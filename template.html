@@ -23,7 +23,7 @@
   --body:'Montserrat',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+
 body{margin:0;background:var(--bg);color:var(--ink);font:500 15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
 a{color:inherit}
 button{font:inherit;cursor:pointer}
@@ -349,6 +349,18 @@ a.prev-i:hover{border-color:var(--gold)}
 .slot.c0 .n{background:var(--celeste-100);color:#0F6FA6}
 .slot .n{font-size:13px}
 .hz{display:block;margin-top:4px;font:700 10.5px/1.25 var(--body);color:#0F6FA6;background:var(--celeste-100);border-radius:5px;padding:3px 6px;width:fit-content;max-width:100%;white-space:normal}
+@media (max-width:640px){table.rk{min-width:0}table.rk td,table.rk th{padding:10px 5px}}
+@media (max-width:640px){table.mini th,table.mini td{padding:8px 4px;font-size:12.5px}table.mini th{font-size:9px;letter-spacing:.06em}
+  #simTab select{min-width:54px;font-size:11.5px;padding:6px 2px}#simTab td.l{max-width:120px}#simTab .nm{font-size:12.5px}}
+.ch{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:58px}
+.ch span{font:800 14px/1 var(--body);color:var(--navy-800)}
+.ch i{display:block;width:52px;height:5px;border-radius:3px;background:var(--line-2);overflow:hidden}
+.ch i b{display:block;height:100%}
+.pager.top{border-top:0;border-bottom:1px solid var(--line-2);padding:12px 20px;background:#FAFBFD;border-radius:var(--radius) var(--radius) 0 0}
+.pager.top .btn{padding:9px 14px;font-size:12px}
+.pager.top{flex-wrap:nowrap}.pager.top .btn{min-width:0;max-width:49%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+@media (max-width:640px){.pager.top{padding:10px 12px}.pager.top .btn{font-size:11px;padding:8px 10px;letter-spacing:.04em}}
+.show-sm{display:none}@media (max-width:640px){.show-sm{display:inline}}
 .note{background:var(--celeste-100);border-left:4px solid var(--celeste);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--navy-700)}
 /* search overlay */
 .ov{position:fixed;inset:0;z-index:100;background:rgba(6,20,48,.6);display:none;align-items:flex-start;justify-content:center;padding:80px 16px 16px}
@@ -557,8 +569,8 @@ HIST.forEach(h=>h.items.forEach(it=>it.keys.forEach(k=>(HKEY[k]=HKEY[k]||[]).pus
 const histCat=(h,it)=>it.team?CATS.find(c=>c.team&&c.age===h.teamCodes[it.cod]):CATS.find(c=>c.num===it.cod);
 const histName=(h,it)=>{const c=histCat(h,it);return c?c.title:it.orig;};
 const wcBadge=(keys,c)=>{const hs=[...new Set(keys.flatMap(k=>(HKEY[k]||[]).filter(x=>histCat(x.h,x.it)===c).map(x=>x.h)))];return hs.map(h=>`<span class="wcb" title="Clasificado en esta categoría al ${esc(h.nombre)} (${esc(h.sede)})">★ ${esc(h.nombre.replace("Mundial ","WC "))}</span>`).join("");};
-const evTh=()=>EV.map(e=>`<th title="${esc(e.nombre)}">${e.corto}</th>`).join("");
-const evTd=p=>p.map((v,i)=>`<td class="ev ${played[i]?"":"na"}">${played[i]?(v==null?"–":fmt(v)):"·"}</td>`).join("");
+const evTh=()=>EV.map(e=>`<th class="hide-sm" title="${esc(e.nombre)}">${e.corto}</th>`).join("");
+const evTd=p=>p.map((v,i)=>`<td class="ev hide-sm ${played[i]?"":"na"}">${played[i]?(v==null?"–":fmt(v)):"·"}</td>`).join("");
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),1800);}
 function pageHead(kicker,title,sub,crumb){
   return `<section class="page-h"><div class="stripes"></div><div class="wrap">
@@ -637,6 +649,7 @@ function homeEvo(){
     </div></div></section>`;
 }
 let RF={mod:"",age:"",gen:""};
+const navLab=(x,c)=>{const full=esc(x.short);const same=x.mod===c.mod&&x.age===c.age&&x.gen===c.gen&&x.div;return same?`<span class="hide-sm">${full}</span><span class="show-sm">${esc(x.div)}</span>`:full;};
 V.ranking=(id)=>{
   let c=CATBY[id];
   if(!c){c=CATS.find(x=>(!RF.mod||x.mod===RF.mod)&&(!RF.age||x.age===RF.age)&&(!RF.gen||x.gen===RF.gen))||CATS[0];}
@@ -657,6 +670,7 @@ V.ranking=(id)=>{
     </aside>
     <div>
       <div class="card">
+        <div class="pager top">${prev?`<a class="btn l" href="#/ranking/${prev.slug}">← ${navLab(prev,c)}</a>`:"<span></span>"}${next?`<a class="btn l" href="#/ranking/${next.slug}">${navLab(next,c)} →</a>`:""}</div>
         <div class="cat-head">
           <div>${c.num?`<span class="chip cel">Código ITF ${esc(c.num)}</span>`:""}<h2>${esc(c.title)}</h2></div>
           <div class="toolbar"><a class="btn p" href="#/simulador/${c.slug}">${ICON.sim}Simular</a><button class="btn l" id="shareBtn">${ICON.link}Copiar enlace</button></div>
@@ -670,16 +684,14 @@ V.ranking=(id)=>{
           ${leader&&leader.pos?`<div><b>${esc(leader.n.split(",")[0])}</b><span>Líder</span></div>`:""}
         </div>
         <div class="tablewrap"><table class="rk">
-          <thead><tr><th>Pos</th>${EVO?`<th title="Variación respecto de ${esc(prevEv.nombre)}">Var.</th>`:""}<th class="l">${c.team?"Equipo":"Competidor"}</th>${evTh()}<th>Total</th><th class="hide-sm">Estado</th></tr></thead>
-          <tbody>${rows.map((r,k)=>{
+          <thead><tr><th>Pos</th>${EVO?`<th title="Variación respecto de ${esc(prevEv.nombre)}">Var.</th>`:""}<th class="l">${c.team?"Equipo":"Competidor"}</th>${evTh()}<th>Total</th>${remaining?`<th title="Probabilidad estimada de terminar en zona de clasificación">Chance</th>`:""}<th class="hide-sm">Estado</th></tr></thead>
+          <tbody>${(()=>{const CHc=remaining?chances(c):null;return rows.map((r,k)=>{
             const who=c.team?`<div class="nm">${esc(r.n)}${wcBadge(r.m.map(n=>slug(n)+"--"+slug(r.s)),c)}</div><div class="sm">${r.m.map(n=>`<a href="#/competidor/${slug(n)}--${slug(r.s)}">${esc(n)}</a>`).join(" / ")}</div><div class="sm"><a href="#/escuela/${slug(r.s)}">${esc(r.s)}</a></div>`
               :`<a href="#/competidor/${slug(r.n)}--${slug(r.s)}"><div class="nm">${esc(r.n)}${wcBadge([slug(r.n)+"--"+slug(r.s)],c)}</div></a><div class="sm"><a href="#/escuela/${slug(r.s)}">${esc(r.s)}</a></div>`;
-            return `<tr class="${r.zone?"zone":""} ${r.clas?"clas":""} ${k===cutIdx?"cut":""}"><td><span class="${posCls(r.pos)}">${r.pos??"–"}</span></td>${EVO?`<td>${varCell(r)}</td>`:""}<td class="l">${who}</td>${evTd(r.p)}<td class="tot">${fmt(r.tot)}</td><td class="hide-sm">${status(r)}</td></tr>`}).join("")}</tbody>
+            return `<tr class="${r.zone?"zone":""} ${r.clas?"clas":""} ${k===cutIdx?"cut":""}"><td><span class="${posCls(r.pos)}">${r.pos??"–"}</span></td>${EVO?`<td>${varCell(r)}</td>`:""}<td class="l">${who}</td>${evTd(r.p)}<td class="tot">${fmt(r.tot)}</td>${CHc?`<td>${chanceCell(CHc.get(r))}</td>`:""}<td class="hide-sm">${status(r)}</td></tr>`}).join("")})()}</tbody>
         </table></div>
-        <div class="legend"><span><i style="background:var(--gold)"></i>Zona de clasificación (provisoria)</span><span><i style="background:var(--ok)"></i>Plaza asegurada matemáticamente</span><span>${EV.map(e=>`<b>${e.corto}</b> ${esc(e.nombre)}`).join(" · ")}</span><span>· = fecha no disputada</span></div>
         ${HIST.map(h=>{const its=h.items.filter(it=>histCat(h,it)===c);return its.length?`<div class="evo"><div class="flabel">Clasificados al ${esc(h.nombre)} · ${esc(h.sede)} en esta categoría</div><div class="prev">${its.map(it=>{const k=it.keys[0];const cur=k&&COMP[k];return `<${cur?`a href="#/competidor/${k}"`:"div"} class="prev-i"><span class="wcb">★</span><span><b>${esc(it.n)}</b>${cur?`<br><span class="sm">Hoy: ${cur.res.filter(x=>x.c===c).map(x=>x.r.pos?x.r.pos+"° en esta categoría":"sin puntos en esta categoría")[0]||"compite en otra categoría"}</span>`:`<br><span class="sm">No figura en el ranking actual</span>`}</span></${cur?"a":"div"}>`}).join("")}</div></div>`:""}).join("")}
-        ${EVO?`<div class="evo"><div class="flabel">Evolución de posiciones · top 8</div>${bump(c)}</div>`:`<div class="legend" style="background:#FAFBFD">La evolución de posiciones fecha a fecha se mostrará a partir de los resultados del Primer Ranqueable.</div>`}
-        <div class="pager">${prev?`<a class="btn l" href="#/ranking/${prev.slug}">← ${esc(prev.short)}</a>`:"<span></span>"}${next?`<a class="btn l" href="#/ranking/${next.slug}">${esc(next.short)} →</a>`:""}</div>
+        ${EVO?`<div class="evo"><div class="flabel">Evolución de posiciones · top 8</div>${bump(c)}</div>`:""}
       </div>
     </div>
   </div></section>`;
@@ -803,7 +815,7 @@ V.competidor=(key)=>{
     <div class="grid2">${o.res.map(({c,r})=>{const m=MODC[c.mod];return `<a class="card" href="#/ranking/${c.slug}" style="text-decoration:none;display:block;overflow:hidden;border-top:4px solid ${m.c}">
       <div class="cat-head" style="padding:16px 18px"><div><span class="chip cel">${esc(c.mod)}</span><h2 style="font-size:24px">${esc(c.age)}${c.gen!=="Mixto"?" "+esc(c.gen):""}${c.div?" · "+esc(c.div):""}</h2>${c.team?`<div class="sm" style="margin-top:4px">Equipo <b>${esc(r.n)}</b> · ${esc(r.m.join(" / "))}</div>`:""}</div>
       <div style="text-align:right"><div class="${posCls(r.pos)}" style="font-size:44px">${r.pos?r.pos+"°":"–"}</div><div class="sm">de ${c.rows.length}</div></div></div>
-      <div class="facts" style="padding:12px 18px">${EV.map((e,i)=>`<div><b class="num" style="${played[i]?"":"color:#B6C0D2"}">${played[i]?fmt(r.p[i]??0):"·"}</b><span>${e.corto}</span></div>`).join("")}<div><b class="num">${fmt(r.tot)}</b><span>Total</span></div>${EVO?`<div><b class="num" style="font-size:16px">${r.h.map((x,k)=>`<span title="${esc(EV[PI[k]].nombre)}">${x.pos?x.pos+"°":"–"}</span>`).join(" → ")}</b><span>Evolución ${varCell(r)}</span></div>`:""}<div style="margin-left:auto;align-self:center">${status(r)||`<span class="chip mut">${r.pos?`A ${fmt(r.gap)} pts de la zona`:"Sin puntaje"}</span>`}</div></div>
+      <div class="facts" style="padding:12px 18px">${EV.map((e,i)=>`<div><b class="num" style="${played[i]?"":"color:#B6C0D2"}">${played[i]?fmt(r.p[i]??0):"·"}</b><span>${e.corto}</span></div>`).join("")}<div><b class="num">${fmt(r.tot)}</b><span>Total</span></div>${remaining?`<div><b class="num">${pctTxt(chances(c).get(r))}</b><span>Chance</span></div>`:""}${EVO?`<div><b class="num" style="font-size:16px">${r.h.map((x,k)=>`<span title="${esc(EV[PI[k]].nombre)}">${x.pos?x.pos+"°":"–"}</span>`).join(" → ")}</b><span>Evolución ${varCell(r)}</span></div>`:""}<div style="margin-left:auto;align-self:center">${status(r)||`<span class="chip mut">${r.pos?`A ${fmt(r.gap)} pts de la zona`:"Sin puntaje"}</span>`}</div></div>
     </a>`}).join("")}</div>
   </div></section>`;
 };
@@ -856,6 +868,9 @@ V.reglamento=()=>{
     ${sec("Conservación de puntos")?`<div class="card pad"><h3>5 · Conservación de puntos</h3>${lst("Conservación de puntos")}<p class="note">El traslado del 50 % se aplica sobre el puntaje de la categoría anterior y rige solo para el Primer Ranqueable.</p></div>`:""}
     ${sec("Divisiones por edad")||sec("Graduaciones permitidas")?`<div class="card pad"><h3>6 · Edades y graduaciones</h3><div class="flabel" style="margin-top:12px">Divisiones por edad</div>${lst("Divisiones por edad")}<div class="flabel" style="margin-top:14px">Graduaciones permitidas</div>${lst("Graduaciones permitidas")}</div>`:""}
     ${sec("Pesaje oficial")?`<div class="card pad"><h3>7 · Pesaje oficial</h3>${lst("Pesaje oficial")}</div>`:""}
+    <div class="card pad"><h3>Chance de clasificar</h3><p>En el ranking de cada categoría, la columna <b>Chance</b> estima la probabilidad de que cada competidor termine dentro de las plazas al cierre del ranking.</p>
+      <ul><li>Se simulan ${SIMS.toLocaleString("es-AR")} veces las fechas que faltan disputar, con la escala de puntos de los ranqueables.</li><li>En cada fecha simulada, cada inscripto compite con un 75% de probabilidad (no todos asisten a todas las fechas).</li><li>Los puntos ya obtenidos dan una ventaja moderada para volver a puntuar, pero cualquier inscripto puede ganar una fecha.</li><li><b>0%</b>: ya no puede alcanzar la zona aunque gane todo. <b>100%</b>: tiene la plaza asegurada.</li></ul>
+      <p class="sm">Es una estimación orientativa: no considera quién se inscribe en cada fecha ni cambios de categoría.</p></div>
     <div class="card pad"><h3>Fuentes</h3><p>Planilla oficial del ranking y reglamento del Primer Ranqueable Argentino (FETRA).</p>
       <p class="note">Ante cualquier diferencia, prevalece el reglamento de FETRA y la información publicada en <a href="https://www.fetra-itf.com/" target="_blank" rel="noopener">fetra-itf.com</a>.</p></div>
   </div></section>`;};
@@ -975,6 +990,54 @@ V.mundial=()=>{const M=MUNDIAL;const li=a=>`<ul>${a.map(x=>`<li>${esc(x)}</li>`)
   </div></section>`;};
 V.mundial.after=()=>{$$("[data-lb]").forEach(i=>i.onclick=()=>{$("#lb img").src=i.src;$("#lb").classList.add("open")});};
 
+
+/* ---------- probabilidad de clasificar (Monte Carlo) ---------- */
+// Parámetros del modelo:
+//  ALPHA  = cuánto pesan los puntos ya obtenidos en la probabilidad de volver a puntuar (0 = todos iguales)
+//  ASIST  = probabilidad de que cada inscripto compita en cada fecha restante
+const SIMS=5000, CH={}, ALPHA=0.3, ASIST=0.75;
+function rng(seed){let h=1779033703^seed.length;for(let i=0;i<seed.length;i++){h=Math.imul(h^seed.charCodeAt(i),3432918353);h=h<<13|h>>>19;}
+  return ()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return (h>>>0)/4294967296;};}
+function chances(c){
+  if(CH[c.slug]) return CH[c.slug];
+  const rows=c.sorted, n=rows.length, rem=EV.map((e,i)=>e.jugado?null:(e.puntos||[])).filter(Boolean);
+  const res=new Map();
+  if(!rem.length){rows.forEach(r=>res.set(r,r.zone?1:0));return CH[c.slug]=res;}
+  const maxRem=rem.reduce((a,p)=>a+(p[0]||0),0);
+  const base=rows.map(r=>r.tot), w=rows.map(r=>1+ALPHA*Math.max(0,r.tot)), cnt=new Float64Array(n), rand=rng(c.slug);
+  const tot=new Float64Array(n);
+  for(let s=0;s<SIMS;s++){
+    for(let j=0;j<n;j++) tot[j]=base[j];
+    for(const pts of rem){
+      // orden de llegada ponderado (Plackett-Luce) para los puestos que suman puntos
+      const avail=[];for(let j=0;j<n;j++) if(rand()<ASIST) avail.push(j);
+      let W=avail.reduce((a,j)=>a+w[j],0);
+      for(let k=0;k<pts.length&&avail.length;k++){
+        let x=rand()*W, idx=0; for(;idx<avail.length-1;idx++){x-=w[avail[idx]];if(x<=0)break;}
+        const j=avail[idx]; tot[j]+=pts[k]; W-=w[j]; avail.splice(idx,1);
+      }
+    }
+    // reparto de plazas con empates en el corte
+    const order=[...Array(n).keys()].sort((a,b)=>tot[b]-tot[a]);
+    let i=0, left=c.cupos;
+    while(i<n&&left>0){ if(!(tot[order[i]]>0)) break;
+      let j=i; while(j<n&&tot[order[j]]===tot[order[i]]) j++;
+      const g=j-i, give=Math.min(1,left/g); for(let k=i;k<j;k++) cnt[order[k]]+=give; left-=g; i=j; }
+  }
+  const sortedTot=[...base].sort((a,b)=>b-a);
+  rows.forEach((r,j)=>{
+    let p=cnt[j]/SIMS;
+    const above=base.filter(t=>t>r.tot+maxRem).length;
+    p=Math.min(.995,Math.max(.004,p));  // sin certeza matemática nunca se muestra 0% ni 100%
+    if(above>=c.cupos) p=0;            // eliminado matemáticamente
+    if(r.clas) p=1;                     // plaza asegurada
+    res.set(r,p);
+  });
+  return CH[c.slug]=res;
+}
+const pctTxt=p=>p>=1?"100%":p<=0?"0%":p>=.995?">99%":p<.01?"<1%":Math.round(p*100)+"%";
+const chanceCell=p=>`<div class="ch"><span class="num">${pctTxt(p)}</span><i><b style="width:${Math.max(p>0?3:0,p*100)}%;background:${p>=.5?"var(--ok)":p>=.15?"var(--gold)":"#9AA8C0"}"></b></i></div>`;
+
 /* ---------- clasificados anteriores ---------- */
 const AB={"Adultos":"Ad.","Juveniles":"Juv.","Pre-Juveniles":"Pre-Juv."};
 const MODSHORT={"Formas":"Formas","Lucha":"Lucha","Técnicas Especiales":"Téc. Esp.","Rotura de Poder":"Rotura","Lucha Pre-Establecida":"Lucha Pre-Est."};
@@ -1033,7 +1096,7 @@ function countdown(){
 }
 
 /* ---------- router ---------- */
-function go(h,replace){if(replace){history.replaceState(null,"",h);render();}else location.hash=h;}
+function go(h,replace){if(replace){history.replaceState(null,"",h);render.keep=true;render();render.keep=false;}else location.hash=h;}
 function render(){
   const [,r="inicio",arg=""]=(location.hash||"#/inicio").match(/^#\/?([^/]*)\/?(.*)$/)||[];
   const view=V[r]||V.inicio; const a=decodeURIComponent(arg);
@@ -1046,7 +1109,13 @@ function render(){
   $("#heroSearch")&&($("#heroSearch").onclick=openSearch);
   $$(".mod[data-mod]").forEach(x=>x.addEventListener("click",()=>{RF={mod:x.dataset.mod,age:"",gen:""}}));
   countdown();
-  if(!render.keep)window.scrollTo(0,0);
+  const same=render.last===r&&(r==="ranking"||r==="simulador"||r==="plazas");
+  if(render.keep){ /* filtros: no mover la página */ }
+  else if(same){ // misma sección: no volver arriba; si se estaba más abajo del contenido, ir al comienzo del contenido
+    const top=($(".sec")?.getBoundingClientRect().top||0)+window.scrollY-80;
+    if(window.scrollY>top) window.scrollTo(0,top);
+  } else window.scrollTo(0,0);
+  render.last=r;
 }
 window.addEventListener("hashchange",render);
 
