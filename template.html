@@ -361,6 +361,39 @@ a.prev-i:hover{border-color:var(--gold)}
 .pager.top{flex-wrap:nowrap}.pager.top .btn{min-width:0;max-width:49%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
 @media (max-width:640px){.pager.top{padding:10px 12px}.pager.top .btn{font-size:11px;padding:8px 10px;letter-spacing:.04em}}
 .show-sm{display:none}@media (max-width:640px){.show-sm{display:inline}}
+.prevrk{border-top:1px solid var(--line-2)}
+.prevrk summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px;font-size:14px;color:var(--navy-800)}
+.prevrk summary::-webkit-details-marker{display:none}
+.prevrk summary:hover{background:#FAFBFD}
+.prevrk .chev{flex:none;font:800 11px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--celeste)}
+.prevrk .chev:after{content:" +"}
+.prevrk[open] .chev:after{content:" –"}
+.prevrk[open] summary{background:var(--gold-100)}
+table.mini2 td{padding:8px}
+.tray{padding:0;overflow:hidden;border-left:5px solid var(--gold);margin-bottom:6px}
+.tray-h{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:16px 20px}
+.tray-h b{font:800 20px/1.1 var(--display);text-transform:uppercase;color:var(--navy-800);display:block;margin-top:4px}
+.tl-y{display:flex;gap:6px}
+.yr{display:flex;flex-direction:column;align-items:center;min-width:70px;padding:8px 6px;border-radius:10px;border:1px dashed var(--line);text-decoration:none;color:var(--ink-3)}
+.yr i{font-style:normal;height:14px;color:var(--gold-600);font-size:13px}
+.yr b{font:800 20px/1 var(--display);margin:0;color:inherit}
+.yr span{font-size:10.5px;font-weight:600}
+.yr.on{border:1px solid #F3D88A;background:var(--gold-100);color:var(--navy-800)}
+.tray-b{border-top:1px solid var(--line-2);padding:8px 20px}
+.tray-r{display:flex;gap:12px;align-items:baseline;padding:6px 0}
+.ty{font:800 16px/1 var(--display);color:var(--gold-600);min-width:40px}
+.tc{display:flex;flex-wrap:wrap;gap:6px}
+.tchip{font:700 12px/1 var(--body);padding:6px 9px;border-radius:7px;background:var(--line-2);color:var(--navy-800);text-decoration:none}
+a.tchip:hover{background:var(--celeste-100)}
+.tray-d{border-top:1px solid var(--line-2)}
+.tray-d summary{cursor:pointer;padding:12px 20px;font:700 12.5px/1 var(--body);color:var(--celeste);list-style:none}
+.tray-d summary::-webkit-details-marker{display:none}
+.tray-d summary:before{content:"+ "}.tray-d[open] summary:before{content:"– "}
+.tray-d ul{margin:0;padding:0 20px 14px 38px;font-size:13.5px;color:var(--ink-2)}
+.tray-d li{margin:4px 0}
+@media (max-width:640px){.tl-y{width:100%}.yr{flex:1;min-width:0}}
+.pl-static:hover{transform:none}
+a.pl-h:hover b{color:var(--celeste)}
 .note{background:var(--celeste-100);border-left:4px solid var(--celeste);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--navy-700)}
 /* search overlay */
 .ov{position:fixed;inset:0;z-index:100;background:rgba(6,20,48,.6);display:none;align-items:flex-start;justify-content:center;padding:80px 16px 16px}
@@ -566,9 +599,27 @@ function bump(c){
 const HIST=(DATA.historial||[]);
 const HKEY={}; // clave competidor -> [{h,it}]
 HIST.forEach(h=>h.items.forEach(it=>it.keys.forEach(k=>(HKEY[k]=HKEY[k]||[]).push({h,it}))));
-const histCat=(h,it)=>it.team?CATS.find(c=>c.team&&c.age===h.teamCodes[it.cod]):CATS.find(c=>c.num===it.cod);
-const histName=(h,it)=>{const c=histCat(h,it);return c?c.title:it.orig;};
+const histCat=(h,it)=>h.equiv===false?null:it.team?CATS.find(c=>c.team&&c.age===h.teamCodes[it.cod]):CATS.find(c=>c.num===it.cod);
+const histName=(h,it)=>{const c=histCat(h,it);return c?c.title:(it.cat||it.orig);};
 const wcBadge=(keys,c)=>{const hs=[...new Set(keys.flatMap(k=>(HKEY[k]||[]).filter(x=>histCat(x.h,x.it)===c).map(x=>x.h)))];return hs.map(h=>`<span class="wcb" title="Clasificado en esta categoría al ${esc(h.nombre)} (${esc(h.sede)})">★ ${esc(h.nombre.replace("Mundial ","WC "))}</span>`).join("");};
+const RKEY={}; // clave competidor -> [{h,b,r}] del ranking clasificatorio anterior
+const rkCat=(h,b)=>h.teamCodes[b.cod]?CATS.find(c=>c.team&&c.age===h.teamCodes[b.cod]):CATS.find(c=>c.num===b.cod);
+HIST.forEach(h=>(h.ranking||[]).forEach(b=>b.rows.forEach(r=>r.keys.forEach(k=>(RKEY[k]=RKEY[k]||[]).push({h,b,r})))));
+function prevBlock(c){
+  return HIST.map(h=>{
+    const b=(h.ranking||[]).find(b=>rkCat(h,b)===c);
+    if(!b){ const its=h.items.filter(it=>histCat(h,it)===c); if(!its.length) return "";
+      return `<div class="evo"><div class="flabel">Compitieron en el ${esc(h.nombre)} · ${esc(h.sede)}</div><div class="sm">${its.map(it=>"★ "+esc(it.n)).join(" · ")}</div></div>`; }
+    const trav=b.rows.filter(r=>r.wc).map(r=>r.n).concat(b.extra||[]);
+    const ev=h.rankingEventos||[];
+    return `<details class="prevrk"><summary><span><b>Ranking clasificatorio ${esc(h.nombre)}</b> · ${esc(h.sede)}<br><span class="sm">★ Viajaron: ${trav.length?esc(trav.join(" · ")):"—"}</span></span><span class="chev">Ver ranking</span></summary>
+      <div class="tablewrap"><table class="rk mini2"><thead><tr><th>Pos</th><th class="l">${c.team?"Equipo":"Competidor"}</th>${ev.map(e=>`<th class="hide-sm">${esc(e)}</th>`).join("")}<th>Total</th></tr></thead>
+      <tbody>${b.rows.map(r=>{const k=r.keys[0];const nm=`${esc(r.n)}${r.wc?' <span class="wcb">★ Viajó</span>':""}`;
+        return `<tr class="${r.wc?"zone":""}"><td><span class="${posCls(r.pos)}">${r.pos??"–"}</span></td><td class="l">${k&&!c.team?`<a href="#/competidor/${k}"><div class="nm">${nm}</div></a>`:`<div class="nm">${nm}</div>`}<div class="sm">${r.m&&r.m.length?esc(r.m.join(" / "))+" · ":""}${esc(r.e||"")}</div></td>${r.p.map(v=>`<td class="ev hide-sm ${v==null?"na":""}">${v==null?"–":fmt(v)}</td>`).join("")}<td class="tot">${fmt(r.t)}</td></tr>`}).join("")}</tbody></table></div>
+      ${b.extra&&b.extra.length?`<div class="legend">También viajó en esta categoría: ${esc(b.extra.join(" · "))}</div>`:""}
+    </details>`;
+  }).join("");
+}
 const evTh=()=>EV.map(e=>`<th class="hide-sm" title="${esc(e.nombre)}">${e.corto}</th>`).join("");
 const evTd=p=>p.map((v,i)=>`<td class="ev hide-sm ${played[i]?"":"na"}">${played[i]?(v==null?"–":fmt(v)):"·"}</td>`).join("");
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),1800);}
@@ -690,7 +741,7 @@ V.ranking=(id)=>{
               :`<a href="#/competidor/${slug(r.n)}--${slug(r.s)}"><div class="nm">${esc(r.n)}${wcBadge([slug(r.n)+"--"+slug(r.s)],c)}</div></a><div class="sm"><a href="#/escuela/${slug(r.s)}">${esc(r.s)}</a></div>`;
             return `<tr class="${r.zone?"zone":""} ${r.clas?"clas":""} ${k===cutIdx?"cut":""}"><td><span class="${posCls(r.pos)}">${r.pos??"–"}</span></td>${EVO?`<td>${varCell(r)}</td>`:""}<td class="l">${who}</td>${evTd(r.p)}<td class="tot">${fmt(r.tot)}</td>${CHc?`<td>${chanceCell(CHc.get(r))}</td>`:""}<td class="hide-sm">${status(r)}</td></tr>`}).join("")})()}</tbody>
         </table></div>
-        ${HIST.map(h=>{const its=h.items.filter(it=>histCat(h,it)===c);return its.length?`<div class="evo"><div class="flabel">Clasificados al ${esc(h.nombre)} · ${esc(h.sede)} en esta categoría</div><div class="prev">${its.map(it=>{const k=it.keys[0];const cur=k&&COMP[k];return `<${cur?`a href="#/competidor/${k}"`:"div"} class="prev-i"><span class="wcb">★</span><span><b>${esc(it.n)}</b>${cur?`<br><span class="sm">Hoy: ${cur.res.filter(x=>x.c===c).map(x=>x.r.pos?x.r.pos+"° en esta categoría":"sin puntos en esta categoría")[0]||"compite en otra categoría"}</span>`:`<br><span class="sm">No figura en el ranking actual</span>`}</span></${cur?"a":"div"}>`}).join("")}</div></div>`:""}).join("")}
+        ${prevBlock(c)}
         ${EVO?`<div class="evo"><div class="flabel">Evolución de posiciones · top 8</div>${bump(c)}</div>`:""}
       </div>
     </div>
@@ -714,7 +765,7 @@ V.plazas=(mod)=>{
       cup:cs.reduce((s,c)=>s+c.cupos,0),cl:cs.reduce((s,c)=>s+Math.min(c.clas,c.cupos),0)}});
   const cats=CATS.filter(c=>!sel||c.mod===sel);
   const byMod={};cats.forEach(c=>(byMod[c.mod]=byMod[c.mod]||[]).push(c));
-  return pageHead("Lista de clasificados","Plazas al Mundial",`${TOTAL_CUPOS} plazas en juego: 2 por categoría individual y 1 equipo por edad en Lucha Pre-Establecida. Mientras resten fechas, los ocupantes son provisorios salvo que tengan la plaza asegurada matemáticamente.${HIST.length?` <a href="#/historial" style="color:var(--gold);font-weight:700">Ver clasificados anteriores →</a>`:""}`,"Plazas")+`
+  return pageHead("Lista de clasificados","Plazas al Mundial",`${TOTAL_CUPOS} plazas en juego: 2 por categoría individual y 1 equipo por edad en Lucha Pre-Establecida. Mientras resten fechas, los ocupantes son provisorios salvo que tengan la plaza asegurada matemáticamente.${HIST.length?` <a href="#/historial" style="color:var(--gold);font-weight:700">Ver Mundiales anteriores →</a>`:""}`,"Plazas")+`
   <section class="sec"><div class="wrap">
     <div class="grid2 wide-r">
       <div class="card pad">
@@ -807,10 +858,10 @@ V.competidor=(key)=>{
     <div class="crumbs"><a href="#/inicio">Inicio</a> / <a href="#/competidores">Competidores</a></div>
     <div class="prof" style="margin-top:16px"><div class="avatar">${esc(ini)}</div>
     <div><div class="kicker">${o.pos?`Puesto ${o.pos} del ranking general`:"Sin puntaje aún"}</div><h1 style="margin:8px 0 4px">${esc(o.n)}</h1><a href="#/escuela/${slug(o.s)}" style="color:#C9D6EE;font-weight:600">${esc(o.s)}</a></div></div>
-    <div class="statrow"><div><b>${fmt(o.tot)}</b><span>Puntos totales</span></div><div><b>${o.res.length}</b><span>Categorías</span></div><div><b>${o.zone}</b><span>En zona</span></div><div><b>${o.clas}</b><span>Plazas aseguradas</span></div></div>
+    <div class="statrow"><div><b>${fmt(o.tot)}</b><span>Puntos totales</span></div><div><b>${o.res.length}</b><span>Categorías</span></div><div><b>${o.zone}</b><span>En zona</span></div><div><b>${o.clas}</b><span>Plazas aseguradas</span></div>${(()=>{const n=HIST.filter(h=>(HKEY[key]||[]).some(x=>x.h===h)).length;return n?`<div><b>${n}</b><span>${n===1?"Mundial":"Mundiales"}</span></div>`:""})()}</div>
   </div></section>
   <section class="sec"><div class="wrap">
-    ${(HKEY[key]||[]).length?`<div class="card pad hist-card"><div class="flabel">Antecedentes</div>${Object.values((HKEY[key]||[]).reduce((a,x)=>((a[x.h.id]=a[x.h.id]||{h:x.h,its:[]}).its.push(x.it),a),{})).map(g=>`<div class="hist-row"><span class="wcb big">★ Clasificado al ${esc(g.h.nombre)}</span><span class="muted">${esc(g.h.sede)}</span><ul>${g.its.map(it=>`<li>${esc(histName(g.h,it))}${it.team?` · equipo ${esc(it.n)}`:""}</li>`).join("")}</ul></div>`).join("")}</div>`:""}
+    ${trayectoria(key)}
     <div class="sec-h" style="margin-top:20px"><h2 class="t"><small>Detalle</small>Posición en cada categoría</h2></div>
     <div class="grid2">${o.res.map(({c,r})=>{const m=MODC[c.mod];return `<a class="card" href="#/ranking/${c.slug}" style="text-decoration:none;display:block;overflow:hidden;border-top:4px solid ${m.c}">
       <div class="cat-head" style="padding:16px 18px"><div><span class="chip cel">${esc(c.mod)}</span><h2 style="font-size:24px">${esc(c.age)}${c.gen!=="Mixto"?" "+esc(c.gen):""}${c.div?" · "+esc(c.div):""}</h2>${c.team?`<div class="sm" style="margin-top:4px">Equipo <b>${esc(r.n)}</b> · ${esc(r.m.join(" / "))}</div>`:""}</div>
@@ -838,7 +889,7 @@ V.calendario=(id)=>pageHead("Calendario clasificatorio","Eventos del ranking",`$
           ${e===nextEv&&e.fecha?`<div class="count" id="cd" style="max-width:380px"><div><b>–</b><span>Días</span></div><div><b>–</b><span>Horas</span></div><div><b>–</b><span>Min</span></div><div><b>–</b><span>Seg</span></div></div>`:""}
           <div class="toolbar">${e.reglamento?`<a class="btn p" href="${e.reglamento.data}" download="${esc(e.reglamento.nombre)}">${ICON.dl}Descargar reglamento (PDF)</a>`:""}${maps?`<a class="btn l" href="${maps}" target="_blank" rel="noopener">${ICON.pin}Cómo llegar</a>`:""}${e.jugado?`<a class="btn p" href="#/ranking">Ver resultados en el ranking</a>`:""}</div>
         </div></article>`}).join("")}
-      <div class="wc wc-fl">${DATA.mundial&&DATA.mundial.flyer?`<img src="${DATA.mundial.flyer}" alt="ITF Taekwon-Do World Championship Paraguay 2027" data-lb>`:""}<div><div class="stripes"></div><div class="kicker" style="color:var(--gold)">Objetivo final</div><h3>Campeonato Mundial ITF 2027</h3><p><b style="color:#fff">17 al 23 de octubre de 2027</b> · ueno SND Arena, Asunción, Paraguay.</p><p style="margin-top:10px">Los ${TOTAL_CUPOS} cupos del ranking se definen al cierre de las ${NEV} fechas del ranking.</p><div class="toolbar" style="margin-top:16px"><a class="btn p" href="#/mundial">Información del Mundial</a><a class="btn g" href="#/plazas">Ver plazas</a>${HIST.length?`<a class="btn g" href="#/historial">Clasificados anteriores</a>`:""}</div></div></div>
+      <div class="wc wc-fl">${DATA.mundial&&DATA.mundial.flyer?`<img src="${DATA.mundial.flyer}" alt="ITF Taekwon-Do World Championship Paraguay 2027" data-lb>`:""}<div><div class="stripes"></div><div class="kicker" style="color:var(--gold)">Objetivo final</div><h3>Campeonato Mundial ITF 2027</h3><p><b style="color:#fff">17 al 23 de octubre de 2027</b> · ueno SND Arena, Asunción, Paraguay.</p><p style="margin-top:10px">Los ${TOTAL_CUPOS} cupos del ranking se definen al cierre de las ${NEV} fechas del ranking.</p><div class="toolbar" style="margin-top:16px"><a class="btn p" href="#/mundial">Información del Mundial</a><a class="btn g" href="#/plazas">Ver plazas</a>${HIST.length?`<a class="btn g" href="#/historial">Mundiales anteriores</a>`:""}</div></div></div>
     </div>
   </div></section>`;
 V.calendario.after=(id)=>{$$("[data-lb]").forEach(i=>i.onclick=()=>{$("#lb img").src=i.src;$("#lb").classList.add("open")});if(id){const el=$("#ev-"+id);el&&setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),60);}};
@@ -1038,6 +1089,21 @@ function chances(c){
 const pctTxt=p=>p>=1?"100%":p<=0?"0%":p>=.995?">99%":p<.01?"<1%":Math.round(p*100)+"%";
 const chanceCell=p=>`<div class="ch"><span class="num">${pctTxt(p)}</span><i><b style="width:${Math.max(p>0?3:0,p*100)}%;background:${p>=.5?"var(--ok)":p>=.15?"var(--gold)":"#9AA8C0"}"></b></i></div>`;
 
+
+const abbr=t=>t.replace("Lucha Pre-Establecida","Lucha Pre-Est.").replace("Técnicas Especiales","Téc. Esp.").replace("Rotura de Poder","Rotura").replace("Pre-Juveniles","Pre-Juv.").replace("Juveniles","Juv.").replace("Adultos","Ad.").replace("Masculino","Masc.").replace("Femenino","Fem.");
+function trayectoria(key){
+  const part=HIST.filter(h=>(HKEY[key]||[]).some(x=>x.h===h));
+  const rks=(RKEY[key]||[]);
+  if(!part.length&&!rks.length) return "";
+  const years=[...HIST].sort((a,b)=>a.anio-b.anio);
+  return `<div class="card tray">
+    <div class="tray-h"><div><div class="flabel" style="margin:0">Trayectoria internacional</div><b>${part.length?`${part.length} ${part.length===1?"Mundial disputado":"Mundiales disputados"}`:"Sin participaciones en Mundiales"}</b></div>
+      <div class="tl-y">${years.map(h=>{const on=part.includes(h);return `<a href="#/historial/${h.id}" class="yr ${on?"on":""}" title="${esc(h.nombre)} · ${esc(h.sede)}"><i>${on?"★":""}</i><b>${h.anio}</b><span>${esc(h.sede.split(",")[0])}</span></a>`}).join("")}</div></div>
+    ${part.length?`<div class="tray-b">${[...part].sort((a,b)=>b.anio-a.anio).map(h=>{const its=(HKEY[key]||[]).filter(x=>x.h===h).map(x=>x.it);
+      return `<div class="tray-r"><span class="ty">${h.anio}</span><span class="tc">${its.map(it=>{const c=histCat(h,it);const lab=abbr(histName(h,it))+(it.team?` (${esc(it.n)})`:"");return c?`<a class="tchip" href="#/ranking/${c.slug}">${lab}</a>`:`<span class="tchip">${lab}</span>`}).join("")}</span></div>`}).join("")}</div>`:""}
+    ${rks.length?`<details class="tray-d"><summary>Ranking clasificatorio ${esc(rks[0].h.nombre.replace("Mundial ",""))} · ${rks.length} ${rks.length===1?"categoría":"categorías"}</summary><ul>${rks.map(x=>{const cc=rkCat(x.h,x.b);return `<li><b>${x.r.pos?x.r.pos+"°":"–"}</b> de ${x.b.rows.length} · ${cc?`<a href="#/ranking/${cc.slug}">${abbr(cc.title)}</a>`:abbr(x.b.orig)} · ${fmt(x.r.t)} pts${x.r.wc?' <span class="wcb">★ Viajó</span>':""}</li>`}).join("")}</ul></details>`:""}
+  </div>`;
+}
 /* ---------- clasificados anteriores ---------- */
 const AB={"Adultos":"Ad.","Juveniles":"Juv.","Pre-Juveniles":"Pre-Juv."};
 const MODSHORT={"Formas":"Formas","Lucha":"Lucha","Técnicas Especiales":"Téc. Esp.","Rotura de Poder":"Rotura","Lucha Pre-Establecida":"Lucha Pre-Est."};
@@ -1051,32 +1117,35 @@ function histStatus(cur,c){
 let HSEL=0;
 V.historial=(id)=>{
   if(!HIST.length) return notFound();
-  const h=HIST.find(x=>x.id===id)||HIST[0];
+  const h=HIST.find(x=>x.id===id)||HIST[0], eq=h.equiv!==false;
   const linked=new Set(h.items.flatMap(it=>it.keys));
   const persons=[...linked].map(k=>COMP[k]).filter(Boolean);
-  const nPrev=h.items.reduce((a,it)=>a+(it.team?1:1),0);
-  const inRank=persons.length;
+  const nPrev=h.items.length, inRank=persons.length, inZoneAny=persons.filter(o=>o.zone).length;
   let zSame=0,zOther=0; h.items.forEach(it=>{const cur=it.keys.map(k=>COMP[k]).filter(Boolean);if(!cur.length)return;const st=histStatus(cur,histCat(h,it));if(st.same)zSame++;else if(st.other.length)zOther++;});
-  const byCat=new Map(); h.items.forEach(it=>{const c=histCat(h,it);const k=c?c.slug:"x-"+it.cod;if(!byCat.has(k))byCat.set(k,{c,it0:it,its:[]});byCat.get(k).its.push(it);});
-  const groups=[...byCat.values()].sort((a,b)=>(a.c?a.c.idx:999)-(b.c?b.c.idx:999));
-  const byMod={};groups.forEach(g=>{const m=g.c?g.c.mod:"Otras";(byMod[m]=byMod[m]||[]).push(g)});
-  return pageHead("Antecedentes","Clasificados anteriores",`Competidores clasificados al ${esc(h.nombre)} (${esc(h.sede)}). Los que también participan del ranking actual están vinculados a su perfil.`,`<a href="#/plazas">Plazas</a>`)+`
+  const byCat=new Map(); h.items.forEach(it=>{const c=histCat(h,it);const k=c?c.slug:"x-"+it.cat;if(!byCat.has(k))byCat.set(k,{c,it0:it,its:[]});byCat.get(k).its.push(it);});
+  const modIdx=m=>MODS.findIndex(x=>x.k===m);
+  const groups=[...byCat.values()].sort((a,b)=>a.c&&b.c?a.c.idx-b.c.idx:(modIdx(a.it0.mod)-modIdx(b.it0.mod))||(+a.it0.cod-+b.it0.cod));
+  const byMod={};groups.forEach(g=>{const m=g.c?g.c.mod:g.it0.mod;(byMod[m]=byMod[m]||[]).push(g)});
+  const head=g=>g.c?(g.c.age+(g.c.gen!=="Mixto"?" "+g.c.gen.slice(0,3)+".":"")+(g.c.div?" · "+g.c.div:"")):g.it0.cat.replace(g.it0.mod+" ","").replace(/(Masculino|Femenino)/,m=>m.slice(0,3)+".").replace(/ (-|\+)(\d)/," · $1$2").replace(/ (I|II|III|IV|V|VI|II-III|IV-VI) Dan/," · $1 Dan");
+  return pageHead("Antecedentes","Mundiales anteriores",`Argentinos que compitieron en el ${esc(h.nombre)} (${esc(h.sede)}). Los que también participan del ranking actual están vinculados a su perfil.`,`<a href="#/plazas">Plazas</a>`)+`
   <section class="sec"><div class="wrap">
-    ${HIST.length>1?`<div class="seg" style="margin-bottom:16px">${HIST.map(x=>`<a class="btn ${x===h?"p":"l"}" href="#/historial/${x.id}">${esc(x.nombre)}</a>`).join("")}</div>`:""}
+    ${HIST.length>1?`<div class="seg" style="margin-bottom:16px">${HIST.map(x=>`<a class="btn ${x===h?"p":"l"}" href="#/historial/${x.id}">${esc(x.nombre)} · ${esc(x.sede.split(",")[0])}</a>`).join("")}</div>`:""}
     <div class="kpis k4" style="margin-top:0">
       <div class="kpi"><b class="num">${nPrev}</b><span>Plazas ${esc(h.nombre)}</span></div>
       <div class="kpi"><b class="num">${inRank}</b><span>Compiten en el ranking actual</span></div>
-      <div class="kpi acc"><b class="num">${zSame}</b><span>Hoy en zona en la misma categoría</span></div>
-      <div class="kpi"><b class="num">${zOther}</b><span>Hoy en zona en otra categoría</span></div>
+      ${eq?`<div class="kpi acc"><b class="num">${zSame}</b><span>Hoy en zona en la misma categoría</span></div>
+      <div class="kpi"><b class="num">${zOther}</b><span>Hoy en zona en otra categoría</span></div>`
+      :`<div class="kpi acc"><b class="num">${inZoneAny}</b><span>Hoy en zona de clasificación</span></div>
+      <div class="kpi"><b>${esc(h.sede.split(",")[0])}</b><span>${esc((h.sede.split(",")[1]||"").trim())} ${h.anio}</span></div>`}
     </div>
+    ${!eq?`<p class="note" style="margin-top:18px">En ${h.anio} las categorías eran distintas a las actuales (otras divisiones de peso y sin Pre-Juveniles), por eso no se comparan con las categorías de hoy.</p>`:""}
     ${Object.entries(byMod).map(([m,gs])=>`<div class="sec-h" style="margin-top:28px"><h2 class="t" style="font-size:28px">${esc(m)}</h2><span class="sub">${gs.reduce((a,g)=>a+g.its.length,0)} plazas</span></div>
-      <div class="pl-grid" style="--n:4">${gs.map(g=>`<${g.c?`a href="#/ranking/${g.c.slug}"`:"div"} class="pl"><div class="pl-h"><b>${esc(g.c?(g.c.age+(g.c.gen!=="Mixto"?" "+g.c.gen.slice(0,3)+".":"")+(g.c.div?" · "+g.c.div:"")):g.it0.orig)}</b><span>${esc(g.it0.cod)}</span></div>
+      <div class="pl-grid" style="--n:4">${gs.map(g=>`<div class="pl pl-static">${g.c?`<a class="pl-h" href="#/ranking/${g.c.slug}" style="text-decoration:none">`:`<div class="pl-h">`}<b>${esc(head(g))}</b><span>${esc(g.it0.cod)}</span>${g.c?"</a>":"</div>"}
         ${g.its.map(it=>{const cur=it.keys.map(k=>COMP[k]).filter(Boolean);
           const st=histStatus(cur,g.c);
-          return `<div class="slot ${cur.length?(st.same?"z":"c0"):"v"}"><span class="n">★</span><span class="who"><span class="nm" style="display:block">${esc(it.team?"Equipo "+it.n:it.n)}</span><span class="sm">${cur.length?esc(cur.map(o=>o.s).filter((x,i,a)=>a.indexOf(x)===i).join(" · "))+(st.same?" · en zona":""):"No figura en el ranking actual"}</span>${!st.same&&st.other.length?`<span class="hz" title="Hoy en zona en otra categoría">Hoy en zona: ${st.other.map(c=>esc(catLabel(c,g.c))).join(" / ")}</span>`:""}</span><span></span></div>`}).join("")}
-      </${g.c?"a":"div"}>`).join("")}</div>`).join("")}
-    <div class="legend" style="border:0;padding:16px 0 0"><span><span class="slot z" style="display:inline;padding:0;border:0"><span class="n" style="display:inline-grid">★</span></span> Hoy en zona en la misma categoría</span><span><span class="slot c0" style="display:inline;padding:0;border:0"><span class="n" style="display:inline-grid">★</span></span> Compite en el ranking actual <span class="hz" style="display:inline-block;margin-left:4px">Hoy en zona: …</span> = en zona en otra categoría</span><span><span class="slot" style="display:inline;padding:0;border:0"><span class="n" style="display:inline-grid">★</span></span> No figura en el ranking actual</span></div>
-    <p class="note" style="margin-top:24px">La vinculación con el ranking actual se hace por nombre y puede tener diferencias de escritura. La categoría corresponde a la del Mundial anterior (por código ITF); hoy el competidor puede estar en otra categoría por edad o peso.</p>
+          return `<div class="slot ${cur.length?(st.same?"z":"c0"):"v"}"><span class="n">★</span><span class="who"><span class="nm" style="display:block">${cur.length===1&&!it.team?`<a href="#/competidor/${cur[0].key}" style="text-decoration:none">${esc(it.n)}</a>`:esc(it.team?"Equipo "+it.n:it.n)}</span><span class="sm">${cur.length?esc(cur.map(o=>o.s).filter((x,i,a)=>a.indexOf(x)===i).join(" · "))+(st.same?" · en zona":""):"No figura en el ranking actual"}</span>${!st.same&&st.other.length?`<span class="hz">Hoy en zona: ${st.other.map(c=>esc(catLabel(c,g.c))).join(" / ")}</span>`:""}</span><span></span></div>`}).join("")}
+      </div>`).join("")}</div>`).join("")}
+    <div class="legend" style="border:0;padding:16px 0 0">${eq?`<span><span class="slot z" style="display:inline;padding:0;border:0"><span class="n" style="display:inline-grid">★</span></span> Hoy en zona en la misma categoría</span>`:""}<span><span class="slot c0" style="display:inline;padding:0;border:0"><span class="n" style="display:inline-grid">★</span></span> Compite en el ranking actual</span><span><span class="slot" style="display:inline;padding:0;border:0"><span class="n" style="display:inline-grid">★</span></span> No figura en el ranking actual</span></div>
   </div></section>`;
 };
 

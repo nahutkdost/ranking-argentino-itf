@@ -115,9 +115,42 @@ PTS_MAX_POR_FECHA = 9
 # ---------------------------------------------------------------------------
 HISTORIAL = [
     {"id": "wc2025", "nombre": "Mundial 2025", "sede": "Poreč, Croacia", "anio": 2025,
-     "csv": "assets/clasificados-mundial-2025.csv"},
+     "csv": "assets/clasificados-mundial-2025.csv",
+     # Ranking clasificatorio completo de ese Mundial (opcional). Bloques "CÓDIGO título" + filas
+     # Nombre | Escuela/Instructor | fechas... | Total | Notas
+     "ranking": "assets/ranking-clasificatorio-mundial-2025.xlsx",
+     "ranking_eventos": ["CA", "1° Sel.", "2° Sel.", "3° Sel.", "4° Sel."]},
+    {"id": "wc2023", "nombre": "Mundial 2023", "sede": "Tampere, Finlandia", "anio": 2023,
+     "csv": "assets/participantes-mundial-2023.csv"},
+    # 2019: las categorías eran distintas (sin Pre-Juveniles); NO se vinculan a las categorías actuales
+    {"id": "wc2019", "nombre": "Mundial 2019", "sede": "Inzell, Alemania", "anio": 2019,
+     "csv": "assets/participantes-mundial-2019.csv", "equiv": False},
 ]
 TEAM_CODES = {"53570": "Pre-Juveniles", "54570": "Juveniles", "55580": "Adultos"}
+
+
+def cat_es(orig):
+    """Traduce el nombre ITF en inglés de una categoría a la forma usada en el sitio."""
+    o = orig.replace("‐", "-")
+    gen = "Masculino" if re.search(r"\bmale\b", o, re.I) else "Femenino" if re.search(r"\bfemale\b", o, re.I) else ""
+    age = "Pre-Juveniles" if re.search(r"pre-?junior", o, re.I) else "Juveniles" if re.search(r"\bjunior\b", o, re.I) else "Adultos"
+    if re.search(r"pre-?arranged", o, re.I):
+        return "Lucha Pre-Establecida", f"Lucha Pre-Establecida {age}"
+    if re.search(r"pattern", o, re.I):
+        mod = "Formas"
+        m = re.search(r"pattern\s+(.+?)\s*dan", o, re.I)
+        nums = re.findall(r"\d", m.group(1)) if m else []
+        rom = {"1": "I", "2": "II", "3": "III", "4": "IV", "5": "V", "6": "VI"}
+        div = ("-".join([rom[nums[0]], rom[nums[-1]]]) if len(nums) > 1 else rom.get(nums[0], "") if nums else "") + " Dan"
+    elif re.search(r"special", o, re.I):
+        mod, div = "Técnicas Especiales", ""
+    elif re.search(r"power", o, re.I):
+        mod, div = "Rotura de Poder", ""
+    else:
+        mod = "Lucha"
+        m1 = re.search(r"up to (\d+)", o, re.I); m2 = re.search(r"over \d+ to (\d+)", o, re.I); m3 = re.search(r"over (\d+)\s*kg", o, re.I)
+        div = f"-{m1.group(1)} kg" if m1 else f"-{m2.group(1)} kg" if m2 else f"+{m3.group(1)} kg" if m3 else ""
+    return mod, " ".join(x for x in (mod, age, gen, div) if x)
 
 SHEETS = [
     ("Formas Adultos", "Formas"), ("Formas Juveniles", "Formas"), ("Formas Pre-Juveniles", "Formas"),
@@ -240,6 +273,7 @@ def historial(cats):
         for r in rows:
             cod, nombre = r["codigo"].strip(), r["nombre"].strip()
             it = {"cod": cod, "orig": r.get("categoria_original", "").strip(), "keys": []}
+            it["mod"], it["cat"] = cat_es(it["orig"])
             mt = re.match(r"^\s*ARGENTINA\s*\((.+)\)\s*$", nombre, re.I)
             if mt:
                 it["team"] = True
@@ -277,10 +311,111 @@ def historial(cats):
             if it["keys"]:
                 nmatch += 1
         print(f"  {h['nombre']}: {len(items)} plazas, {nmatch} vinculadas a competidores actuales")
+        rk = prev_ranking(h, people, items) if h.get("ranking") else None
         rep_lines = [f"{i['cod']};{i['n']};" + ",".join(i["keys"]) for i in items]
         (HERE / f"reporte-{h['id']}.txt").write_text("\n".join(rep_lines), encoding="utf-8")
-        out.append({k: h[k] for k in ("id", "nombre", "sede", "anio")} | {"items": items, "teamCodes": TEAM_CODES})
+        out.append({k: h[k] for k in ("id", "nombre", "sede", "anio")} | {"items": items, "teamCodes": TEAM_CODES,
+                    "equiv": h.get("equiv", True), "clasificados": bool(h.get("ranking")),
+                    "ranking": rk, "rankingEventos": h.get("ranking_eventos", [])})
     return out
+
+
+def match_person(nombre, people):
+    """Devuelve claves de competidores actuales para un nombre escrito 'Apellido Nombre'."""
+    T = nrm(nombre).split()
+    if not T:
+        return []
+    cands = []
+    for k, o in people.items():
+        if not o.get("S") or not o.get("G"):
+            continue
+        strong = all(x in T for x in o["S"]) and o["G"][0] in T
+        medium = o["S"][0] == T[0] and any(close(o["G"][0], t) for t in T[1:])
+        if strong or medium:
+            cands.append((0 if strong else 1, k))
+    if not cands:
+        return []
+    best = min(x[0] for x in cands)
+    return sorted({key for _, k in cands if _ == best for key in people[k]["keys"]})
+
+
+def same_person(a, b):
+    A, B = nrm(a).split(), nrm(b).split()
+    if not A or not B or A[0] != B[0]:
+        return False
+    return any(close(x, y) for x in A[1:] for y in B[1:]) or (len(A) == 1 or len(B) == 1)
+
+
+def map_code(cod):
+    # En 2025 la lucha adultos usaba 15171-15177 / 25171-25177; hoy 15181-15187 / 25181-25187
+    if re.match(r"^[12]517\d$", cod):
+        return cod[:3] + "8" + cod[4]
+    return cod
+
+
+def tcase(x):
+    small = {"de", "del", "la", "las", "los", "y", "e"}
+    return " ".join(w if i and w.lower() in small and not w.lower().__eq__(w) and False else (w.lower() if i and w.lower() in small else w.capitalize()) for i, w in enumerate(x.lower().split()))
+
+
+def prev_ranking(h, people, items):
+    path = HERE / h["ranking"]
+    if not path.exists():
+        print(f"  aviso: no se encontró {h['ranking']}")
+        return None
+    wb = openpyxl.load_workbook(path, data_only=True)
+    nev = len(h.get("ranking_eventos", [])) or 5
+    blocks, cur = [], None
+    for ws in wb:
+        for row in ws.iter_rows(values_only=True):
+            row = list(row) + [None] * 12
+            a = row[0]
+            m = re.match(r"^\s*(\d{5})\s+(.+)$", str(a or ""))
+            if m:
+                cur = {"cod": map_code(m.group(1)), "orig": m.group(2).strip(), "rows": []}
+                blocks.append(cur)
+                continue
+            if cur is None or not a or not str(a).strip():
+                continue
+            pts = [num(row[2 + i]) for i in range(nev)]
+            tot = num(row[2 + nev])
+            if tot is None:
+                tot = sum(x or 0 for x in pts)
+            esc = re.sub(r"\s*ARG\s*-\s*ARGENTINA\s*$", "", str(row[1] or "").strip(), flags=re.I).strip()
+            nota = str(row[3 + nev] or "").strip()
+            raw = re.sub(r"\s+", " ", str(a)).strip()
+            r = {"p": pts, "t": tot, "e": tcase(esc) if esc.isupper() else esc}
+            mt = re.match(r"^(.*?)\s*\((.+?)\)?\s*$", raw)
+            if cur["cod"] in TEAM_CODES:
+                miembros = [x.replace("_", " ").strip() for x in (mt.group(2).split("/") if mt else [])]
+                r["n"] = tcase(mt.group(1) if mt else raw)
+                r["m"] = [tcase(x) for x in miembros]
+                r["keys"] = sorted({k for x in miembros for k in match_person(x, people)})
+            else:
+                r["n"] = tcase(raw)
+                r["keys"] = match_person(raw, people)
+            cur["rows"].append(r)
+    # posiciones y quiénes viajaron (según la lista de clasificados)
+    nlink = ntrav = 0
+    for b in blocks:
+        b["rows"].sort(key=lambda r: -(r["t"] or 0))
+        tots = [r["t"] or 0 for r in b["rows"]]
+        trav_items = [it for it in items if map_code(it["cod"]) == b["cod"]]
+        for r in b["rows"]:
+            r["pos"] = 1 + sum(1 for t in tots if t > (r["t"] or 0)) if (r["t"] or 0) > 0 else None
+            if b["cod"] in TEAM_CODES:
+                mem = " ".join(r.get("m", []))
+                r["wc"] = any(any(nrm(x).split()[0] in nrm(mem).split() for x in it.get("miembros", [])) for it in trav_items)
+            else:
+                r["wc"] = any(same_person(it["n"], r["n"]) for it in trav_items)
+            nlink += bool(r["keys"]); ntrav += r["wc"]
+        found = sum(1 for r in b["rows"] if r["wc"])
+        if found < len(trav_items):
+            b["extra"] = [it["n"] for it in trav_items
+                          if not any(r["wc"] and (same_person(it["n"], r["n"]) or it.get("team")) for r in b["rows"])]
+    print(f"  Ranking {h['nombre']}: {len(blocks)} categorías, {sum(len(b['rows']) for b in blocks)} filas, "
+          f"{nlink} vinculadas al ranking actual, {ntrav} marcadas como clasificadas")
+    return blocks
 
 
 def b64(rel):

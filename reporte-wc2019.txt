@@ -1,0 +1,111 @@
+15182;Abasolo Leandro;
+25181;Acosta Ailen;acosta-ailen--club-nacional-de-taekwondo
+25183;Acosta Milagros;acosta-milagros--club-nacional-de-taekwondo
+14174;Agostino Julian;
+14250;Agostino Julian;
+24171;Aguila Rocio;
+24175;Andrada Dianela;
+55580;Giz / Gozzano;
+54580;Rojas / Sampaio;sampaio-alexis--escuela-taekwon-do-argentina
+24260;Aymonino Lucia;aymonino-luciana-ines--centro-profesional-de-taekwondo
+14171;Barco Jonathan;
+14173;Barreto Emanuel;barreto-duette-emanuel--organizacion-sudamericana-de-taekwon-do
+14250;Barreto Emanuel;barreto-duette-emanuel--organizacion-sudamericana-de-taekwon-do
+14174;Bartolini Federico;
+24250;Bersanini Valentina;bersanini-valentina--ifat
+15184;Bertoli Javier;
+25185;Bihurriet Delfina;bihurriet-delfina--espiritu-guerrero
+14175;Bonaldi Sergio;
+25181;Borelli Noelia;
+25480;Borelli Noelia;
+14370;Brites Cristian;
+14470;Brites Cristian;
+25250;Burgos Florencia;
+15182;Bustamante Matias;
+25183;Bustos Ornella;
+24270;Caamaño Sasha Micaela;caamano-mickaela-sasha--grupo-taekwon-do-patagonia
+14173;Caballero Maximiliano;
+14175;Cacciatore Gianfranco;
+14270;Cacciatore Gianfranco;
+14174;Caceres Juan;
+15250;Cantarutti Mauro;
+25184;Canut Camila;canut-camila--m-a-s
+14171;Cento Tomas;
+14172;Chamorro Laureano;
+24173;Cordobes Carolina;cordobes-carolina--une-escuela-marcial
+24250;Cordobes Carolina;cordobes-carolina--une-escuela-marcial
+25186;Coronel Anna;
+25380;Coronel Anna;
+14173;Demat Jorge Naim;
+14176;De Barros Gonzalo;
+14176;Donde Gonzalo;donde-gonzalo--academia-bbg
+24175;Errante Morena;
+24470;Errante Morena;
+14270;Farias Valentin;farias-valentin--asociacion-buenos-aires-de-taekwondo-itf
+14470;Farias Valentin;farias-valentin--asociacion-buenos-aires-de-taekwondo-itf
+14260;Flores Joaquin;flores-lavenir-joaquin-mateo--taekwon-do-formacion-integral
+25280;Fusco Lucia;fusco-lucia--academia-bbg
+25260;Gadea Sofia;gadea-sofia--gmg
+25270;Gadea Romero Leslie Carolina;gadea-leslie--gmg
+14172;Galo Tomás;
+14171;González Francisco;
+14260;González Francisco;
+15270;Guerra Cristian;
+24175;Hodnik Lourdes;hodnik-lourdes--academia-bordiez
+15480;Insfrán David;
+24270;Insfran Erica;
+15186;Iszczyk Ivan;
+24174;Kaufmann Sasha;kaufmann-sasha--asociacion-civil-federal-utkda
+24176;Larrosa Gisela;larrosa-gisela--fati
+24260;Larrosa Gisela;larrosa-gisela--fati
+24370;Larrosa Gisela;larrosa-gisela--fati
+14172;Ledezma Ezequiel Damian;
+14470;Leites Francisco;
+14176;Leiva Tomas;
+15270;Lopez Juan;lopez-juan--ait
+15260;Lorenzo Ulises;
+15186;Luraschi Sebastian;
+14175;Maldonado Juan;
+15185;Marin Fernando;marin-fernando--academia-bordiez
+15183;Mayo Aron;
+24173;Miranda Rond Brisa;
+15260;Molaro Axel;molaro-axel--asociacion-civil-nuevo-taekwon-do-unido
+24172;Mura Estrada Abril;
+15183;Mutri Brian;
+24171;Nemesio Giuliana;
+15280;Oga Marco;
+24174;Padilla Delfina;
+24470;Padilla Delfina;
+24173;Pais Martina;
+24260;Pais Martina;
+25270;Peluffo Melanie;
+25184;Pereyra Rocio;pereyra-rocio--aeit-federacion
+25280;Perez Lindo Evelin;perez-lindo-evelin--lotus-taekwondo
+24172;Rimasa Rocio;
+14270;Rodriguez Gabriel;
+14260;Rojas Nicolas;
+24370;Rossel Lara;rossel-lara-yanina--anjong
+24470;Rossel Lara;rossel-lara-yanina--anjong
+24176;Rossi Sofia;
+24250;Rossi Sofia;
+14250;Sampaio Alexis;sampaio-alexis--escuela-taekwon-do-argentina
+24174;Sanchez Lucia;
+25182;Sanchis Maria Fernanda;
+25260;Sanchis Maria Fernanda;
+24176;Sava Narelle;
+24370;Sava Narelle;
+15380;Serra Victor;
+24270;Soria Priscila;
+24172;Struti Zoe;
+15181;Tapia Fernando Andres;
+15380;Tavric Julian;
+25186;Tornatori Maria Belen;
+25250;Tornatori Maria Belen;
+25380;Tornatori Maria Belen;
+15181;Vargas Axel;
+15280;Vargas Axel;
+15480;Vargas Axel;
+15184;Vatrano Alejo;
+25182;Vaveluk Florencia;
+25185;Viscomi Cecilia;
+15185;Wahlberg Nils;
