@@ -394,6 +394,90 @@ a.tchip:hover{background:var(--celeste-100)}
 @media (max-width:640px){.tl-y{width:100%}.yr{flex:1;min-width:0}}
 .pl-static:hover{transform:none}
 a.pl-h:hover b{color:var(--celeste)}
+.ydots{display:inline-flex;gap:4px}
+.ydots i{font:800 11px/1 var(--body);font-style:normal;width:28px;height:22px;border-radius:6px;display:grid;place-items:center;background:var(--line-2);color:#B6C0D2}
+.ydots i.on{background:var(--gold-100);color:#8A6200;border:1px solid #F3D88A}
+.meds{display:inline-flex;gap:4px}
+.meds i{font:800 11px/1 var(--body);font-style:normal;min-width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff}
+.meds .mo{background:#D9A400}.meds .mp{background:#9AA5B5}.meds .mb{background:#B26F37}
+@media (max-width:640px){.ydots i{width:24px;height:20px;font-size:10px}}
+.arg-band{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;text-decoration:none;color:#fff;background:linear-gradient(120deg,var(--navy-800),var(--navy-600));border-radius:var(--radius);padding:24px 26px;position:relative;overflow:hidden}
+.arg-band:after{content:"";position:absolute;right:-40px;top:-30px;width:260px;height:180px;background:repeating-linear-gradient(135deg,rgba(244,180,26,.45) 0 2px,transparent 2px 9px);-webkit-mask:linear-gradient(225deg,#000 25%,transparent 70%);mask:linear-gradient(225deg,#000 25%,transparent 70%)}
+.arg-band h3{margin:6px 0 4px;font:900 34px/1 var(--display);text-transform:uppercase}
+.arg-band p{margin:0;color:#C9D6EE}
+.arg-band .btn{position:relative;z-index:1}
+.tchip.med-oro{background:#FFF1C2}.tchip.med-plata{background:#EEF1F5}.tchip.med-bronce{background:#F6E3D3}
+table.rk td.aus{color:var(--ink-3);font-weight:800}
+.nuevo-tag{font:800 9.5px/1 var(--body);letter-spacing:.06em;color:#0F6FA6;background:var(--celeste-100);border-radius:4px;padding:2px 5px;margin-left:6px;vertical-align:2px}
+table.rk td.ins{color:var(--ok);font-weight:800}
+.ins-tag{display:inline-block;margin-left:6px;font:800 9.5px/1 var(--body);color:var(--ok);background:var(--ok-100);border-radius:4px;padding:2px 5px}
+.ins-tag.aus{color:var(--ink-3);background:var(--line-2)}
+.ins-tag.show-sm{display:none}
+@media (max-width:640px){.ins-tag.show-sm{display:inline-block}}
+.direct{margin:0 20px 14px;padding:10px 14px;border-radius:10px;background:var(--celeste-100);color:var(--navy-700);font-size:13.5px;font-weight:600;border-left:4px solid var(--celeste)}
+.direct.ok{background:var(--ok-100);color:#0B6B42;border-left-color:var(--ok)}
+table.rk td.lost{color:#C0392B;font-weight:800}
+table.rk td.risk{color:#B26F37;text-decoration:underline dotted;text-underline-offset:3px;cursor:help}
+.ins-tag.risk{color:#B26F37;background:#F6E3D3}
+.evbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 20px;border-top:1px solid var(--line-2)}
+.evbar button{border:1px solid var(--line);background:#fff;color:var(--ink-2);font:700 12px/1 var(--body);padding:7px 10px;border-radius:8px}
+.evbar button.on{background:var(--navy-800);border-color:var(--navy-800);color:#fff}
+th.evh{cursor:pointer}th.evh:hover{color:var(--celeste)}th.evh.on{color:var(--celeste)}th.evh.off{cursor:default;opacity:.6}
+.bwrap{overflow-x:auto;padding:6px 20px 22px;border-top:1px solid var(--line-2)}
+.bhead{position:relative;height:34px}
+.bhead span{position:absolute;top:10px;font:800 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--celeste)}
+.bcanvas{position:relative;margin-top:18px}
+.bcanvas svg{position:absolute;inset:0;overflow:visible}
+.bcanvas path{fill:none;stroke:#B9C4D6;stroke-width:1.6}
+.bm{position:relative;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 2px rgba(6,20,48,.05)}
+.bcanvas .bm{position:absolute}
+.bnum{position:absolute;left:2px;top:-15px;font:800 10px/1 var(--body);letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase}
+.bnum:before{content:"Pelea "}
+.bs{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;align-items:center;height:46px;padding:0 10px 0 8px}
+.bs+.bs{border-top:1px solid var(--line-2)}
+.bm>.bs:nth-of-type(1){border-radius:10px 10px 0 0}.bm>.bs:last-child{border-radius:0 0 10px 10px}
+.sd{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font:800 13px/1 var(--display);background:var(--navy-800);color:#fff}
+.bs.w .sd,.sd.np{background:var(--line-2);color:var(--ink-3)}
+select.swap{width:100%;border:0;padding:0 16px 0 0;margin:0;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%231784C7' stroke-width='1.8'/%3E%3C/svg%3E") no-repeat right 2px center;-webkit-appearance:none;appearance:none;font:700 13px/1.2 var(--body);color:var(--navy-800);cursor:pointer;border-radius:0;text-overflow:ellipsis;box-shadow:none}
+select.swap:hover,select.swap:focus{color:var(--celeste);box-shadow:none}
+.bs:has(select.swap){background:linear-gradient(90deg,#F6FAFE,#fff)}
+.bn{min-width:0;display:flex;flex-direction:column;line-height:1.2}
+.bn b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bn small{font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bn i{font-size:12px;color:var(--ink-3)}
+.bp{font:800 15px/1 var(--display);color:var(--navy-800)}
+.bmob .bm{margin:22px 0 4px}
+.bmob{padding:12px 16px 16px;border-top:1px solid var(--line-2)}
+.show-sm-b{display:none}
+@media (max-width:640px){.show-sm-b{display:block}}
+.bs{grid-template-columns:26px minmax(0,1fr) auto}
+.win{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:#fff;color:#B6C0D2;font:800 13px/1 var(--body);display:grid;place-items:center;padding:0}
+.win:hover{border-color:var(--ok);color:var(--ok)}
+.win.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.bs.won{background:var(--ok-100)!important}.bs.won .bn b,.bs.won select.swap{color:#0B6B42}
+.bs.lost{opacity:.5}
+.bm.third{border-color:#E8C9A8}
+.tlabel{position:absolute;font:800 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:#B26F37}
+.simbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 20px;border-top:1px solid var(--line-2);font-size:13.5px;color:var(--ink-2)}
+.wtick{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--ok);color:#fff;font-size:11px}
+.simres{padding:18px 20px;border-top:1px solid var(--line-2);background:#FAFBFD}
+.simres h3{margin:6px 0 12px;font:800 24px/1 var(--display);text-transform:uppercase;color:var(--navy-800)}
+.simres .tablewrap{background:#fff;border:1px solid var(--line);border-radius:12px}
+.podium{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:14px}
+.pod{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.pod span{font:800 20px/1 var(--display);color:var(--ink-3)}.pod.p1 span{color:var(--gold-600)}.pod.p2 span{color:#8C98AE}.pod.p3 span,.pod.p4 span{color:#B26F37}
+.pod b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pod small{font-size:11.5px;color:var(--ok);font-weight:700}
+table.rk td.plus{color:var(--ok);font-weight:800}
+.chip.tie{background:#FCE4D6;color:#B4501A}
+table.rk tr.tiezone td{background:#FFF4EC}
+table.rk tr.tiezone td:first-child{box-shadow:inset 4px 0 0 #E07B24}
+.chip.tie.show-sm{display:none}@media (max-width:640px){.chip.tie.show-sm{display:inline-flex}}
+.tienote{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--ink-2)}
+.chip.lostc{background:#FBE6E3;color:#C0392B}
+table.rk td.lostn{color:#C0392B;font-weight:800}
+.seedlist{list-style:none;margin:0;padding:4px 20px 16px}
+.seedlist li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:13.5px}
+.seedlist li:last-child{border-bottom:0}
 .note{background:var(--celeste-100);border-left:4px solid var(--celeste);border-radius:8px;padding:12px 14px;font-size:13.5px;color:var(--navy-700)}
 /* search overlay */
 .ov{position:fixed;inset:0;z-index:100;background:rgba(6,20,48,.6);display:none;align-items:flex-start;justify-content:center;padding:80px 16px 16px}
@@ -500,8 +584,16 @@ const lastEv=EV[PI[PI.length-1]], prevEv=EVO?EV[PI[PI.length-2]]:null;
 const CATS=DATA.categorias.map((c,i)=>{
   c.idx=i; c.slug=slug(c.title.replace(/([+-])(\d)/g,(m,sg,d)=>(sg==="+"?" mas ":" menos ")+d));
   c.short=c.mod==="Lucha Pre-Establecida"?c.age:[c.age,c.gen==="Mixto"?"":c.gen.slice(0,3)+".",c.div].filter(Boolean).join(" ");
-  c.rows.forEach(r=>{r.tot=r.p.reduce((a,b)=>a+(b||0),0)+(r.d||0)/10;});
-  const rows=[...c.rows].sort((a,b)=>b.tot-a.tot||a.n.localeCompare(b.n,"es"));
+  // Quien sumó puntos en el Argentino y no se presenta al 1er Ranqueable en esa categoría pierde esos puntos
+  const iR1=EV.findIndex(e=>e.id==="r1");
+  c.rows.forEach(r=>{
+    // no pierde quien se cambió de categoría (marcado "-"): conserva sus puntos y puede volver más adelante
+    r.lost=iR1>=0&&played[iR1]&&(r.p[0]||0)>0&&r.p[iR1]==null&&!(r.x||[]).includes(iR1);
+    r.tot=r.p.reduce((a,b,k)=>a+(k===0&&r.lost?0:(b||0)),0)+(r.d||0)/10;
+  });
+  // a igual puntaje, primero quienes están inscriptos en la próxima fecha (1er Ranqueable)
+  const insNext=r=>iR1>=0&&!played[iR1]&&(r.i||[]).includes(iR1)?1:0;
+  const rows=[...c.rows].sort((a,b)=>b.tot-a.tot||insNext(b)-insNext(a)||a.n.localeCompare(b.n,"es"));
   const totals=rows.map(r=>r.tot);
   rows.forEach(r=>{r.pos=r.tot>0?1+totals.filter(t=>t>r.tot).length:null;});
   const thr=totals[c.cupos]??0; // (cupos+1)-ésimo puntaje
@@ -510,6 +602,13 @@ const CATS=DATA.categorias.map((c,i)=>{
     r.zone=r.pos!=null&&r.pos<=c.cupos;
     r.clas=r.tot>0&&(final?r.zone:ptsMax<r.dif);
   });
+  // Participantes del ranking: estuvieron en el Argentino o en el 1er Ranqueable (inscriptos mientras no se dispute).
+  // Desde el 2do Ranqueable solo pueden competir ellos, por eso el 1er Ranqueable es la última fecha para sumar competidores.
+  const R1=EV.findIndex(e=>e.id==="r1");
+  rows.forEach(r=>{r.part=r.p[0]!=null||(R1>=0&&(played[R1]?r.p[R1]!=null:(r.i||[]).includes(R1)));});
+  const nPart=rows.filter(r=>r.part).length;
+  c.direct=nPart>0&&nPart<=c.cupos?{n:nPart,final:R1>=0&&played[R1]}:null;
+  if(c.direct&&c.direct.final) rows.forEach(r=>{if(r.part){r.clas=true;r.zone=true;r.dclas=true;}});
   const lastZone=rows[c.cupos-1]?rows[c.cupos-1].tot:0;
   rows.forEach(r=>{r.gap=r.zone?0:Math.max(0,lastZone-r.tot);});
   // Evolución: posición luego de cada fecha disputada
@@ -568,11 +667,13 @@ const evState=e=>e.jugado?["Disputado","ok"]:(e===nextEv&&e.fecha?["Próxima fec
 const posCls=p=>p===1?"pos p1":p===2?"pos p2":p===3?"pos p3":"pos";
 const modBar=(mod,tot)=>tot>0?`<div class="bar">${MODS.map(m=>mod[m.k]?`<i style="width:${mod[m.k]/tot*100}%;background:${m.c}" title="${m.k}: ${fmt(mod[m.k])}"></i>`:"").join("")}</div>`:"";
 const status=r=>r.clas?`<span class="chip ok">✓ Clasificado</span>`:r.zone?`<span class="chip zone">En zona</span>`:"";
+const directNote=c=>c.direct&&c.direct.final?`<div class="direct ${c.direct.final?"ok":""}">${c.direct.final?`✓ Clasificación confirmada: la categoría cerró con ${c.direct.n} ${c.direct.n===1?(c.team?"equipo":"competidor"):(c.team?"equipos":"competidores")} para ${c.cupos} ${c.cupos===1?"plaza":"plazas"}.`:`Por ahora la categoría tiene ${c.direct.n} ${c.direct.n===1?(c.team?"equipo":"competidor"):(c.team?"equipos":"competidores")} entre el Argentino y los inscriptos al 1er Ranqueable. Si no se suman más, ${c.direct.n===1?"queda confirmada su clasificación":"quedan confirmados"} al cerrar el 1er Ranqueable.`}</div>`:"";
 const ICON={
   cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
   pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
   info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
   star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>',
+  llave:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h5v6H3M3 13h5v6H3M8 8h4v8H8M12 12h5M17 9h4v6h-4"/></svg>',
   sim:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
   dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v11m0 0 4.5-4.5M12 15l-4.5-4.5M5 20h14"/></svg>',
   link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>',
@@ -620,8 +721,9 @@ function prevBlock(c){
     </details>`;
   }).join("");
 }
+const insTag=r=>(r.i||[]).filter(i=>!played[i]).map(i=>`<span class="ins-tag show-sm">✓ ${EV[i].corto}</span>`).join("")+(r.x||[]).filter(i=>!played[i]).map(i=>`<span class="ins-tag show-sm aus">- ${EV[i].corto}</span>`).join("");
 const evTh=()=>EV.map(e=>`<th class="hide-sm" title="${esc(e.nombre)}">${e.corto}</th>`).join("");
-const evTd=p=>p.map((v,i)=>`<td class="ev hide-sm ${played[i]?"":"na"}">${played[i]?(v==null?"–":fmt(v)):"·"}</td>`).join("");
+const evTd=(p,x,ins,r)=>p.map((v,i)=>i===0&&r&&r.lost?`<td class="ev hide-sm lost" title="No suma al total: no se presentó al 1er Ranqueable">${fmt(v)}</td>`:!played[i]&&ins&&ins.includes(i)?`<td class="ev hide-sm ins" title="Inscripto en ${esc(EV[i].nombre)}">✓</td>`:x&&x.includes(i)?`<td class="ev hide-sm aus" title="No participa en esta fecha en esta categoría">-</td>`:`<td class="ev hide-sm ${played[i]?"":"na"}">${played[i]?(v==null?"–":fmt(v)):"·"}</td>`).join("");
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),1800);}
 function pageHead(kicker,title,sub,crumb){
   return `<section class="page-h"><div class="stripes"></div><div class="wrap">
@@ -668,6 +770,7 @@ V.inicio=()=>{
     <div class="card pad"><div class="tl">${tl}</div></div>
   </div></section>
   ${homeEvo()}
+  ${ATL.length?`<section class="sec" style="padding-top:0"><div class="wrap"><a class="arg-band" href="#/argentinos"><div><div class="kicker" style="color:var(--gold)">Historia</div><h3>Argentinos en Mundiales</h3><p>${ATL.length} atletas · ${ATL.reduce((x,a)=>x+a.n_,0)} participaciones en ${WCS.length} Mundiales · ${ATL.filter(a=>a.act>=2).length} con racha activa</p></div><span class="btn p">Ver estadísticas ${ICON.arrow}</span></a></div></section>`:""}
   <section class="sec" style="padding-top:0"><div class="wrap">
     <div class="sec-h"><h2 class="t"><small>Explorar por</small>Modalidad</h2></div>
     <div class="mods">${MODS.map(m=>{const cs=CATS.filter(c=>c.mod===m.k);return `<a class="mod" style="--c:${m.c}" href="#/ranking/${cs[0].slug}" data-mod="${esc(m.k)}"><i></i><b>${esc(m.k)}</b><span>${cs.length} categorías · ${cs.reduce((a,c)=>a+c.cupos,0)} plazas</span></a>`}).join("")}</div>
@@ -700,6 +803,8 @@ function homeEvo(){
     </div></div></section>`;
 }
 let RF={mod:"",age:"",gen:""};
+let REV={slug:null,ev:null};
+const evLabel=e=>({arg:"Campeonato Argentino",r1:"1er Ranqueable",r2:"2do Ranqueable",r3:"3er Ranqueable"})[e.id]||e.nombre.replace(/ Argentino$/,"").replace(/ \d{4}$/,"");
 const navLab=(x,c)=>{const full=esc(x.short);const same=x.mod===c.mod&&x.age===c.age&&x.gen===c.gen&&x.div;return same?`<span class="hide-sm">${full}</span><span class="show-sm">${esc(x.div)}</span>`:full;};
 V.ranking=(id)=>{
   let c=CATBY[id];
@@ -708,8 +813,16 @@ V.ranking=(id)=>{
   const groups={};list.forEach(x=>{const g=x.mod+" · "+x.age;(groups[g]=groups[g]||[]).push(x)});
   const seg=(k,vals,lab)=>`<div class="flabel">${lab}</div><div class="seg" data-f="${k}"><button data-v="" class="${RF[k]===""?"on":""}">Todas</button>${vals.map(v=>`<button data-v="${esc(v)}" class="${RF[k]===v?"on":""}">${esc(v.replace("Técnicas Especiales","Téc. Especiales").replace("Lucha Pre-Establecida","Lucha Pre-Est."))}</button>`).join("")}</div>`;
   const i=CATS.indexOf(c), prev=CATS[i-1], next=CATS[i+1];
-  const rows=c.sorted;
-  const cutIdx=rows.findIndex(r=>!r.zone)-1;
+  const fev=REV.slug===c.slug?REV.ev:null;
+  let rows=c.sorted, evPos=null;
+  if(fev!=null){
+    if(played[fev]){
+      rows=c.sorted.filter(r=>r.p[fev]!=null).sort((a,b)=>(b.p[fev]||0)-(a.p[fev]||0)||c.sorted.indexOf(a)-c.sorted.indexOf(b));
+      const vals=rows.map(r=>r.p[fev]||0); evPos=new Map(rows.map((r,k)=>[r,vals[k]>0?1+vals.filter(v=>v>vals[k]).length:null]));
+    } else { rows=c.sorted.filter(r=>(r.i||[]).includes(fev)); evPos=new Map(rows.map(r=>[r,null])); }
+  }
+  const evAvail=EV.map((e,i)=>played[i]?c.rows.some(r=>r.p[i]!=null):c.rows.some(r=>(r.i||[]).includes(i)));
+  const cutIdx=fev==null?rows.findIndex(r=>!r.zone)-1:-1;
   const m=MODC[c.mod];
   const leader=rows[0];
   return pageHead(`<span style="color:${m.c==="var(--m-lucha)"?"var(--celeste-300)":m.c}">${esc(c.mod)}</span>`,"Ranking por categoría",`Puntaje acumulado por fecha. Las primeras ${c.cupos===1?"posición obtiene":c.cupos+" posiciones obtienen"} plaza para el Mundial Paraguay 2027.`,`<a href="#/ranking">Ranking</a>`)+`
@@ -724,22 +837,25 @@ V.ranking=(id)=>{
         <div class="pager top">${prev?`<a class="btn l" href="#/ranking/${prev.slug}">← ${navLab(prev,c)}</a>`:"<span></span>"}${next?`<a class="btn l" href="#/ranking/${next.slug}">${navLab(next,c)} →</a>`:""}</div>
         <div class="cat-head">
           <div>${c.num?`<span class="chip cel">Código ITF ${esc(c.num)}</span>`:""}<h2>${esc(c.title)}</h2></div>
-          <div class="toolbar"><a class="btn p" href="#/simulador/${c.slug}">${ICON.sim}Simular</a><button class="btn l" id="shareBtn">${ICON.link}Copiar enlace</button></div>
+          <div class="toolbar"><a class="btn p" href="#/simulador/${c.slug}">${ICON.sim}Simular</a>${hasLlave(c)?`<a class="btn p" href="#/llave/${c.slug}">${ICON.llave}Llave ${esc(evLabel(EV[NEXT]))}</a>`:""}<button class="btn l" id="shareBtn">${ICON.link}Copiar enlace</button></div>
         </div>
+        ${directNote(c)}
         <div class="facts">
-          <div><b class="num">${c.rows.length}</b><span>${c.team?"Equipos":"Inscriptos"}</span></div>
+          <div><b class="num">${c.rows.length}</b><span>${c.team?"Equipos":"Competidores"}</span></div>
           <div><b class="num">${c.ranked}</b><span>Con puntaje</span></div>
           <div><b class="num">${c.cupos}</b><span>${c.cupos===1?"Plaza":"Plazas"}</span></div>
           <div><b class="num">${final?"—":ptsMax}</b><span>Pts. en juego</span></div>
+          ${c.insc?Object.entries(c.insc).map(([i,nn])=>`<div><b class="num">${nn}</b><span>Inscriptos ${EV[i].corto}</span></div>`).join(""):""}
           <div><b class="num">${Math.min(c.clas,c.cupos)}/${c.cupos}</b><span>Aseguradas</span></div>
           ${leader&&leader.pos?`<div><b>${esc(leader.n.split(",")[0])}</b><span>Líder</span></div>`:""}
         </div>
+        <div class="evbar" id="evbar"><span class="flabel" style="margin:0">Ver</span><button data-ev="" class="${fev==null?"on":""}">Ranking General</button>${EV.map((e,i)=>evAvail[i]?`<button data-ev="${i}" class="${fev===i?"on":""}" title="${played[i]?"Participantes":"Inscriptos"}">${esc(evLabel(e))}</button>`:"").join("")}${fev!=null?`<span class="sm" style="margin-left:auto">${rows.length} ${played[fev]?"participantes, ordenados por puesto en la fecha":"inscriptos"}</span>`:""}</div>
         <div class="tablewrap"><table class="rk">
-          <thead><tr><th>Pos</th>${EVO?`<th title="Variación respecto de ${esc(prevEv.nombre)}">Var.</th>`:""}<th class="l">${c.team?"Equipo":"Competidor"}</th>${evTh()}<th>Total</th>${remaining?`<th title="Probabilidad estimada de terminar en zona de clasificación">Chance</th>`:""}<th class="hide-sm">Estado</th></tr></thead>
+          <thead><tr><th>Pos</th>${EVO?`<th title="Variación respecto de ${esc(prevEv.nombre)}">Var.</th>`:""}<th class="l">${c.team?"Equipo":"Competidor"}</th>${EV.map((e,i)=>`<th class="hide-sm evh ${fev===i?"on":""} ${evAvail[i]?"":"off"}" data-ev="${evAvail[i]?i:""}" title="${esc(e.nombre)}${evAvail[i]?(played[i]?" · tocar para ver solo sus participantes":" · tocar para ver solo los inscriptos"):""}">${e.corto}${fev===i?" ▾":""}</th>`).join("")}<th>Total</th>${remaining?`<th title="Probabilidad estimada de terminar en zona de clasificación">Chance</th>`:""}<th class="hide-sm">Estado</th></tr></thead>
           <tbody>${(()=>{const CHc=remaining?chances(c):null;return rows.map((r,k)=>{
             const who=c.team?`<div class="nm">${esc(r.n)}${wcBadge(r.m.map(n=>slug(n)+"--"+slug(r.s)),c)}</div><div class="sm">${r.m.map(n=>`<a href="#/competidor/${slug(n)}--${slug(r.s)}">${esc(n)}</a>`).join(" / ")}</div><div class="sm"><a href="#/escuela/${slug(r.s)}">${esc(r.s)}</a></div>`
-              :`<a href="#/competidor/${slug(r.n)}--${slug(r.s)}"><div class="nm">${esc(r.n)}${wcBadge([slug(r.n)+"--"+slug(r.s)],c)}</div></a><div class="sm"><a href="#/escuela/${slug(r.s)}">${esc(r.s)}</a></div>`;
-            return `<tr class="${r.zone?"zone":""} ${r.clas?"clas":""} ${k===cutIdx?"cut":""}"><td><span class="${posCls(r.pos)}">${r.pos??"–"}</span></td>${EVO?`<td>${varCell(r)}</td>`:""}<td class="l">${who}</td>${evTd(r.p)}<td class="tot">${fmt(r.tot)}</td>${CHc?`<td>${chanceCell(CHc.get(r))}</td>`:""}<td class="hide-sm">${status(r)}</td></tr>`}).join("")})()}</tbody>
+              :`<a href="#/competidor/${slug(r.n)}--${slug(r.s)}"><div class="nm">${esc(r.n)}${wcBadge([slug(r.n)+"--"+slug(r.s)],c)}</div></a><div class="sm"><a href="#/escuela/${slug(r.s)}">${esc(r.s)}</a>${insTag(r)}</div>`;
+            return `<tr class="${r.zone?"zone":""} ${r.clas?"clas":""} ${k===cutIdx?"cut":""}"><td>${evPos?`<span class="${posCls(evPos.get(r))}">${evPos.get(r)??"-"}</span>`:`<span class="${posCls(r.pos)}">${r.pos??"–"}</span>`}</td>${EVO?`<td>${varCell(r)}</td>`:""}<td class="l">${who}</td>${evTd(r.p,r.x,r.i,r)}<td class="tot">${fmt(r.tot)}</td>${CHc?`<td>${chanceCell(CHc.get(r))}</td>`:""}<td class="hide-sm">${status(r)}</td></tr>`}).join("")})()}</tbody>
         </table></div>
         ${prevBlock(c)}
         ${EVO?`<div class="evo"><div class="flabel">Evolución de posiciones · top 8</div>${bump(c)}</div>`:""}
@@ -748,6 +864,10 @@ V.ranking=(id)=>{
   </div></section>`;
 };
 V.ranking.after=(id)=>{
+  const cc=CATBY[id]||CATS[0];
+  const setEv=v=>{REV={slug:cc.slug,ev:v===""||v==null?null:+v};go(location.hash,true);};
+  $("#evbar")?.addEventListener("click",e=>{const b=e.target.closest("button");if(b)setEv(b.dataset.ev);});
+  $$("th.evh").forEach(th=>th.onclick=()=>{if(th.dataset.ev==="")return;setEv(REV.slug===cc.slug&&REV.ev===+th.dataset.ev?"":th.dataset.ev);});
   const c=CATBY[id]||CATS.find(x=>(!RF.mod||x.mod===RF.mod)&&(!RF.age||x.age===RF.age)&&(!RF.gen||x.gen===RF.gen))||CATS[0];
   $$(".seg").forEach(s=>s.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;RF[s.dataset.f]=b.dataset.v;
     const first=CATS.find(x=>(!RF.mod||x.mod===RF.mod)&&(!RF.age||x.age===RF.age)&&(!RF.gen||x.gen===RF.gen||x.gen==="Mixto"));
@@ -866,7 +986,7 @@ V.competidor=(key)=>{
     <div class="grid2">${o.res.map(({c,r})=>{const m=MODC[c.mod];return `<a class="card" href="#/ranking/${c.slug}" style="text-decoration:none;display:block;overflow:hidden;border-top:4px solid ${m.c}">
       <div class="cat-head" style="padding:16px 18px"><div><span class="chip cel">${esc(c.mod)}</span><h2 style="font-size:24px">${esc(c.age)}${c.gen!=="Mixto"?" "+esc(c.gen):""}${c.div?" · "+esc(c.div):""}</h2>${c.team?`<div class="sm" style="margin-top:4px">Equipo <b>${esc(r.n)}</b> · ${esc(r.m.join(" / "))}</div>`:""}</div>
       <div style="text-align:right"><div class="${posCls(r.pos)}" style="font-size:44px">${r.pos?r.pos+"°":"–"}</div><div class="sm">de ${c.rows.length}</div></div></div>
-      <div class="facts" style="padding:12px 18px">${EV.map((e,i)=>`<div><b class="num" style="${played[i]?"":"color:#B6C0D2"}">${played[i]?fmt(r.p[i]??0):"·"}</b><span>${e.corto}</span></div>`).join("")}<div><b class="num">${fmt(r.tot)}</b><span>Total</span></div>${remaining?`<div><b class="num">${pctTxt(chances(c).get(r))}</b><span>Chance</span></div>`:""}${EVO?`<div><b class="num" style="font-size:16px">${r.h.map((x,k)=>`<span title="${esc(EV[PI[k]].nombre)}">${x.pos?x.pos+"°":"–"}</span>`).join(" → ")}</b><span>Evolución ${varCell(r)}</span></div>`:""}<div style="margin-left:auto;align-self:center">${status(r)||`<span class="chip mut">${r.pos?`A ${fmt(r.gap)} pts de la zona`:"Sin puntaje"}</span>`}</div></div>
+      <div class="facts" style="padding:12px 18px">${EV.map((e,i)=>`<div><b class="num" style="${played[i]?"":"color:#B6C0D2"}">${r.x&&r.x.includes(i)?"-":played[i]?fmt(r.p[i]??0):(r.i&&r.i.includes(i)?'<span style="color:var(--ok)">✓</span>':"·")}</b><span>${e.corto}</span></div>`).join("")}<div><b class="num">${fmt(r.tot)}</b><span>Total</span></div>${remaining?`<div><b class="num">${pctTxt(chances(c).get(r))}</b><span>Chance</span></div>`:""}${EVO?`<div><b class="num" style="font-size:16px">${r.h.map((x,k)=>`<span title="${esc(EV[PI[k]].nombre)}">${x.pos?x.pos+"°":"–"}</span>`).join(" → ")}</b><span>Evolución ${varCell(r)}</span></div>`:""}<div style="margin-left:auto;align-self:center">${status(r)||`<span class="chip mut">${r.pos?`A ${fmt(r.gap)} pts de la zona`:"Sin puntaje"}</span>`}</div></div>
     </a>`}).join("")}</div>
   </div></section>`;
 };
@@ -889,7 +1009,7 @@ V.calendario=(id)=>pageHead("Calendario clasificatorio","Eventos del ranking",`$
           ${e===nextEv&&e.fecha?`<div class="count" id="cd" style="max-width:380px"><div><b>–</b><span>Días</span></div><div><b>–</b><span>Horas</span></div><div><b>–</b><span>Min</span></div><div><b>–</b><span>Seg</span></div></div>`:""}
           <div class="toolbar">${e.reglamento?`<a class="btn p" href="${e.reglamento.data}" download="${esc(e.reglamento.nombre)}">${ICON.dl}Descargar reglamento (PDF)</a>`:""}${maps?`<a class="btn l" href="${maps}" target="_blank" rel="noopener">${ICON.pin}Cómo llegar</a>`:""}${e.jugado?`<a class="btn p" href="#/ranking">Ver resultados en el ranking</a>`:""}</div>
         </div></article>`}).join("")}
-      <div class="wc wc-fl">${DATA.mundial&&DATA.mundial.flyer?`<img src="${DATA.mundial.flyer}" alt="ITF Taekwon-Do World Championship Paraguay 2027" data-lb>`:""}<div><div class="stripes"></div><div class="kicker" style="color:var(--gold)">Objetivo final</div><h3>Campeonato Mundial ITF 2027</h3><p><b style="color:#fff">17 al 23 de octubre de 2027</b> · ueno SND Arena, Asunción, Paraguay.</p><p style="margin-top:10px">Los ${TOTAL_CUPOS} cupos del ranking se definen al cierre de las ${NEV} fechas del ranking.</p><div class="toolbar" style="margin-top:16px"><a class="btn p" href="#/mundial">Información del Mundial</a><a class="btn g" href="#/plazas">Ver plazas</a>${HIST.length?`<a class="btn g" href="#/historial">Mundiales anteriores</a>`:""}</div></div></div>
+      <div class="wc wc-fl">${DATA.mundial&&DATA.mundial.flyer?`<img src="${DATA.mundial.flyer}" alt="ITF Taekwon-Do World Championship Paraguay 2027" data-lb>`:""}<div><div class="stripes"></div><div class="kicker" style="color:var(--gold)">Objetivo final</div><h3>Campeonato Mundial ITF 2027</h3><p><b style="color:#fff">17 al 23 de octubre de 2027</b> · ueno SND Arena, Asunción, Paraguay.</p><p style="margin-top:10px">Los ${TOTAL_CUPOS} cupos del ranking se definen al cierre de las ${NEV} fechas del ranking.</p><div class="toolbar" style="margin-top:16px"><a class="btn p" href="#/mundial">Información del Mundial</a><a class="btn g" href="#/plazas">Ver plazas</a>${HIST.length?`<a class="btn g" href="#/historial">Mundiales anteriores</a><a class="btn g" href="#/argentinos">Argentinos en Mundiales</a>`:""}</div></div></div>
     </div>
   </div></section>`;
 V.calendario.after=(id)=>{$$("[data-lb]").forEach(i=>i.onclick=()=>{$("#lb img").src=i.src;$("#lb").classList.add("open")});if(id){const el=$("#ev-"+id);el&&setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),60);}};
@@ -912,7 +1032,9 @@ V.reglamento=()=>{
       ${sec("Asignación de puestos")?`<div class="flabel" style="margin-top:14px">Cómo se definen los puestos en los ranqueables</div>${lst("Asignación de puestos")}`:""}</div>
     <div class="card pad"><h3>3 · Plazas al Mundial</h3><p>Hay <b>${TOTAL_CUPOS} plazas</b>:</p>
       <ul><li><b>2 plazas</b> por cada categoría individual de Formas, Lucha, Rotura de Poder y Técnicas Especiales.</li><li><b>1 equipo</b> por grupo de edad en Lucha Preestablecida (Adultos, Juveniles y Pre-Juveniles).</li></ul>
-      <p>Al cierre del ranking, las plazas corresponden a los mejores puntajes acumulados de cada categoría.</p></div>
+      <p>Al cierre del ranking, las plazas corresponden a los mejores puntajes acumulados de cada categoría.</p>
+      <p><b>Categorías con pocos competidores:</b> si una categoría termina con ${"2"} o menos competidores en total (entre el Campeonato Argentino y el 1er Ranqueable), se confirma la clasificación de esos competidores.</p>
+      <p><b>Requisito para el 2do y 3er Ranqueable:</b> haber participado del Campeonato Argentino y/o del 1er Ranqueable. El 1er Ranqueable es la última oportunidad para sumar nuevos competidores al ranking.</p></div>
     <div class="card pad"><h3>4 · Plaza asegurada anticipada</h3><p>Antes de la última fecha, un competidor <span class="chip ok">✓ Clasificado</span> tiene la plaza asegurada matemáticamente: su ventaja sobre el primer puesto fuera de zona (el 3° en individuales, el 2° en equipos) es mayor que los puntos que todavía están en juego.</p>
       <p>Se consideran <b>${DATA.ptsMaxFecha} puntos por cada fecha restante</b> (el puntaje del 1° puesto en un ranqueable)${!final?`: hoy quedan ${remaining} ${remaining===1?"fecha":"fechas"}, es decir ${ptsMax} pts en juego`:""}.</p>
       <p>Mientras tanto, los que ocupan los puestos de clasificación figuran <span class="chip zone">En zona</span> de forma provisoria.</p></div>
@@ -931,7 +1053,7 @@ V.reglamento=()=>{
 const UNP=EV.map((e,i)=>e.jugado?-1:i).filter(i=>i>=0); // fechas por disputar
 let SIM=null;
 function simInit(c){
-  SIM={slug:c.slug,c,rows:c.sorted.map(r=>({n:r.n,s:r.s,p:r.p,d:r.d||0,pos:r.pos,team:c.team,m:r.m})),pick:{}};
+  SIM={slug:c.slug,c,rows:c.sorted.map(r=>({n:r.n,s:r.s,p:r.p,d:r.d||0,pos:r.pos,team:c.team,m:r.m,x:r.x||[]})),pick:{}};
   UNP.forEach(i=>SIM.pick[i]={});
 }
 function simCalc(){
@@ -978,7 +1100,7 @@ V.simulador.after=(id)=>{
   const draw=()=>{
     const {res,rem,pmax,simEv}=simCalc();
     const byJ=Object.fromEntries(res.map(x=>[x.j,x]));
-    $("#simTab").innerHTML=`<thead><tr><th class="l">${c.team?"Equipo":"Competidor"}</th>${EV.map((e,i)=>`<th class="${e.jugado?"hide-sm":"simcol"}" title="${esc(e.nombre)}">${e.corto}</th>`).join("")}<th>Total</th></tr></thead><tbody>${SIM.rows.map((r,j)=>`<tr><td class="l"><div class="nm">${esc(r.n)}${r.extra?`<span class="badge-x">nuevo</span>`:""}</div><div class="sm">${esc(r.s||"")}</div></td>${EV.map((e,i)=>e.jugado?`<td class="ev hide-sm">${fmt(r.p[i]||0)}</td>`:`<td><select data-e="${i}" data-j="${j}" class="${SIM.pick[i][j]?"set":""}"><option value="">—</option>${(e.puntos||[]).map((v,k)=>`<option value="${k+1}" ${SIM.pick[i][j]===k+1?"selected":""}>${k+1}° · ${v}</option>`).join("")}</select></td>`).join("")}<td class="tot">${fmt(byJ[j].tot)}</td></tr>`).join("")}</tbody>`;
+    $("#simTab").innerHTML=`<thead><tr><th class="l">${c.team?"Equipo":"Competidor"}</th>${EV.map((e,i)=>`<th class="${e.jugado?"hide-sm":"simcol"}" title="${esc(e.nombre)}">${e.corto}</th>`).join("")}<th>Total</th></tr></thead><tbody>${SIM.rows.map((r,j)=>`<tr><td class="l"><div class="nm">${esc(r.n)}${r.extra?`<span class="badge-x">nuevo</span>`:""}</div><div class="sm">${esc(r.s||"")}</div></td>${EV.map((e,i)=>e.jugado?`<td class="ev hide-sm">${fmt(r.p[i]||0)}</td>`:(r.x||[]).includes(i)?`<td class="ev aus" title="No participa en esta fecha">-</td>`:`<td><select data-e="${i}" data-j="${j}" class="${SIM.pick[i][j]?"set":""}"><option value="">—</option>${(e.puntos||[]).map((v,k)=>`<option value="${k+1}" ${SIM.pick[i][j]===k+1?"selected":""}>${k+1}° · ${v}</option>`).join("")}</select></td>`).join("")}<td class="tot">${fmt(byJ[j].tot)}</td></tr>`).join("")}</tbody>`;
     $("#simRes").innerHTML=`<div class="card-h"><h3>Ranking simulado</h3><span class="chip ${rem?"cel":"navy"}">${rem?`${rem} ${rem===1?"fecha pendiente":"fechas pendientes"}`:"Final"}</span></div>
       <div class="legend" style="border-top:0;border-bottom:1px solid var(--line-2)">${simEv.length?`Simulando: ${simEv.map(i=>esc(EV[i].nombre)).join(", ")}`:"Todavía no cargaste resultados."}${rem?` · Puntos aún en juego: ${pmax}`:""}</div>
       <ul class="rank-list" style="padding:4px 18px">${res.filter(x=>x.tot>0).map(x=>{const d=x.r.pos!=null&&x.pos!=null?x.r.pos-x.pos:null;
@@ -1051,17 +1173,21 @@ function rng(seed){let h=1779033703^seed.length;for(let i=0;i<seed.length;i++){h
   return ()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return (h>>>0)/4294967296;};}
 function chances(c){
   if(CH[c.slug]) return CH[c.slug];
-  const rows=c.sorted, n=rows.length, rem=EV.map((e,i)=>e.jugado?null:(e.puntos||[])).filter(Boolean);
+  const rows=c.sorted, n=rows.length, remI=EV.map((e,i)=>e.jugado?-1:i).filter(i=>i>=0), rem=remI.map(i=>EV[i].puntos||[]);
   const res=new Map();
   if(!rem.length){rows.forEach(r=>res.set(r,r.zone?1:0));return CH[c.slug]=res;}
+  if(c.direct&&c.direct.final){rows.forEach(r=>res.set(r,r.part?1:0));return CH[c.slug]=res;}
+  const R1i=EV.findIndex(e=>e.id==="r1");
   const maxRem=rem.reduce((a,p)=>a+(p[0]||0),0);
   const base=rows.map(r=>r.tot), w=rows.map(r=>1+ALPHA*Math.max(0,r.tot)), cnt=new Float64Array(n), rand=rng(c.slug);
   const tot=new Float64Array(n);
   for(let s=0;s<SIMS;s++){
     for(let j=0;j<n;j++) tot[j]=base[j];
-    for(const pts of rem){
+    for(let q=0;q<rem.length;q++){ const pts=rem[q], ei=remI[q], known=c.insc&&c.insc[ei]!=null;
       // orden de llegada ponderado (Plackett-Luce) para los puestos que suman puntos
-      const avail=[];for(let j=0;j<n;j++) if(rand()<ASIST) avail.push(j);
+      const avail=[];for(let j=0;j<n;j++){ if(ei>R1i&&!rows[j].part) continue; if(known){ const rr=rows[j]; if(rr.x&&rr.x.includes(ei)) continue; const ins=rr.i&&rr.i.includes(ei); if(!ins&&EV[ei].inscripcion_cerrada) continue; if(rand()<(ins?.97:ASIST)) avail.push(j); } else if(rand()<ASIST) avail.push(j); }
+      // con la inscripción cerrada, quien no se anotó (y no cambió de categoría) pierde los puntos del Argentino
+      if(ei===R1i&&EV[ei].inscripcion_cerrada){ for(let j=0;j<n;j++){ const rr=rows[j]; if(!(rr.i||[]).includes(ei)&&!(rr.x||[]).includes(ei)) tot[j]-=Math.max(0,rr.p[0]||0); } }
       let W=avail.reduce((a,j)=>a+w[j],0);
       for(let k=0;k<pts.length&&avail.length;k++){
         let x=rand()*W, idx=0; for(;idx<avail.length-1;idx++){x-=w[avail[idx]];if(x<=0)break;}
@@ -1078,7 +1204,8 @@ function chances(c){
   const sortedTot=[...base].sort((a,b)=>b-a);
   rows.forEach((r,j)=>{
     let p=cnt[j]/SIMS;
-    const above=base.filter(t=>t>r.tot+maxRem).length;
+    const maxRow=remI.reduce((x,ei,q)=>x+((r.x&&r.x.includes(ei))||(ei>R1i&&!r.part)?0:(rem[q][0]||0)),0);
+    const above=base.filter(t=>t>r.tot+maxRow).length;
     p=Math.min(.995,Math.max(.004,p));  // sin certeza matemática nunca se muestra 0% ni 100%
     if(above>=c.cupos) p=0;            // eliminado matemáticamente
     if(r.clas) p=1;                     // plaza asegurada
@@ -1097,13 +1224,70 @@ function trayectoria(key){
   if(!part.length&&!rks.length) return "";
   const years=[...HIST].sort((a,b)=>a.anio-b.anio);
   return `<div class="card tray">
-    <div class="tray-h"><div><div class="flabel" style="margin:0">Trayectoria internacional</div><b>${part.length?`${part.length} ${part.length===1?"Mundial disputado":"Mundiales disputados"}`:"Sin participaciones en Mundiales"}</b></div>
+    <div class="tray-h"><div><div class="flabel" style="margin:0">Trayectoria internacional</div><b>${part.length?`${part.length} ${part.length===1?"Mundial disputado":"Mundiales disputados"}`:"Sin participaciones en Mundiales"}</b>${(()=>{const a=ATLKEY[key];if(!a)return "";return `<div class="sm" style="margin-top:6px">${a.act>=2?`<span class="chip zone">Racha activa: ${a.act}</span> `:""}${a.mt?medDots(a.med)+" ":""}<a href="#/argentinos" style="color:var(--celeste);font-weight:700">Argentinos en Mundiales →</a></div>`})()}</div>
       <div class="tl-y">${years.map(h=>{const on=part.includes(h);return `<a href="#/historial/${h.id}" class="yr ${on?"on":""}" title="${esc(h.nombre)} · ${esc(h.sede)}"><i>${on?"★":""}</i><b>${h.anio}</b><span>${esc(h.sede.split(",")[0])}</span></a>`}).join("")}</div></div>
     ${part.length?`<div class="tray-b">${[...part].sort((a,b)=>b.anio-a.anio).map(h=>{const its=(HKEY[key]||[]).filter(x=>x.h===h).map(x=>x.it);
-      return `<div class="tray-r"><span class="ty">${h.anio}</span><span class="tc">${its.map(it=>{const c=histCat(h,it);const lab=abbr(histName(h,it))+(it.team?` (${esc(it.n)})`:"");return c?`<a class="tchip" href="#/ranking/${c.slug}">${lab}</a>`:`<span class="tchip">${lab}</span>`}).join("")}</span></div>`}).join("")}</div>`:""}
+      const am=(ATLKEY[key]&&ATLKEY[key].ev[h.id]||{med:[]}).med;
+      return `<div class="tray-r"><span class="ty">${h.anio}</span><span class="tc">${am.map(m=>`<span class="tchip med-${m.m}">${{oro:"🥇",plata:"🥈",bronce:"🥉"}[m.m]} ${esc(abbr(m.c||""))}</span>`).join("")}${its.map(it=>{const c=histCat(h,it);const lab=abbr(histName(h,it))+(it.team?` (${esc(it.n)})`:"");return c?`<a class="tchip" href="#/ranking/${c.slug}">${lab}</a>`:`<span class="tchip">${lab}</span>`}).join("")}</span></div>`}).join("")}</div>`:""}
     ${rks.length?`<details class="tray-d"><summary>Ranking clasificatorio ${esc(rks[0].h.nombre.replace("Mundial ",""))} · ${rks.length} ${rks.length===1?"categoría":"categorías"}</summary><ul>${rks.map(x=>{const cc=rkCat(x.h,x.b);return `<li><b>${x.r.pos?x.r.pos+"°":"–"}</b> de ${x.b.rows.length} · ${cc?`<a href="#/ranking/${cc.slug}">${abbr(cc.title)}</a>`:abbr(x.b.orig)} · ${fmt(x.r.t)} pts${x.r.wc?' <span class="wcb">★ Viajó</span>':""}</li>`}).join("")}</ul></details>`:""}
   </div>`;
 }
+
+/* ---------- Argentinos en Mundiales ---------- */
+const WCS=[...HIST].sort((a,b)=>a.anio-b.anio);
+const ATL=(DATA.atletas||[]).map((a,i)=>{
+  const on=WCS.map(h=>!!a.ev[h.id]);
+  let act=0; for(let k=on.length-1;k>=0&&on[k];k--) act++;
+  let mx=0,run=0; on.forEach(x=>{run=x?run+1:0;mx=Math.max(mx,run)});
+  const med={oro:0,plata:0,bronce:0}; Object.values(a.ev).forEach(e=>e.med.forEach(m=>med[m.m]++));
+  const cur=a.keys.map(k=>COMP[k]).filter(Boolean)[0]||null;
+  return {...a,i,on,n_:on.filter(Boolean).length,act,mx,med,mt:med.oro+med.plata+med.bronce,cur};
+}).sort((a,b)=>b.n_-a.n_||b.med.oro-a.med.oro||b.med.plata-a.med.plata||b.med.bronce-a.med.bronce||b.act-a.act||a.n.localeCompare(b.n,"es"));
+const ATLKEY={}; ATL.forEach(a=>a.keys.forEach(k=>ATLKEY[k]=a));
+const medDots=m=>m.oro+m.plata+m.bronce?`<span class="meds">${m.oro?`<i class="mo">${m.oro}</i>`:""}${m.plata?`<i class="mp">${m.plata}</i>`:""}${m.bronce?`<i class="mb">${m.bronce}</i>`:""}</span>`:`<span class="muted">–</span>`;
+const yrDots=a=>`<span class="ydots">${WCS.map((h,k)=>`<i class="${a.on[k]?"on":""}" title="${esc(h.nombre)} · ${esc(h.sede)}${a.ev[h.id]?": "+esc(a.ev[h.id].cats.join(" / ")):""}">${String(h.anio).slice(2)}</i>`).join("")}</span>`;
+let AF={q:"",f:"",n:50};
+V.argentinos=()=>{
+  const tot=ATL.reduce((x,a)=>x+a.n_,0), meds=ATL.reduce((x,a)=>x+a.mt,0);
+  const lastWC=WCS[WCS.length-1];
+  const rachas=ATL.filter(a=>a.act>=2).sort((a,b)=>b.act-a.act||a.n.localeCompare(b.n,"es"));
+  const top=ATL.slice(0,8);
+  const perWC=WCS.map(h=>({h,n:ATL.filter(a=>a.ev[h.id]).length,m:ATL.reduce((x,a)=>x+(a.ev[h.id]?a.ev[h.id].med.length:0),0)}));
+  const maxN=Math.max(...perWC.map(x=>x.n),1);
+  const li=a=>`<li><span class="pos" style="font-size:20px">${a.n_}</span><div>${a.cur?`<a href="#/competidor/${a.cur.key}" class="nm" style="text-decoration:none">${esc(a.n)}</a>`:`<div class="nm">${esc(a.n)}</div>`}<div class="sm">${a.cur?esc(a.cur.s):"No compite en el ranking actual"}</div></div><span>${yrDots(a)}</span></li>`;
+  return pageHead("Historia","Argentinos en Mundiales",`Participaciones de competidores argentinos en Campeonatos Mundiales de Taekwon-Do ITF: cantidad de Mundiales, rachas y medallas.`,"Argentinos en Mundiales")+`
+  <section class="sec"><div class="wrap">
+    <div class="kpis k4" style="margin-top:0">
+      <div class="kpi"><b class="num">${WCS.length}</b><span>Mundiales registrados</span></div>
+      <div class="kpi"><b class="num">${ATL.length}</b><span>Atletas distintos</span></div>
+      <div class="kpi"><b class="num">${tot}</b><span>Participaciones</span></div>
+      <div class="kpi acc"><b class="num">${meds||"—"}</b><span>Medallas${meds?"":" (a cargar)"}</span></div>
+    </div>
+    <div class="grid3" style="margin-top:20px">
+      <div class="card"><div class="card-h"><h3>Más Mundiales</h3></div><ul class="rank-list" style="padding:4px 18px">${top.map(li).join("")}</ul></div>
+      <div class="card"><div class="card-h"><h3>Rachas activas</h3><span class="chip zone">${rachas.length}</span></div><div class="sm" style="padding:10px 18px 0">Mundiales consecutivos hasta el ${esc(lastWC.nombre)}</div><ul class="rank-list scroll" style="padding:4px 18px">${rachas.map(a=>li(a).replace(`<span class="pos" style="font-size:20px">${a.n_}</span>`,`<span class="pos p1" style="font-size:20px">${a.act}</span>`)).join("")||`<div class="empty">Sin rachas activas</div>`}</ul></div>
+      <div class="card"><div class="card-h"><h3>Por Mundial</h3></div><div class="pad">${perWC.slice().reverse().map(x=>`<a href="#/historial/${x.h.id}" style="display:block;text-decoration:none;margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:13.5px"><span>${x.h.anio} · ${esc(x.h.sede)}</span><span class="num">${x.n} atletas</span></div><div class="prog" style="height:8px;margin-top:6px"><i style="width:${x.n/maxN*100}%;background:var(--celeste)"></i></div>${x.m?`<div class="sm" style="margin-top:4px">${x.m} medallas</div>`:""}</a>`).join("")}</div></div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <div class="pad toolbar" style="border-bottom:1px solid var(--line-2)"><input type="search" id="aq" placeholder="Buscar atleta…" value="${esc(AF.q)}">
+        <div class="seg" id="af" style="flex:1 1 100%;min-width:0">${[["","Todos"],["hoy","Compiten hoy"],["racha","Racha activa"],["med","Medallistas"],["multi","2 o más Mundiales"]].map(([v,l])=>`<button data-v="${v}" class="${AF.f===v?"on":""}">${l}</button>`).join("")}</div></div>
+      <div class="tablewrap"><table class="rk" id="at"></table></div>
+      <div class="pager" id="amore"></div>
+    </div>
+    <p class="note" style="margin-top:20px">Datos cargados: ${WCS.map(h=>`${esc(h.nombre)} (${esc(h.sede)})`).join(", ")}. Las rachas cuentan Mundiales consecutivos dentro de los registrados. La identificación de atletas entre Mundiales se hace por nombre.</p>
+  </div></section>`;
+};
+V.argentinos.after=()=>{
+  const draw=()=>{const q=norm(AF.q);
+    const rows=ATL.filter(a=>(!q||norm(a.n).includes(q)||(a.cur&&norm(a.cur.n).includes(q)))&&(!AF.f||(AF.f==="hoy"&&a.cur)||(AF.f==="racha"&&a.act>=2)||(AF.f==="med"&&a.mt)||(AF.f==="multi"&&a.n_>=2)));
+    $("#at").innerHTML=`<thead><tr><th class="l">Atleta</th><th>Mundiales</th><th class="hide-sm">Participaciones</th><th>Racha</th><th class="hide-sm">Mejor racha</th><th>Medallas</th></tr></thead><tbody>${rows.slice(0,AF.n).map(a=>`<tr><td class="l">${a.cur?`<a href="#/competidor/${a.cur.key}"><div class="nm">${esc(a.n)}</div></a><div class="sm">${esc(a.cur.s)}</div>`:`<div class="nm">${esc(a.n)}</div><div class="sm">${esc(Object.values(a.ev).flatMap(e=>e.cats).slice(-1)[0]||"")}</div>`}</td><td>${yrDots(a)}</td><td class="tot hide-sm">${a.n_}</td><td>${a.act>=2?`<span class="chip zone">${a.act}</span>`:a.act?`<span class="muted">1</span>`:`<span class="muted">–</span>`}</td><td class="hide-sm">${a.mx}</td><td>${medDots(a.med)}</td></tr>`).join("")||`<tr><td colspan="6" class="empty">Sin resultados</td></tr>`}</tbody>`;
+    $("#amore").innerHTML=`<span class="muted sm">Mostrando ${Math.min(AF.n,rows.length)} de ${rows.length}</span>${rows.length>AF.n?`<button class="btn l" id="amb">Ver más</button>`:""}`;
+    $("#amb")&&($("#amb").onclick=()=>{AF.n+=100;draw();});};
+  $("#aq").oninput=e=>{AF.q=e.target.value;AF.n=50;draw();};
+  $("#af").onclick=e=>{const b=e.target.closest("button");if(!b)return;AF.f=b.dataset.v;AF.n=50;$$("#af button").forEach(x=>x.classList.toggle("on",x===b));draw();};
+  draw();
+};
+
 /* ---------- clasificados anteriores ---------- */
 const AB={"Adultos":"Ad.","Juveniles":"Juv.","Pre-Juveniles":"Pre-Juv."};
 const MODSHORT={"Formas":"Formas","Lucha":"Lucha","Técnicas Especiales":"Téc. Esp.","Rotura de Poder":"Rotura","Lucha Pre-Establecida":"Lucha Pre-Est."};
@@ -1129,7 +1313,7 @@ V.historial=(id)=>{
   const head=g=>g.c?(g.c.age+(g.c.gen!=="Mixto"?" "+g.c.gen.slice(0,3)+".":"")+(g.c.div?" · "+g.c.div:"")):g.it0.cat.replace(g.it0.mod+" ","").replace(/(Masculino|Femenino)/,m=>m.slice(0,3)+".").replace(/ (-|\+)(\d)/," · $1$2").replace(/ (I|II|III|IV|V|VI|II-III|IV-VI) Dan/," · $1 Dan");
   return pageHead("Antecedentes","Mundiales anteriores",`Argentinos que compitieron en el ${esc(h.nombre)} (${esc(h.sede)}). Los que también participan del ranking actual están vinculados a su perfil.`,`<a href="#/plazas">Plazas</a>`)+`
   <section class="sec"><div class="wrap">
-    ${HIST.length>1?`<div class="seg" style="margin-bottom:16px">${HIST.map(x=>`<a class="btn ${x===h?"p":"l"}" href="#/historial/${x.id}">${esc(x.nombre)} · ${esc(x.sede.split(",")[0])}</a>`).join("")}</div>`:""}
+    <div class="seg" style="margin-bottom:16px">${HIST.length>1?HIST.map(x=>`<a class="btn ${x===h?"p":"l"}" href="#/historial/${x.id}">${esc(x.nombre)} · ${esc(x.sede.split(",")[0])}</a>`).join(""):""}<a class="btn l" href="#/argentinos" style="margin-left:auto">★ Argentinos en Mundiales</a></div>
     <div class="kpis k4" style="margin-top:0">
       <div class="kpi"><b class="num">${nPrev}</b><span>Plazas ${esc(h.nombre)}</span></div>
       <div class="kpi"><b class="num">${inRank}</b><span>Compiten en el ranking actual</span></div>
@@ -1147,6 +1331,182 @@ V.historial=(id)=>{
       </div>`).join("")}</div>`).join("")}
     <div class="legend" style="border:0;padding:16px 0 0">${eq?`<span><span class="slot z" style="display:inline;padding:0;border:0"><span class="n" style="display:inline-grid">★</span></span> Hoy en zona en la misma categoría</span>`:""}<span><span class="slot c0" style="display:inline;padding:0;border:0"><span class="n" style="display:inline-grid">★</span></span> Compite en el ranking actual</span><span><span class="slot" style="display:inline;padding:0;border:0"><span class="n" style="display:inline-grid">★</span></span> No figura en el ranking actual</span></div>
   </div></section>`;
+};
+
+/* ---------- llave del próximo torneo (sorteo aproximado) ---------- */
+const NEXT=EV.findIndex(e=>!e.jugado);
+const DRAW={};  // slug -> número de sorteo
+const ROUNDN=n=>({2:"Final",4:"Semifinal",8:"Cuartos de final",16:"Octavos de final",32:"16avos de final",64:"32avos de final",128:"64avos de final"})[n]||`Ronda de ${n}`;
+const hasLlave=c=>NEXT>=0&&c.rows.some(r=>(r.i||[]).includes(NEXT));
+function seedOrder(n){let a=[1];while(a.length<n){const m=a.length*2;a=a.flatMap(x=>[x,m+1-x]);}return a;}
+const LORD={}; // slug -> orden actual (lista de filas), editable entre empatados
+function llaveEntrants(c){
+  if(!LORD[c.slug]){
+    const draw=DRAW[c.slug]||1, rand=rng(c.slug+"#"+draw);
+    const L=c.sorted.filter(r=>(r.i||[]).includes(NEXT));
+    const k=new Map(L.map(r=>[r,rand()]));
+    // orden por puntaje del ranking; los empates (incluidos los sin puntos) se sortean
+    LORD[c.slug]=[...L].sort((a,b)=>b.tot-a.tot||k.get(a)-k.get(b));
+  }
+  const L=LORD[c.slug];
+  return L.map((r,i)=>({r,seed:i+1,grp:L.filter(x=>x.tot===r.tot)}));
+}
+function buildBracket(S){
+  const N=S.length;
+  if(N<2) return {N,rounds:[],P:N,E:0};
+  let P=1; while(P*2<=N) P*=2;
+  const E=N-P, K=N-2*E, topK=Math.min(K,P/2), botK=K-topK;
+  const top=S.slice(0,topK), bot=botK?S.slice(N-botK):[], mid=S.slice(topK,N-botK);
+  let num=0;
+  const pre=[]; for(let i=0;i<mid.length/2;i++) pre.push({a:{p:mid[i]},b:{p:mid[mid.length-1-i]},pre:true});
+  // entidades en orden de fuerza: cabezas de serie directas, ganadores de preliminares y últimos directos
+  const ent=[...top.map(p=>({p})),...pre.map(m=>({m})),...bot.map(p=>({p}))];
+  const pos=seedOrder(P).map(k=>ent[k-1]);
+  const main=[]; for(let i=0;i<P/2;i++) main.push({a:pos[2*i],b:pos[2*i+1]});
+  const preOrd=[]; main.forEach(m=>[m.a,m.b].forEach(s=>{if(s.m)preOrd.push(s.m)}));
+  preOrd.forEach(m=>m.num=++num);
+  const rounds=[]; if(preOrd.length) rounds.push({name:ROUNDN(2*P),matches:preOrd,pre:true});
+  main.forEach(m=>m.num=++num); rounds.push({name:ROUNDN(P),matches:main});
+  let prev=main;
+  while(prev.length>1){const nx=[];for(let i=0;i<prev.length;i+=2) nx.push({a:{m:prev[i]},b:{m:prev[i+1]},num:0});nx.forEach(m=>m.num=++num);rounds.push({name:ROUNDN(prev.length),matches:nx});prev=nx;}
+  const all=rounds.flatMap(r=>r.matches), fin=all[all.length-1];
+  // semifinales = las que alimentan la final (pueden ser preliminares si hay 3 inscriptos)
+  const semis=[fin.a.m,fin.b.m].filter(Boolean);
+  let third=null;
+  if(semis.length===2){ third={a:{l:semis[0]},b:{l:semis[1]},num:fin.num,third:true}; fin.num=fin.num+1; }
+  return {N,P,E,rounds,fin,semis,third,S};
+}
+const WIN={}; // slug -> {numPelea: "a"|"b"}
+const resolve=(s,W)=>{ if(s.p) return s.p;
+  if(s.m){const w=W[s.m.num]; return w?resolve(s.m[w],W):null;}
+  if(s.l){const w=W[s.l.num]; return w?resolve(s.l[w==="a"?"b":"a"],W):null;}
+  return null; };
+function placements(B,W){
+  const out=[]; if(!B.fin) return {done:false,out};
+  const pl=m=>{const w=W[m.num];return w?[resolve(m[w],W),resolve(m[w==="a"?"b":"a"],W)]:null;};
+  const f=pl(B.fin); if(!f) return {done:false,out};
+  out[1]=f[0]; out[2]=f[1];
+  if(B.third){const t=pl(B.third); if(!t) return {done:false,out}; out[3]=t[0]; out[4]=t[1];}
+  else if(B.semis.length===1){const sm=pl(B.semis[0]); if(sm) out[3]=sm[1];}
+  const qf=B.rounds.find(r=>r.name==="Cuartos de final");
+  if(B.N===5){
+    // con 5 competidores, los 4 que llegan a semifinal definen del 1° al 4° y el restante queda 5°
+    const top=new Set(out.filter(Boolean)), rest=B.S.filter(x=>!top.has(x)); if(rest.length===1) out[5]=rest[0];
+  } else if(qf){ [[1,5],[2,6]].forEach(([w,pos])=>{const m=qf.matches.find(m=>{const x=pl(m);return x&&x[0]===out[w];}); if(m) out[pos]=pl(m)[1]; }); }
+  return {done:true,out};
+}
+const slotHTML=(s,c,m,side)=>{
+  const W=WIN[c.slug]||{}, who=s.p||resolve(s,W), canPick=m&&resolve(m.a,W)&&resolve(m.b,W), won=m&&W[m.num]===side, lost=m&&W[m.num]&&W[m.num]!==side;
+  const pick=canPick?`<button class="win ${won?"on":""}" data-m="${m.num}" data-s="${side}" title="Marcar como ganador">✓</button>`:"";
+  const cls=`bs ${won?"won":""} ${lost?"lost":""}`;
+  if(s.p){const r=s.p.r, L=LORD[c.slug], i=s.p.seed-1;
+    const nm=s.p.grp.length>1?`<select class="swap" data-i="${i}" title="Cambiar por otro con el mismo puntaje">${s.p.grp.map(x=>`<option value="${L.indexOf(x)}" ${x===r?"selected":""}>${esc(x.n)}</option>`).join("")}</select>`:`<b>${esc(r.n)}</b>`;
+    return `<div class="${cls}"><span class="sd ${r.tot>0?"":"np"}">${r.tot>0?s.p.seed:"-"}</span><span class="bn">${nm}<small>${esc(r.s)}</small></span>${pick}</div>`;}
+  if(who){const r=who.r;return `<div class="${cls}"><span class="sd ${r.tot>0?"":"np"}">${r.tot>0?who.seed:"-"}</span><span class="bn"><b>${esc(r.n)}</b><small>${esc(r.s)}</small></span>${pick}</div>`;}
+  return `<div class="bs w"><span class="sd">·</span><span class="bn"><i>${s.l?"Perdedor":"Ganador"} pelea ${(s.m||s.l).num}</i></span></div>`;
+};
+const matchHTML=(m,c,st)=>`<div class="bm ${m.third?"third":""}" ${st?`style="${st}"`:""}><span class="bnum">${m.num}</span>${slotHTML(m.a,c,m,"a")}${slotHTML(m.b,c,m,"b")}</div>`;
+function bracketDesktop(B,c){
+  const SH=46,MH=94,G=30,CG=30, avail=Math.min(window.innerWidth,1200)-90, CW=Math.max(190,Math.min(250,Math.floor((avail-(B.rounds.length-1)*CG)/B.rounds.length)));
+  const R=B.rounds, hasPre=R[0]&&R[0].pre, mainIdx=hasPre?1:0, main=R[mainIdx].matches;
+  const Y=new Map(); let y=0;
+  main.forEach(m=>{
+    const pa=!!m.a.m&&hasPre, pb=!!m.b.m&&hasPre;
+    if(pa&&pb){Y.set(m.a.m,y);Y.set(m.b.m,y+MH+G);Y.set(m,y+(MH+G)/2);y+=2*MH+G;}
+    else if(pa){Y.set(m.a.m,y);Y.set(m,y+SH/2);y+=MH+SH/2;}
+    else if(pb){Y.set(m,y);Y.set(m.b.m,y+SH/2);y+=MH+SH/2;}
+    else{Y.set(m,y);y+=MH;}
+    y+=G;
+  });
+  for(let k=mainIdx+1;k<R.length;k++) R[k].matches.forEach(m=>Y.set(m,(Y.get(m.a.m)+Y.get(m.b.m))/2));
+  const H=y-G, W=R.length*CW+(R.length-1)*CG, X=k=>k*(CW+CG);
+  let lines="", boxes="";
+  R.forEach((rd,k)=>rd.matches.forEach(m=>{
+    boxes+=matchHTML(m,c,`left:${X(k)}px;top:${Y.get(m)}px;width:${CW}px`);
+    [["a",0],["b",1]].forEach(([s,j])=>{const f=m[s].m; if(!f||!Y.has(f)) return;
+      const fk=R.findIndex(rr=>rr.matches.includes(f)); const x1=X(fk)+CW, y1=Y.get(f)+MH/2, x2=X(k), y2=Y.get(m)+SH/2+j*SH, xm=(x1+x2)/2;
+      lines+=`<path d="M${x1} ${y1}H${xm}V${y2}H${x2}"/>`;});
+  }));
+  let H2=H;
+  if(B.third){const k=R.length-1, ty=Y.get(B.fin)+MH+64; boxes+=`<div class="tlabel" style="left:${X(k)}px;top:${ty-36}px;width:${CW}px">3° y 4° puesto</div>`+matchHTML(B.third,c,`left:${X(k)}px;top:${ty}px;width:${CW}px`); H2=Math.max(H,ty+MH);}
+  return `<div class="bwrap"><div class="bhead" style="width:${W}px">${R.map((rd,k)=>`<span style="left:${X(k)}px;width:${CW}px">${esc(rd.name)}</span>`).join("")}</div>
+    <div class="bcanvas" style="width:${W}px;height:${H2}px"><svg width="${W}" height="${H2}">${lines}</svg>${boxes}</div></div>`;
+}
+function bracketMobile(B,c){
+  const RR=B.third?[...B.rounds.slice(0,-1),{name:"3° y 4° puesto",matches:[B.third]},B.rounds[B.rounds.length-1]]:B.rounds;
+  return `<div class="bmob"><div class="seg" id="brTabs">${RR.map((rd,k)=>`<button data-k="${k}" class="${k===0?"on":""}">${esc(rd.name.replace(" de final",""))}</button>`).join("")}</div>
+    ${RR.map((rd,k)=>`<div class="bround" data-k="${k}" ${k?'hidden':""}><div class="flabel" style="margin:14px 0 8px">${esc(rd.name)} · ${rd.matches.length} ${rd.matches.length===1?"pelea":"peleas"}</div>${rd.matches.map(m=>matchHTML(m,c)).join("")}</div>`).join("")}</div>`;
+}
+function depsOf(B,num){ // peleas que dependen (directa o indirectamente) de la pelea num
+  const all=[...B.rounds.flatMap(r=>r.matches),...(B.third?[B.third]:[])], out=new Set([num]); let ch=true;
+  while(ch){ch=false;all.forEach(m=>{if(out.has(m.num))return;if([m.a,m.b].some(x=>(x.m&&out.has(x.m.num))||(x.l&&out.has(x.l.num)))){out.add(m.num);ch=true;}});}
+  out.delete(num); return out; }
+function simResult(c,B,S){
+  const W=WIN[c.slug]||{}, total=B.rounds.reduce((a,r)=>a+r.matches.length,0)+(B.third?1:0), hechas=Object.keys(W).length;
+  const {done,out}=placements(B,W);
+  if(!done) return `<div class="simres pending"><div class="flabel" style="margin:0">Ranking simulado</div><div class="prog" style="height:8px;margin:10px 0 6px"><i style="width:${hechas/total*100}%;background:var(--celeste)"></i></div><span class="sm">${hechas} de ${total} peleas definidas. Al completar la final${B.third?" y la pelea por el 3° puesto":""} vas a ver cómo quedaría el ranking general.</span></div>`;
+  const pts=EV[NEXT].puntos||[], place=new Map();
+  out.forEach((x,k)=>{if(x)place.set(x.r,k);});
+  const ins=new Set(S.map(x=>x.r));
+  // en la simulación, quien sumó en el Argentino y no se presenta (sin haberse cambiado de categoría) pierde esos puntos
+  const rows=c.rows.map(r=>{const lost=!ins.has(r)&&!(r.x||[]).includes(NEXT)&&(r.p[0]||0)>0&&!r.lost?(r.p[0]||0):0;
+    return {r,lost,add:place.has(r)?(pts[place.get(r)-1]||0):0};}).map(o=>({...o,tot:o.r.tot-o.lost+o.add}));
+  rows.sort((a,b)=>b.tot-a.tot||(place.get(a.r)||99)-(place.get(b.r)||99)||a.r.n.localeCompare(b.r.n,"es"));
+  const T=rows.map(o=>o.tot); rows.forEach(o=>{o.pos=o.tot>0?1+T.filter(t=>t>o.tot).length:null;});
+  const shown=rows.filter(o=>o.tot>0||o.lost), rest=rows.length-shown.length, perd=rows.filter(o=>o.lost);
+  const podium=out.map((x,k)=>x?`<div class="pod p${k}"><span>${k}°</span><b>${esc(x.r.n)}</b><small>+${pts[k-1]||0} pts</small></div>`:"").join("");
+  return `<div class="simres"><div class="sim-h"><div><div class="flabel" style="margin:0">Resultado simulado · ${esc(EV[NEXT].nombre)}</div><h3>Así quedaría el ranking</h3></div></div>
+    <div class="podium">${podium}</div>
+    <div class="tablewrap"><table class="rk"><thead><tr><th>Pos</th><th class="hide-sm">Var.</th><th class="l">${c.team?"Equipo":"Competidor"}</th><th class="hide-sm">Actual</th><th>${esc(EV[NEXT].corto)}</th><th>Total</th><th class="hide-sm">Estado</th></tr></thead>
+    <tbody>${shown.map(o=>{const d=o.r.pos!=null&&o.pos!=null?o.r.pos-o.pos:(o.pos!=null?"new":(o.r.pos!=null?"out":null));const z=o.pos!=null&&o.pos<=c.cupos;
+      // empate en el corte: el grupo empatado empieza dentro de las plazas pero no entra completo
+      const tie=z&&o.pos+shown.filter(x=>x.tot===o.tot).length-1>c.cupos;
+      const vb=d==null?`<span class="var eq">–</span>`:d==="out"?`<span class="var dn">Sale</span>`:d==="new"?`<span class="var nw">Nuevo</span>`:d>0?`<span class="var up">▲${d}</span>`:d<0?`<span class="var dn">▼${-d}</span>`:`<span class="var eq">=</span>`;
+      return `<tr class="${tie?"tiezone":z?"zone":""}"><td><span class="${posCls(o.pos)}">${o.pos??"–"}</span><div class="show-sm-b" style="margin-top:4px">${vb}</div></td><td class="hide-sm">${d==null?`<span class="var eq">–</span>`:d==="out"?`<span class="var dn">Sale</span>`:d==="new"?`<span class="var nw">Nuevo</span>`:d>0?`<span class="var up">▲${d}</span>`:d<0?`<span class="var dn">▼${-d}</span>`:`<span class="var eq">=</span>`}</td><td class="l"><div class="nm">${esc(o.r.n)}</div><div class="sm">${esc(o.r.s)}</div>${o.lost?`<span class="chip lostc" style="margin-top:4px">Pierde ${fmt(o.lost)} pts. del Argentino</span>`:""}${tie?`<span class="chip tie show-sm" style="margin-top:4px">Empatados en zona</span>`:""}</td><td class="ev hide-sm ${o.lost?"lostn":""}">${fmt(o.r.tot)}</td><td class="ev ${o.add?"plus":o.lost?"lostn":""}">${o.add?"+"+o.add:o.lost?"−"+fmt(o.lost):(ins.has(o.r)?"0":"·")}</td><td class="tot">${fmt(o.tot)}</td><td class="hide-sm">${tie?`<span class="chip tie">Empatados en zona</span>`:z?`<span class="chip zone">En zona</span>`:""}</td></tr>`}).join("")}</tbody></table></div>
+    ${shown.some(o=>o.pos!=null&&o.pos<=c.cupos&&o.pos+shown.filter(x=>x.tot===o.tot).length-1>c.cupos)?`<div class="tienote"><span class="chip tie">Empatados en zona</span> Hay más ${c.team?"equipos":"competidores"} empatados que plazas disponibles: la plaza se define en las fechas siguientes o por desempate.</div>`:""}
+    ${perd.length?`<div class="tienote"><span class="chip lostc">Pierde pts. del Argentino</span> ${perd.length===1?"No se presenta":"No se presentan"} al ${esc(EV[NEXT].nombre)} en esta categoría: ${perd.map(o=>esc(o.r.n)).join(", ")}. Solo se descuenta en esta simulación.</div>`:""}
+    ${rest?`<div class="legend">+ ${rest} ${rest===1?"competidor":"competidores"} sin puntos</div>`:""}</div>`;
+}
+V.llave=(id)=>{
+  const list=CATS.filter(hasLlave);
+  if(NEXT<0||!list.length) return pageHead("Próximo torneo","Llave del sorteo","Todavía no hay inscriptos cargados para la próxima fecha.","Llave");
+  const c=list.includes(CATBY[id])?CATBY[id]:list[0];
+  const S=llaveEntrants(c), B=buildBracket(S), ev=EV[NEXT];
+  const g={};list.forEach(x=>{(g[x.mod+" · "+x.age]=g[x.mod+" · "+x.age]||[]).push(x)});
+  const i=list.indexOf(c), prev=list[i-1], next=list[i+1];
+  return pageHead(esc(ev.nombre),"Llave del sorteo",`Sorteo aproximado con los inscriptos al día de hoy. Cabezas de serie según el ranking general: 1° y 2° en mitades opuestas, cruces 1° vs último, 2° vs anteúltimo y así sucesivamente.`,`<a href="#/ranking/${c.slug}">Ranking</a>`)+`
+  <section class="sec"><div class="wrap">
+    <div class="card">
+      <div class="pager top">${prev?`<a class="btn l" href="#/llave/${prev.slug}">← ${navLab(prev,c)}</a>`:"<span></span>"}${next?`<a class="btn l" href="#/llave/${next.slug}">${navLab(next,c)} →</a>`:""}</div>
+      <div class="cat-head">
+        <div>${c.num?`<span class="chip cel">Código ITF ${esc(c.num)}</span>`:""}<h2>${esc(c.title)}</h2></div>
+        <div class="toolbar">${S.some((x,k)=>S.some((y,j)=>j!==k&&y.r.tot===x.r.tot))?`<button class="btn p" id="redraw">↻ Volver a sortear</button>`:""}<a class="btn l" href="#/ranking/${c.slug}">Ver ranking</a></div>
+      </div>
+      <div style="padding:0 20px 14px"><select id="llCat">${Object.entries(g).map(([k,xs])=>`<optgroup label="${esc(k)}">${xs.map(x=>`<option value="${x.slug}" ${x===c?"selected":""}>${esc(x.title)}</option>`).join("")}</optgroup>`).join("")}</select></div>
+      <div class="facts"><div><b class="num">${S.length}</b><span>Inscriptos</span></div><div><b class="num">${S.length>1?B.rounds.reduce((a,r)=>a+r.matches.length,0)+(B.third?1:0):0}</b><span>Peleas</span></div><div><b>${S.length>1?esc(B.rounds[0].name):"—"}</b><span>Primera ronda</span></div></div>
+      ${S.length<2?`<div class="empty">${S.length?`Única inscripción: <b>${esc(S[0].r.n)}</b>. Por ahora no hay cruces.`:"Sin inscriptos."}</div>`
+        :`<div class="simbar"><span>Simulá el torneo marcando con <b class="wtick">✓</b> al ganador de cada pelea.</span>${Object.keys(WIN[c.slug]||{}).length?`<button class="btn l" id="simReset2">Reiniciar simulación</button>`:""}</div>
+          <div class="hide-sm">${bracketDesktop(B,c)}</div><div class="show-sm-b">${bracketMobile(B,c)}</div>${simResult(c,B,S)}`}
+      <details class="prevrk"><summary><span><b>Orden de siembra</b> · ${S.length} ${c.team?"equipos":"competidores"}</span><span class="chev">Ver</span></summary>
+        <ol class="seedlist">${S.map(x=>`<li><span class="sd ${x.r.tot>0?"":"np"}">${x.r.tot>0?x.seed:"-"}</span><span><b>${esc(x.r.n)}</b> <small class="muted">${esc(x.r.s)}</small></span><span></span></li>`).join("")}</ol></details>
+    </div>
+  </div></section>`;
+};
+window.__LL={CATS,hasLlave,llaveEntrants,buildBracket};
+V.llave.after=(id)=>{
+  const c=CATBY[id]&&hasLlave(CATBY[id])?CATBY[id]:CATS.find(hasLlave); if(!c) return;
+  $("#llCat")?.addEventListener("change",e=>go("#/llave/"+e.target.value));
+  const keepTab=()=>{const tab=$("#brTabs button.on")?.dataset.k;go(location.hash,true);if(tab){const b=$(`#brTabs button[data-k="${tab}"]`);b&&b.click();}};
+  $("#redraw")&&($("#redraw").onclick=()=>{DRAW[c.slug]=(DRAW[c.slug]||1)+1;delete LORD[c.slug];delete WIN[c.slug];go(location.hash,true);toast("Nuevo sorteo");});
+  $("#simReset2")&&($("#simReset2").onclick=()=>{delete WIN[c.slug];keepTab();});
+  $$("button.win").forEach(bt=>bt.addEventListener("click",()=>{
+    const B=buildBracket(llaveEntrants(c)), W=WIN[c.slug]=WIN[c.slug]||{}, n=+bt.dataset.m, sd=bt.dataset.s;
+    depsOf(B,n).forEach(k=>delete W[k]);
+    if(W[n]===sd) delete W[n]; else W[n]=sd;
+    keepTab();}));
+  $$("select.swap").forEach(sl=>sl.addEventListener("change",()=>{const L=LORD[c.slug],i=+sl.dataset.i,j=+sl.value;if(i===j)return;[L[i],L[j]]=[L[j],L[i]];delete WIN[c.slug];
+    const tab=$("#brTabs button.on")?.dataset.k;go(location.hash,true);if(tab){const b=$(`#brTabs button[data-k="${tab}"]`);b&&b.click();}}));
+  $("#brTabs")?.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;$$("#brTabs button").forEach(x=>x.classList.toggle("on",x===b));$$(".bround").forEach(d=>d.hidden=d.dataset.k!==b.dataset.k);});
 };
 
 function notFound(){return pageHead("Error","No encontrado","El elemento que buscás no existe o cambió de nombre en la última actualización.")+`<section class="sec"><div class="wrap"><a class="btn p" href="#/inicio">Volver al inicio</a></div></section>`;}
@@ -1172,7 +1532,7 @@ function render(){
   if(view.match)view.match(a);
   $("#app").innerHTML=view(a);
   view.after&&view.after(a);
-  const sec={historial:"plazas",escuela:"competidores",competidor:"competidores",simulador:"ranking",mundial:"calendario"}[r]||r;
+  const sec={llave:"ranking",argentinos:"inicio",historial:"plazas",escuela:"competidores",competidor:"competidores",simulador:"ranking",mundial:"calendario"}[r]||r;
   $$("#links a").forEach(x=>x.classList.toggle("on",x.dataset.r===sec));
   $("#links").classList.remove("open");
   $("#heroSearch")&&($("#heroSearch").onclick=openSearch);

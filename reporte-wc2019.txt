@@ -1,12 +1,12 @@
 15182;Abasolo Leandro;
-25181;Acosta Ailen;acosta-ailen--club-nacional-de-taekwondo
+25181;Acosta Ailen;acosta-ailen--academia-bordiez
 25183;Acosta Milagros;acosta-milagros--club-nacional-de-taekwondo
 14174;Agostino Julian;
 14250;Agostino Julian;
 24171;Aguila Rocio;
 24175;Andrada Dianela;
 55580;Giz / Gozzano;
-54580;Rojas / Sampaio;sampaio-alexis--escuela-taekwon-do-argentina
+54580;Rojas / Sampaio;rojas-renata--fati,sampaio-alexis--escuela-taekwon-do-argentina
 24260;Aymonino Lucia;aymonino-luciana-ines--centro-profesional-de-taekwondo
 14171;Barco Jonathan;
 14173;Barreto Emanuel;barreto-duette-emanuel--organizacion-sudamericana-de-taekwon-do
@@ -15,7 +15,7 @@
 24250;Bersanini Valentina;bersanini-valentina--ifat
 15184;Bertoli Javier;
 25185;Bihurriet Delfina;bihurriet-delfina--espiritu-guerrero
-14175;Bonaldi Sergio;
+14175;Bonaldi Sergio;bonaldi-sergio--asociacion-cordobesa-de-taekwon-do
 25181;Borelli Noelia;
 25480;Borelli Noelia;
 14370;Brites Cristian;
@@ -25,8 +25,8 @@
 25183;Bustos Ornella;
 24270;Caamaño Sasha Micaela;caamano-mickaela-sasha--grupo-taekwon-do-patagonia
 14173;Caballero Maximiliano;
-14175;Cacciatore Gianfranco;
-14270;Cacciatore Gianfranco;
+14175;Cacciatore Gianfranco;cacciatore-gianfranco--academia-bordiez
+14270;Cacciatore Gianfranco;cacciatore-gianfranco--academia-bordiez
 14174;Caceres Juan;
 15250;Cantarutti Mauro;
 25184;Canut Camila;canut-camila--m-a-s
@@ -38,7 +38,7 @@
 25380;Coronel Anna;
 14173;Demat Jorge Naim;
 14176;De Barros Gonzalo;
-14176;Donde Gonzalo;donde-gonzalo--academia-bbg
+14176;Donde Gonzalo;donde-gonzalo-ariel--academia-bbg
 24175;Errante Morena;
 24470;Errante Morena;
 14270;Farias Valentin;farias-valentin--asociacion-buenos-aires-de-taekwondo-itf
@@ -55,10 +55,10 @@
 15480;Insfrán David;
 24270;Insfran Erica;
 15186;Iszczyk Ivan;
-24174;Kaufmann Sasha;kaufmann-sasha--asociacion-civil-federal-utkda
-24176;Larrosa Gisela;larrosa-gisela--fati
-24260;Larrosa Gisela;larrosa-gisela--fati
-24370;Larrosa Gisela;larrosa-gisela--fati
+24174;Kaufmann Sasha;kaufmann-trueba-sasha--asociacion-civil-federal-utkda
+24176;Larrosa Gisela;larrosa-gisela-celeste--fati
+24260;Larrosa Gisela;larrosa-gisela-celeste--fati
+24370;Larrosa Gisela;larrosa-gisela-celeste--fati
 14172;Ledezma Ezequiel Damian;
 14470;Leites Francisco;
 14176;Leiva Tomas;

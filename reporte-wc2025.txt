@@ -11,7 +11,7 @@
 13176;Blanco Benjamin;
 13176;Galvez Manuel;
 13177;Cameroni Agustin;
-13177;Kern Francisco;kern-francisco--m-a-s
+13177;Kern Francisco;kern-francisco-andres--m-a-s
 13250;Diaz Joaquin;diaz-joaquin--ifat
 13250;Vescovo Juan Martín;
 13260;Aguirre André;aguirre-andre-nazareno--centro-profesional-filial-dolores
@@ -23,8 +23,8 @@
 14172;Barrera Emanuel;barrera-emanuel--asociacion-cordobesa-de-taekwon-do
 14172;Maldonado Miqueas Aaron;maldonado-miqueas-aaron--academia-bordiez
 14173;Cabrera Ulises Joaquin;cabrera-ulises--academia-bordiez
-14173;Melaragno Bautista;
-14174;Dariozzi Bolatti Luka;dariozzi-luka--centro-formativo-marcial-y-deportivo
+14173;Melaragno Bautista;melaragno-bautista--academia-bbg
+14174;Dariozzi Bolatti Luka;dariozzi-luka--m-a-s
 14174;Daverio Luciano;daverio-luciano--m-a-s
 14175;Rios Paez Gonzalo Javier;rios-paez-gonzalo--academia-bordiez
 14175;Valler Santino;valler-santino--asociacion-taekwondistas-argentinos
@@ -45,15 +45,15 @@
 15181;Rizzo Lautaro;rizzo-lautaro--asociacion-pinguinera-pinino-tapia
 15182;Ferreyra Walter;ferreyra-walter--organizacion-sudamericana-de-taekwon-do
 15182;Gozzano Rodrigo;
-15183;Dariozzi Thiago;
+15183;Dariozzi Thiago;dariozzi-thiago--m-a-s
 15183;Daverio Valentino;daverio-valentino--m-a-s
 15184;Maggioni Mauricio;maggioni-mauricio--m-a-s
 15184;Turner Lucas;turner-lucas--fati
 15185;Bianchi Bruno;bianchi-bruno--academia-bordiez
-15185;Cacciatore Gianfranco;
-15186;Gomez De Olivera Thiago;
+15185;Cacciatore Gianfranco;cacciatore-gianfranco--academia-bordiez
+15186;Gomez De Olivera Thiago;gomez-de-olivera-thiago-ezequiel--asociacion-hwarang-de-taekwon-do
 15186;Wahlberg Nils;
-15187;Donde Gonzalo;donde-gonzalo--academia-bbg
+15187;Donde Gonzalo;donde-gonzalo-ariel--academia-bbg
 15187;Garcia Nahuel Ivan;garcia-nahuel-ivan--organizacion-sudamericana-de-taekwon-do
 15250;Carrizo Lautaro Emanuel;carrizo-lautaro--in-nae
 15250;Carrizo Matheo Pablo;carrizo-matheo--in-nae
@@ -61,7 +61,7 @@
 15260;Maggioni Mauricio;maggioni-mauricio--m-a-s
 15270;Beneitez Ezequiel;beneitez-ezequiel--asociacion-civil-nuevo-taekwon-do-unido
 15270;Musi Arato Demian;arato-demian--mulyo
-15280;Gamboa Silvio;gamboa-silvio--lotus-taekwondo
+15280;Gamboa Silvio;gamboa-silvio-david--lotus-taekwondo
 15280;Gozzano Rodrigo;
 15380;De Gregorio Lucas;de-gregorio-lucas--asociacion-civil-nuevo-taekwon-do-unido
 15380;Zunino Juan Bautista;
@@ -75,41 +75,41 @@
 23175;Lopez Herrero Melody;lopez-herrero-melody--club-nacional-de-taekwondo
 23175;Rivera Eugenia Alma;rivera-eugenia-alma--asociacion-hwarang-de-taekwon-do
 23176;Acosta Loana;acosta-loana--asociacion-pinguinera-pinino-tapia
-23176;Feijoo Lucila Andrea;feijoo-lucila--lotus-taekwondo
+23176;Feijoo Lucila Andrea;feijoo-lucila--jung-do,feijoo-lucila--lotus-taekwondo
 23177;Nudelman Iara Lilen;nudelman-iara--escuela-tecnica
-23250;Feijoo Lucila Andrea;feijoo-lucila--lotus-taekwondo
+23250;Feijoo Lucila Andrea;feijoo-lucila--jung-do,feijoo-lucila--lotus-taekwondo
 23250;Gomez Nicole Magali;gomez-nicole-magali--organizacion-sudamericana-de-taekwon-do
 23260;Lopez Herrero Melody;lopez-herrero-melody--club-nacional-de-taekwondo
 23260;Rivera Eugenia Alma;rivera-eugenia-alma--asociacion-hwarang-de-taekwon-do
 23470;Palma Emilia;palma-emilia--asociacion-cordobesa-de-taekwon-do
 23470;Perez Cabrera Olivia;perez-cabrera-olivia--lotus-taekwondo
 24172;Batalla Sofía;batalla-sofia--organizacion-sudamericana-de-taekwon-do
-24172;Ibañez Victoria Abril;ibanez-victoria--asociacion-hwarang-de-taekwon-do
-24173;Gonzalez Lola;gonzalez-feliu-lola--asociacion-pinguinera-pinino-tapia
+24172;Ibañez Victoria Abril;ibanez-victoria-abril--asociacion-hwarang-de-taekwon-do
+24173;Gonzalez Lola;gonzalez-feliu-lola--academia-bordiez
 24173;Racca Samaniego Jazmin;racca-samaniego-jazmin--une-escuela-marcial
 24174;Gorosito Geraldine;gorosito-geraldine-gabriela--academia-bordiez
 24174;Reyes Luciana Belen;
 24175;Casero Martina;casero-martina--organizacion-marplatense-de-taekwon-do
 24175;Rivera Camila;rivera-camila-esperanza--asociacion-hwarang-de-taekwon-do
 24176;Rossi Agustina;
-24176;Trump Catalina;
+24176;Trump Catalina;trump-catalina-lucia--academia-bordiez
 24177;Lorefice Zoe;lorefice-zoe--escuela-tecnica
 24177;Sorbello Vidal Tiziana;sorbello-vidal-tiziana--academia-bordiez
-24250;Gonzalez Lola;gonzalez-feliu-lola--asociacion-pinguinera-pinino-tapia
+24250;Gonzalez Lola;gonzalez-feliu-lola--academia-bordiez
 24250;Racca Samaniego Jazmin;racca-samaniego-jazmin--une-escuela-marcial
 24260;Reyes Luciana Belen;
-24260;Trump Catalina;
+24260;Trump Catalina;trump-catalina-lucia--academia-bordiez
 24270;Riedel Milagros;riedel-milagros--asociacion-taekwondistas-argentinos
 24270;Rivera Camila;rivera-camila-esperanza--asociacion-hwarang-de-taekwon-do
 24370;Casero Martina;casero-martina--organizacion-marplatense-de-taekwon-do
 24370;Sorbello Vidal Tiziana;sorbello-vidal-tiziana--academia-bordiez
 24470;Coronel Anabela;coronel-faray-anabella--organizacion-sudamericana-de-taekwon-do
 24470;Espindola Alina;
-25181;Acosta Ailen;acosta-ailen--club-nacional-de-taekwondo
+25181;Acosta Ailen;acosta-ailen--academia-bordiez
 25181;Amores Ivana;
 25182;Bordiez Bianca;bordiez-bianca--academia-bordiez
 25182;Pampiglioni Indira;
-25183;Altamirano Maria Agustina;
+25183;Altamirano Maria Agustina;altamirano-agustina--e-p-i-c-a
 25183;Delgado Camila;delgado-camila--academia-bbg
 25184;Canut Camila;canut-camila--m-a-s
 25184;Rossi Sofia;
@@ -125,7 +125,7 @@
 25260;Rossi Sofia;
 25270;Gadea Romero Leslie Carolina;gadea-leslie--gmg
 25270;Rossel Lara;rossel-lara-yanina--anjong
-25280;Acosta Ailen;acosta-ailen--club-nacional-de-taekwondo
+25280;Acosta Ailen;acosta-ailen--academia-bordiez
 25280;Perez Lindo Evelin;perez-lindo-evelin--lotus-taekwondo
 25380;Brizuela Cecilia;brizuela-cecilia--asociacion-civil-federal-utkda
 25380;Palavecino Mailen;palavecino-mailen--itf-club

@@ -50,6 +50,9 @@ EVENTOS = [
         "flyer": "assets/flyer-ranqueable1.jpg",
         "direccion": "Av. Cmte. Rosales 10, Posadas, Misiones",
         "reglamento": "assets/Reglamento - 1er Ranqueable Paraguay 2027.pdf",
+        # Poner True cuando cierre la inscripción: quien no esté inscripto no suma en esta fecha
+        # y, si había sumado en el Argentino, se considera que pierde esos puntos en el cálculo de chances.
+        "inscripcion_cerrada": False,
         "puntos": [9, 6, 4, 3, 2, 1],
         "cronograma": [
             {"dia": "Viernes 13 de noviembre", "items": [
@@ -74,7 +77,8 @@ EVENTOS = [
                 "Si no cumplen con el peso quedan descalificados, sin posibilidad de pasar a otra categoría de peso."]},
             {"t": "Conservación de puntos", "items": [
                 "Quienes sumaron puntos en el Campeonato Argentino 2026 deben inscribirse en la misma categoría para conservar todo su puntaje.",
-                "Excepcionalmente, y solo en este ranqueable, quien cambie de categoría puede trasladar a la nueva el 50 % de los puntos obtenidos en la anterior."]},
+                "Excepcionalmente, y solo en este ranqueable, quien cambie de categoría puede trasladar a la nueva el 50 % de los puntos obtenidos en la anterior.",
+                "Quien sumó puntos en el Campeonato Argentino y no se presenta al 1er Ranqueable pierde esos puntos (salvo que se haya cambiado de categoría: en ese caso los conserva en la anterior y puede volver a sumar en ella más adelante)."]},
             {"t": "Asignación de puestos", "items": [
                 "Se disputa una ronda adicional para definir el 3° y el 4° puesto.",
                 "5° puesto: el eliminado en cuartos de final por el campeón de la categoría.",
@@ -238,6 +242,9 @@ def slug(s):
 def close(a, b):
     if a == b:
         return True
+    # Mario/María, Juliano/Juliana: distinto género, no es la misma persona
+    if len(a) == len(b) and a[:-1] == b[:-1] and {a[-1], b[-1]} <= {"a", "o"}:
+        return False
     if len(a) >= 4 and len(b) >= 4 and (a.startswith(b) or b.startswith(a)):
         return True
     if abs(len(a) - len(b)) > 1 or min(len(a), len(b)) < 4:
@@ -418,6 +425,227 @@ def prev_ranking(h, people, items):
     return blocks
 
 
+# ---------------------------------------------------------------------------
+# ARGENTINOS EN MUNDIALES
+# Medallas: assets/medallas-mundiales.csv  (mundial;nombre;codigo;categoria;medalla)
+#   mundial = id del HISTORIAL (wc2025, wc2023, wc2019...) · medalla = oro / plata / bronce
+#   nombre como "Apellido Nombre"; codigo y categoria son opcionales (alcanza con uno).
+# ---------------------------------------------------------------------------
+MEDALLAS_CSV = "assets/medallas-mundiales.csv"
+
+
+def atletas(hist):
+    import csv
+    order = sorted(hist, key=lambda h: h["anio"])
+    people = []  # {"n", "ev": {id: {"cats": [...], "med": []}}, "keys": set()}
+
+    def find(name):
+        for o in people:
+            if same_person(name, o["n"]):
+                return o
+        return None
+
+    for h in order:
+        for it in h["items"]:
+            if it.get("team"):
+                continue
+            o = find(it["n"])
+            if not o:
+                o = {"n": it["n"], "ev": {}, "keys": set()}
+                people.append(o)
+            o["n"] = it["n"] if len(it["n"]) >= len(o["n"]) else o["n"]
+            e = o["ev"].setdefault(h["id"], {"cats": [], "med": []})
+            e["cats"].append(it["cat"])
+            o["keys"].update(it["keys"])
+        # equipos: se asignan por apellido a quien compitió individualmente en ese mismo Mundial
+        for it in h["items"]:
+            if not it.get("team"):
+                continue
+            for sur in it.get("miembros", []):
+                S = nrm(sur).split()
+                c = [o for o in people if h["id"] in o["ev"] and nrm(o["n"]).split()[:len(S)] == S]
+                if len(c) == 1:
+                    c[0]["ev"][h["id"]]["cats"].append(it["cat"])
+    # medallas
+    path = HERE / MEDALLAS_CSV
+    nmed = 0
+    if path.exists():
+        for r in csv.DictReader(path.open(encoding="utf-8"), delimiter=";"):
+            mid, nom, med = (r.get("mundial") or "").strip(), (r.get("nombre") or "").strip(), (r.get("medalla") or "").strip().lower()
+            if not mid or not nom or med not in ("oro", "plata", "bronce"):
+                continue
+            cat = (r.get("categoria") or "").strip()
+            cod = (r.get("codigo") or "").strip()
+            if not cat and cod:
+                h = next((x for x in hist if x["id"] == mid), None)
+                it = next((i for i in (h["items"] if h else []) if i["cod"] == cod and same_person(i["n"], nom)), None)
+                cat = it["cat"] if it else cod
+            o = find(nom)
+            if not o:
+                o = {"n": nom, "ev": {}, "keys": set()}
+                people.append(o)
+            o["ev"].setdefault(mid, {"cats": [], "med": []})["med"].append({"m": med, "c": cat})
+            nmed += 1
+    out = [{"n": o["n"], "ev": o["ev"], "keys": sorted(o["keys"])} for o in people]
+    print(f"  Argentinos en Mundiales: {len(out)} atletas distintos, {nmed} medallas cargadas")
+    return out
+
+
+# ---------------------------------------------------------------------------
+# INSCRIPTOS A UNA FECHA (antes de que se dispute)
+# assets/inscriptos.csv  ->  evento;codigo;nombre;escuela;integrantes
+#   evento  = id del evento (r1, r2, r3)
+#   codigo  = código ITF de la categoría (ej. 15187). Equipos: LPE-Adultos / LPE-Juveniles / LPE-Pre-Juveniles
+#   nombre  = "Apellido, Nombre" (equipos: nombre del equipo; integrantes separados por "/")
+#             "-" = la categoría no tiene inscriptos en ese evento (todos quedan con "-")
+# Solo se toca una categoría si tiene al menos un inscripto cargado para ese evento:
+#   - quien ya estaba en la categoría y no figura inscripto queda marcado con "-" en esa fecha
+#   - quien no estaba se agrega a la categoría con 0 puntos
+# Los puntos no se modifican (el traslado del 50% se carga en la planilla luego del pesaje).
+# ---------------------------------------------------------------------------
+INSCRIPTOS_CSV = "assets/inscriptos.csv"
+
+
+ESCUELAS_CSV = "assets/escuelas-actualizadas.csv"
+NOMBRES_CSV = "assets/nombres-actualizados.csv"
+
+
+def actualizar_nombres(cats):
+    """1) assets/nombres-actualizados.csv -> nombre_anterior;escuela;nombre_nuevo (escuela vacía = cualquiera)
+    2) Unifica nombres de la misma persona (mismo primer apellido y escuela) dejando la versión más completa,
+       p. ej. 'Rossel, Lara' + 'Rossel, Lara Yanina' -> 'Rossel, Lara Yanina'."""
+    import csv
+    ren = []
+    path = HERE / NOMBRES_CSV
+    if path.exists():
+        ren = [r for r in csv.DictReader(path.open(encoding="utf-8"), delimiter=";") if (r.get("nombre_nuevo") or "").strip()]
+    def apply(old, esc, new):
+        n = 0
+        for c in cats:
+            for r in c["rows"]:
+                if nrm(r["n"]).strip() == nrm(old).strip() and (not esc or esc_key(r["s"]) == esc_key(esc)):
+                    r["n"] = new; n += 1
+                if r.get("m"):
+                    r["m"] = [new if nrm(x).strip() == nrm(old).strip() else x for x in r["m"]]
+        return n
+    total = 0
+    for r in ren:
+        total += apply(r["nombre_anterior"].strip(), (r.get("escuela") or "").strip(), r["nombre_nuevo"].strip())
+    # unificación automática dentro del ranking
+    toks = lambda n: [t for t in nrm(n.replace(",", " ")).split()]
+    groups = {}
+    for c in cats:
+        if c["team"]:
+            continue
+        for r in c["rows"]:
+            T = toks(r["n"])
+            if T:
+                groups.setdefault((T[0], esc_key(r["s"])), set()).add(r["n"])
+    cambios = []
+    for (_, esc), names in groups.items():
+        names = sorted(names, key=lambda n: -len(toks(n)))
+        for a in names:
+            for b in names:
+                if a == b or len(toks(b)) >= len(toks(a)):
+                    continue
+                sa, sb = a.partition(",")[0], b.partition(",")[0]
+                ga, gb = toks(a.partition(",")[2]), toks(b.partition(",")[2])
+                if gb and ga[:len(gb)] == gb and set(toks(sb)) <= set(toks(sa)):
+                    cambios.append((b, a))
+    for b, a in cambios:
+        total += apply(b, "", a)
+    if cambios:
+        (HERE / "reporte-nombres.txt").write_text("\n".join(f"{b} -> {a}" for b, a in cambios), encoding="utf-8")
+    print(f"  Nombres actualizados: {total} filas ({len(cambios)} unificaciones automáticas)")
+
+
+def actualizar_escuelas(cats):
+    """assets/escuelas-actualizadas.csv -> nombre;escuela_anterior;escuela_nueva
+    Cambia la escuela de un competidor en todas sus categorías (escuela_anterior vacía = cualquiera).
+    nombre = "*" renombra la escuela para todos sus competidores."""
+    import csv
+    path = HERE / ESCUELAS_CSV
+    if not path.exists():
+        return
+    n = 0
+    for u in csv.DictReader(path.open(encoding="utf-8"), delimiter=";"):
+        nom, ant, nue = (u.get("nombre") or "").strip(), (u.get("escuela_anterior") or "").strip(), (u.get("escuela_nueva") or "").strip()
+        if not nom or not nue:
+            continue
+        for c in cats:
+            for r in c["rows"]:
+                if (nom == "*" or nrm(r["n"]).strip() == nrm(nom).strip()) and (not ant or nrm(r["s"]).strip() == nrm(ant).strip()):
+                    r["s"] = nue
+                    n += 1
+    print(f"  Escuelas actualizadas: {n} filas")
+
+
+def esc_key(s):
+    return re.sub(r"[^a-z0-9]", "", nrm(s))
+
+
+def inscripciones(cats, played):
+    import csv
+    path = HERE / INSCRIPTOS_CSV
+    if not path.exists():
+        return
+    ev_idx = {e["id"]: i for i, e in enumerate(EVENTOS)}
+    rows = [r for r in csv.DictReader(path.open(encoding="utf-8"), delimiter=";") if (r.get("nombre") or "").strip()]
+    if not rows:
+        return
+    bycat = {(("LPE-" + c["age"]) if c["team"] else c["num"]): c for c in cats}
+    reporte, nuevos = [], 0
+    groups = {}
+    for r in rows:
+        groups.setdefault((r["evento"].strip(), r["codigo"].strip()), []).append(r)
+    inscriptos = {}  # evento -> set((nombre, modalidad, edad))
+    tocadas = {}     # evento -> [categorías con lista cargada]
+    for (ev, cod), lst in groups.items():
+        i = ev_idx.get(ev)
+        c = bycat.get(cod)
+        if i is None or c is None:
+            reporte.append(f"?? evento/categoría desconocida: {ev} {cod}")
+            continue
+        if played[i]:
+            reporte.append(f"!! {ev} ya tiene resultados en la planilla; se ignoran inscriptos de {cod}")
+            continue
+        lst = [r for r in lst if r["nombre"].strip() != "-"]  # "-" = categoría sin inscriptos
+        c.setdefault("insc", {})[str(i)] = len(lst)
+        tocadas.setdefault(i, []).append(c)
+        for r in lst:
+            nom = clean_name(r["nombre"]) if not c["team"] else r["nombre"].strip()
+            esc = (r.get("escuela") or "").strip()
+            cand = [row for row in c["rows"] if nrm(row["n"]).strip() == nrm(nom).strip()]
+            hit = next((row for row in cand if not esc or esc_key(row["s"]) == esc_key(esc)), None)
+            if hit is None:
+                hit = {"n": nom, "s": esc, "p": [None] * 4, "nuevo": i}
+                if c["team"]:
+                    hit["m"] = [clean_name(x) if "," in x else x.strip() for x in (r.get("integrantes") or "").split("/") if x.strip()]
+                c["rows"].append(hit)
+                nuevos += 1
+                reporte.append(f"+  {c['title']}: NUEVO {nom} ({esc})" + (" — mismo nombre que otro competidor con otra escuela" if cand else ""))
+            elif c["team"] and r.get("integrantes") and not hit.get("m"):
+                hit["m"] = [x.strip() for x in r["integrantes"].split("/") if x.strip()]
+            hit.setdefault("i", []).append(i)
+            if not c["team"]:
+                inscriptos.setdefault(i, set()).add((nrm(nom).strip(), esc_key(hit["s"]), c["mod"], c["age"]))
+    # "-" solo para quien cambió de categoría: está inscripto en otra categoría de la misma modalidad y edad
+    cambios = 0
+    for i, cs in tocadas.items():
+        for c in cs:
+            if c["team"]:
+                continue
+            for row in c["rows"]:
+                if i in row.get("i", []):
+                    continue
+                if (nrm(row["n"]).strip(), esc_key(row["s"]), c["mod"], c["age"]) in inscriptos.get(i, set()):
+                    row.setdefault("x", []).append(i)
+                    cambios += 1
+                    reporte.append(f"-  {c['title']}: {row['n']} cambió de categoría")
+    (HERE / "reporte-inscriptos.txt").write_text("\n".join(reporte), encoding="utf-8")
+    print(f"  Inscriptos: {len(rows)} cargados en {len(groups)} categorías · {nuevos} nuevos en su categoría · {cambios} cambios de categoría")
+
+
 def b64(rel):
     if not rel:
         return None
@@ -437,7 +665,10 @@ def main():
     a = ap.parse_args()
 
     cats = parse(a.xlsx)
+    actualizar_escuelas(cats)
+    actualizar_nombres(cats)
     played = [any(r["p"][i] is not None for c in cats for r in c["rows"]) for i in range(4)]
+    inscripciones(cats, played)
     eventos = []
     for i, e in enumerate(EVENTOS):
         e = dict(e)
@@ -453,7 +684,8 @@ def main():
         "ptsMaxFecha": PTS_MAX_POR_FECHA,
         "eventos": eventos,
         "categorias": cats,
-        "historial": historial(cats),
+        "historial": (H := historial(cats)),
+        "atletas": atletas(H),
         "mundial": {"flyer": b64("assets/flyer-mundial.jpg")},
     }
     tpl = (HERE / "template.html").read_text(encoding="utf-8")

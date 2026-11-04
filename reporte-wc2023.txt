@@ -2,12 +2,12 @@
 15187;Aidar Alan;aidar-alan--villanueva
 14270;Alarcon Thiago;
 15181;Almeida Lautaro;
-14173;Alvarenga Genaro;alvarenga-genaro--fati
-14250;Alvarenga Genaro;alvarenga-genaro--fati
-14470;Alvarenga Genaro;alvarenga-genaro--fati
+14173;Alvarenga Genaro;alvarenga-genaro-benjamin--fati
+14250;Alvarenga Genaro;alvarenga-genaro-benjamin--fati
+14470;Alvarenga Genaro;alvarenga-genaro-benjamin--fati
 25183;Amores Ivana;
-55580;Gamboa / Gozzano;gamboa-silvio--lotus-taekwondo
-53570;Gonzalez / Trump;
+55580;Gamboa / Gozzano;gamboa-silvio-david--lotus-taekwondo
+53570;Gonzalez / Trump;trump-catalina-lucia--academia-bordiez
 54570;Romano / Rossi;rossi-tobias-benjamin--asociacion-pinguinera-pinino-tapia
 13174;Arrua Santiago Gabriel;
 25260;Baez Giselle;baez-giselle--organizacion-sudamericana-de-taekwon-do
@@ -24,8 +24,8 @@
 25185;Bordiez Aldana;
 25250;Bordiez Bianca;bordiez-bianca--academia-bordiez
 15183;Bustamante Matias;
-15185;Cacciatore Gianfranco;
-15270;Cacciatore Gianfranco;
+15185;Cacciatore Gianfranco;cacciatore-gianfranco--academia-bordiez
+15270;Cacciatore Gianfranco;cacciatore-gianfranco--academia-bordiez
 13173;Caceres Francisco;
 13250;Caceres Francisco;
 25184;Canut Camila;canut-camila--m-a-s
@@ -37,16 +37,16 @@
 25250;Cordobes Carolina;cordobes-carolina--une-escuela-marcial
 25187;Coronel Anna;
 25380;Coronel Anna;
-13176;Dariozzi Luka;dariozzi-luka--centro-formativo-marcial-y-deportivo
-15183;Dariozzi Thiago;
+13176;Dariozzi Luka;dariozzi-luka--m-a-s
+15183;Dariozzi Thiago;dariozzi-thiago--m-a-s
 13174;Daverio Luciano;daverio-luciano--m-a-s
 14174;Daverio Valentino;daverio-valentino--m-a-s
 14176;De Boe Facundo;de-boe-facundo--academia-bordiez
 24175;Delgado Camila;delgado-camila--academia-bbg
 24260;Delgado Camila;delgado-camila--academia-bbg
 25181;Dellisola Celeste;dellisola-celeste--academia-bbg
-15187;Donde Gonzalo;donde-gonzalo--academia-bbg
-15380;Esposito Leandro Ramiro;
+15187;Donde Gonzalo;donde-gonzalo-ariel--academia-bbg
+15380;Esposito Leandro Ramiro;esposito-leandro--academia-bordiez
 24250;Esteche Nataly;esteche-nataly--asociacion-civil-nuevo-taekwon-do-unido
 24173;Favalli Priscilla;
 24260;Favalli Priscilla;
@@ -55,11 +55,11 @@
 25183;Fusco Lucia;fusco-lucia--academia-bbg
 25280;Fusco Lucia;fusco-lucia--academia-bbg
 14260;Gallo Bautista;
-15186;Gamboa Silvio;gamboa-silvio--lotus-taekwondo
-15280;Gamboa Silvio;gamboa-silvio--lotus-taekwondo
+15186;Gamboa Silvio;gamboa-silvio-david--lotus-taekwondo
+15280;Gamboa Silvio;gamboa-silvio-david--lotus-taekwondo
 15380;Garcia Nahuel Ivan;garcia-nahuel-ivan--organizacion-sudamericana-de-taekwon-do
-23173;Gonzalez Lola;gonzalez-feliu-lola--asociacion-pinguinera-pinino-tapia
-23250;Gonzalez Lola;gonzalez-feliu-lola--asociacion-pinguinera-pinino-tapia
+23173;Gonzalez Lola;gonzalez-feliu-lola--academia-bordiez
+23250;Gonzalez Lola;gonzalez-feliu-lola--academia-bordiez
 23175;Gorosito Geraldine;gorosito-geraldine-gabriela--academia-bordiez
 23260;Gorosito Geraldine;gorosito-geraldine-gabriela--academia-bordiez
 15280;Gozzano Rodrigo;
@@ -70,9 +70,9 @@
 24470;Hodnik Lourdes;hodnik-lourdes--academia-bordiez
 24174;Ibañez Magali;ibanez-magali-lujan--asociacion-hwarang-de-taekwon-do,ibanez-magali-lujan--asociacion-hwarang-de-taekwondo
 24260;Ibañez Magali;ibanez-magali-lujan--asociacion-hwarang-de-taekwon-do,ibanez-magali-lujan--asociacion-hwarang-de-taekwondo
-15185;Kaufmann Pablo;kaufmann-pablo--asociacion-civil-federal-utkda
-13173;Kosinski Iraci Sareri Bautista;kosinski-bautista--alpha-academia-de-tkd
-25185;Larrosa Gisela;larrosa-gisela--fati
+15185;Kaufmann Pablo;kaufmann-trueba-pablo-tomas--asociacion-civil-federal-utkda
+13173;Kosinski Iraci Sareri Bautista;kosinski-iraci-sareri-bautista--alpha-academia-de-tkd
+25185;Larrosa Gisela;larrosa-gisela-celeste--fati
 14177;Leiva Alejandro;leiva-alejandro--escuela-tecnica
 14250;Lopez Quiñones Lautaro;
 23177;Lorefice Zoe;lorefice-zoe--escuela-tecnica
@@ -105,8 +105,8 @@
 13470;Rios Paez Gonzalo Javier;rios-paez-gonzalo--academia-bordiez
 14171;Rizzo Marco;rizzo-marco--asociacion-pinguinera-pinino-tapia
 24173;Rodriguez Albiac Zoe Aylen;albiac-zoe--e-p-i-c-a
-13175;Rodríguez Andrada Mario Gabriel;rodriguez-maria--escuela-tecnica
-13260;Rodríguez Andrada Mario Gabriel;rodriguez-maria--escuela-tecnica
+13175;Rodríguez Andrada Mario Gabriel;
+13260;Rodríguez Andrada Mario Gabriel;
 24171;Román Delfina;
 24176;Romano Camila;
 13176;Ronchese Tomas;ronchese-tomas--academia-bordiez
@@ -121,8 +121,8 @@
 13177;Santana Juan;santana-ledesma-juan-gabriel--jung-do
 14177;Serafino Lucio;
 23177;Sorbello Vidal Tiziana;sorbello-vidal-tiziana--academia-bordiez
-14174;Sturla Joaquin;sturla-joaquin--grupo-marrero
-23176;Trump Catalina;
+14174;Sturla Joaquin;sturla-joaquin--grupo-marrero-fati
+23176;Trump Catalina;trump-catalina-lucia--academia-bordiez
 15184;Vatrano Alejo;
 15186;Wahlberg Nils;
 24176;Zalazar Ariana;
