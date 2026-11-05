@@ -475,6 +475,16 @@ table.rk td.plus{color:var(--ok);font-weight:800}
 .tb-tab select.tbpos{width:auto;min-width:96px;padding:7px 8px;font-size:13px;border-radius:8px}.tb-tab select.tbpos.set{border-color:var(--ok);background:var(--ok-100);color:#0B6B42;font-weight:800}
 .linkbtn{background:none;border:0;padding:0;color:var(--celeste);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer}
 .chip.tbr{background:#F1E8FF;color:#5B2BA8}
+.cps{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+td.hide-sm .cps{margin-top:0}
+.cp{display:inline-flex;align-items:center;gap:6px;padding:3px 4px 3px 3px;border:1px solid var(--line-2);border-radius:999px;background:#fff;text-decoration:none;color:var(--ink-2);font-size:12px;line-height:1;white-space:nowrap}
+.cp:hover{border-color:var(--celeste-300);background:var(--celeste-100)}
+.cp>b{display:inline-grid;place-items:center;min-width:22px;height:18px;padding:0 4px;border-radius:999px;color:#fff;font-size:10px;font-weight:800;letter-spacing:.02em}
+.cp-n{font-weight:600}
+.zr-st{display:flex;align-items:center;gap:10px;justify-content:flex-end}
+@media (max-width:640px){.zr-st{flex-direction:column-reverse;align-items:flex-end;gap:5px}}
+.pp{display:inline-block;min-width:44px;text-align:center;padding:4px 8px;border-radius:999px;font:800 11px/1 var(--body);font-variant-numeric:tabular-nums}
+.pp.hi{background:var(--ok-100);color:#0B6B42}.pp.mid{background:var(--gold-100);color:#8A6200}.pp.lo{background:#EEF1F6;color:#5E6B85}.pp.wait{background:#F4F6FA;color:#B6C0D2}
 .chip.tie{background:#FCE4D6;color:#B4501A}
 table.rk tr.tiezone td{background:#FFF4EC}
 table.rk tr.tiezone td:first-child{box-shadow:inset 4px 0 0 #E07B24}
@@ -928,7 +938,8 @@ V.plazas.after=()=>{$("#plSeg").addEventListener("click",e=>{const b=e.target.cl
 V.escuela=(key)=>{
   const s=SCH[key]; if(!s) return notFound();
   const comps=COMPS.filter(o=>slug(o.s)===key);
-  const zoneRes=[];CATS.forEach(c=>c.sorted.forEach(r=>{if(slug(r.s)===key&&r.zone)zoneRes.push({c,r})}));
+  const zoneRes=[];CATS.forEach(c=>c.sorted.forEach(r=>{if(slug(r.s)===key&&r.pos!=null&&r.pos<=4)zoneRes.push({c,r})}));
+  zoneRes.sort((a,b)=>a.r.pos-b.r.pos||b.r.tot-a.r.tot||a.c.idx-b.c.idx); // primero los 1°, después los 2°
   return `<section class="page-h"><div class="stripes"></div><div class="wrap">
     <div class="crumbs"><a href="#/inicio">Inicio</a> / Escuelas</div>
     <div class="prof" style="margin-top:16px"><div class="avatar" style="background:var(--navy-600)">${esc(s.n.replace(/^(Asociaci[oó]n|Organizaci[oó]n|Escuela|Academia|Centro|Instituto|Club|Esc)\s+(de\s+|Civil\s+)?/i,"").charAt(0))}</div>
@@ -942,8 +953,8 @@ V.escuela=(key)=>{
         <div class="flabel" style="margin-top:20px">Por fecha</div>
         <table class="mini"><tbody>${EV.map((e,i)=>`<tr><td class="l">${esc(e.nombre)}</td><td><b>${played[i]?fmt(s.ev[i]):"·"}</b></td></tr>`).join("")}</tbody></table>
       </div></div>
-      <div class="card"><div class="card-h"><h3>En zona de clasificación</h3><span class="chip zone">${zoneRes.length}</span></div>
-        ${zoneRes.length?`<ul class="rank-list" style="padding:4px 20px">${zoneRes.map(({c,r})=>`<li><span class="${posCls(r.pos)}">${r.pos}</span><a href="#/ranking/${c.slug}"><div class="nm">${esc(r.n)}</div><div class="sm">${esc(c.title)}</div></a><span>${status(r)}</span></li>`).join("")}</ul>`:`<div class="empty">Sin competidores en zona de clasificación por ahora.</div>`}
+      <div class="card"><div class="card-h"><h3>Mejores ubicados</h3>${remaining?`<span class="sm" style="margin-left:auto;margin-right:8px">Chance de clasificar</span>`:""}<span class="chip cel">${zoneRes.length}</span></div>
+        ${zoneRes.length?`<ul class="rank-list" style="padding:4px 20px">${zoneRes.map(({c,r})=>`<li><span class="${posCls(r.pos)}">${r.pos}</span><a href="#/ranking/${c.slug}"><div class="nm">${esc(r.n)}</div><div class="sm">${esc(c.title)}</div></a><span class="zr-st">${status(r)}${remaining?(CH[c.slug]?pctPill(CH[c.slug].get(r)):`<span class="pp wait" data-c="${c.slug}" data-r="${c.sorted.indexOf(r)}">…</span>`):""}</span></li>`).join("")}</ul>`:`<div class="empty">Sin competidores entre los 4 primeros de su categoría por ahora.</div>`}
       </div>
     </div>
     <div class="card" style="margin-top:20px"><div class="card-h"><h3>Competidores (${comps.length})</h3></div>
@@ -953,6 +964,12 @@ V.escuela=(key)=>{
   </div></section>`;
 };
 
+V.escuela.after=()=>{
+  const pend=[...new Set($$(".pp.wait").map(e=>e.dataset.c))], h=location.hash;
+  const step=()=>{ if(location.hash!==h||!pend.length) return; const sl=pend.shift(), c=CATS.find(x=>x.slug===sl), m=chances(c);
+    $$(`.pp.wait[data-c="${sl}"]`).forEach(e=>{e.outerHTML=pctPill(m.get(c.sorted[+e.dataset.r]));}); setTimeout(step,0); };
+  setTimeout(step,30);
+};
 let CF={q:"",mod:"",sch:"",n:60};
 V.competidores=()=>pageHead("Ranking general individual","Competidores","Puntaje total de cada competidor sumando todas sus modalidades. Los puntos de Lucha Pre-Establecida se acreditan a cada integrante del equipo.","Competidores")+`
   <section class="sec"><div class="wrap"><div class="card">
@@ -1263,6 +1280,7 @@ function chancesCore(c,rows,base,remI,clasA,zoneA,seed){
   return res;
 }
 const pctTxt=p=>p>=1?"100%":p<=0?"0%":p>=.995?">99%":p<.01?"<1%":Math.round(p*100)+"%";
+const pctPill=p=>`<span class="pp ${p>=.5?"hi":p>=.15?"mid":"lo"}">${pctTxt(p)}</span>`;
 const chanceCell=p=>`<div class="ch"><span class="num">${pctTxt(p)}</span><i><b style="width:${Math.max(p>0?3:0,p*100)}%;background:${p>=.5?"var(--ok)":p>=.15?"var(--gold)":"#9AA8C0"}"></b></i></div>`;
 
 
