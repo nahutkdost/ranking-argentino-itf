@@ -468,6 +468,13 @@ select.swap:hover,select.swap:focus{color:var(--celeste);box-shadow:none}
 .pod span{font:800 20px/1 var(--display);color:var(--ink-3)}.pod.p1 span{color:var(--gold-600)}.pod.p2 span{color:#8C98AE}.pod.p3 span,.pod.p4 span{color:#B26F37}
 .pod b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pod small{font-size:11.5px;color:var(--ok);font-weight:700}
 table.rk td.plus{color:var(--ok);font-weight:800}
+.tb-box{margin:4px 18px 14px;padding:12px 14px;border:1px solid #F3C9AE;background:#FFF8F3;border-radius:12px}
+.tb-h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.tb-h b{font-size:14px}
+.tb-win{display:flex;gap:8px;flex-wrap:wrap}.tb-win .btn{flex:1 1 140px;justify-content:center;text-transform:none;letter-spacing:0}
+.tb-tab{width:100%;border-collapse:collapse}.tb-tab td{padding:6px 0;border-top:1px solid #F3DCCB}.tb-tab td:last-child{text-align:right;width:110px}
+.tb-tab select.tbpos{width:auto;min-width:96px;padding:7px 8px;font-size:13px;border-radius:8px}.tb-tab select.tbpos.set{border-color:var(--ok);background:var(--ok-100);color:#0B6B42;font-weight:800}
+.linkbtn{background:none;border:0;padding:0;color:var(--celeste);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer}
+.chip.tbr{background:#F1E8FF;color:#5B2BA8}
 .chip.tie{background:#FCE4D6;color:#B4501A}
 table.rk tr.tiezone td{background:#FFF4EC}
 table.rk tr.tiezone td:first-child{box-shadow:inset 4px 0 0 #E07B24}
@@ -475,6 +482,11 @@ table.rk tr.tiezone td:first-child{box-shadow:inset 4px 0 0 #E07B24}
 .tienote{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--ink-2)}
 .chip.lostc{background:#FBE6E3;color:#C0392B}
 table.rk td.lostn{color:#C0392B;font-weight:800}
+@media (max-width:640px){.simres{padding:16px 12px}.simres .ch{min-width:44px}.simres .ch i{width:40px}.simres table.rk td,.simres table.rk th{padding:9px 4px}}
+table.tabla-pos select.tpos{width:auto;min-width:84px;padding:7px 8px;font-size:13px;border-radius:8px}
+table.tabla-pos select.tpos.zero{border-color:var(--line-2);background:var(--bg);color:var(--ink-3);font-weight:700}
+table.tabla-pos select.tpos.set{border-color:var(--ok);background:var(--ok-100);color:#0B6B42;font-weight:800}
+table.tabla-pos tr.set td{background:#F6FCF8}
 .seedlist{list-style:none;margin:0;padding:4px 20px 16px}
 .seedlist li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:13.5px}
 .seedlist li:last-child{border-bottom:0}
@@ -584,13 +596,8 @@ const lastEv=EV[PI[PI.length-1]], prevEv=EVO?EV[PI[PI.length-2]]:null;
 const CATS=DATA.categorias.map((c,i)=>{
   c.idx=i; c.slug=slug(c.title.replace(/([+-])(\d)/g,(m,sg,d)=>(sg==="+"?" mas ":" menos ")+d));
   c.short=c.mod==="Lucha Pre-Establecida"?c.age:[c.age,c.gen==="Mixto"?"":c.gen.slice(0,3)+".",c.div].filter(Boolean).join(" ");
-  // Quien sumó puntos en el Argentino y no se presenta al 1er Ranqueable en esa categoría pierde esos puntos
   const iR1=EV.findIndex(e=>e.id==="r1");
-  c.rows.forEach(r=>{
-    // no pierde quien se cambió de categoría (marcado "-"): conserva sus puntos y puede volver más adelante
-    r.lost=iR1>=0&&played[iR1]&&(r.p[0]||0)>0&&r.p[iR1]==null&&!(r.x||[]).includes(iR1);
-    r.tot=r.p.reduce((a,b,k)=>a+(k===0&&r.lost?0:(b||0)),0)+(r.d||0)/10;
-  });
+  c.rows.forEach(r=>{ r.tot=r.p.reduce((a,b)=>a+(b||0),0)+(r.d||0)/10; });
   // a igual puntaje, primero quienes están inscriptos en la próxima fecha (1er Ranqueable)
   const insNext=r=>iR1>=0&&!played[iR1]&&(r.i||[]).includes(iR1)?1:0;
   const rows=[...c.rows].sort((a,b)=>b.tot-a.tot||insNext(b)-insNext(a)||a.n.localeCompare(b.n,"es"));
@@ -600,15 +607,16 @@ const CATS=DATA.categorias.map((c,i)=>{
   rows.forEach(r=>{
     r.dif=r.tot-thr;
     r.zone=r.pos!=null&&r.pos<=c.cupos;
-    r.clas=r.tot>0&&(final?r.zone:ptsMax<r.dif);
+    // empate en el corte: hay más empatados que plazas -> se define por desempate
+    r.tie=r.zone&&r.pos+totals.filter(t=>t===r.tot).length-1>c.cupos;
+    r.clas=r.tot>0&&(final?r.zone&&!r.tie:ptsMax<r.dif);
   });
   // Participantes del ranking: estuvieron en el Argentino o en el 1er Ranqueable (inscriptos mientras no se dispute).
   // Desde el 2do Ranqueable solo pueden competir ellos, por eso el 1er Ranqueable es la última fecha para sumar competidores.
   const R1=EV.findIndex(e=>e.id==="r1");
   rows.forEach(r=>{r.part=r.p[0]!=null||(R1>=0&&(played[R1]?r.p[R1]!=null:(r.i||[]).includes(R1)));});
-  const nPart=rows.filter(r=>r.part).length;
-  c.direct=nPart>0&&nPart<=c.cupos?{n:nPart,final:R1>=0&&played[R1]}:null;
-  if(c.direct&&c.direct.final) rows.forEach(r=>{if(r.part){r.clas=true;r.zone=true;r.dclas=true;}});
+  // Aunque una categoría tenga 2 o menos competidores, un cambio de categoría posterior podría sumar uno más:
+  // la plaza asegurada se sigue calculando contra un hipotético 3er competidor (0 pts) más los puntos en juego.
   const lastZone=rows[c.cupos-1]?rows[c.cupos-1].tot:0;
   rows.forEach(r=>{r.gap=r.zone?0:Math.max(0,lastZone-r.tot);});
   // Evolución: posición luego de cada fecha disputada
@@ -666,7 +674,7 @@ const nextEv=EV.find(e=>!e.jugado&&e.fecha&&dt(e.fecha_fin||e.fecha)>=new Date(t
 const evState=e=>e.jugado?["Disputado","ok"]:(e===nextEv&&e.fecha?["Próxima fecha","zone"]:(e.fecha?["Programado","cel"]:e.estimada?["Fecha estimada","cel"]:["A confirmar","mut"]));
 const posCls=p=>p===1?"pos p1":p===2?"pos p2":p===3?"pos p3":"pos";
 const modBar=(mod,tot)=>tot>0?`<div class="bar">${MODS.map(m=>mod[m.k]?`<i style="width:${mod[m.k]/tot*100}%;background:${m.c}" title="${m.k}: ${fmt(mod[m.k])}"></i>`:"").join("")}</div>`:"";
-const status=r=>r.clas?`<span class="chip ok">✓ Clasificado</span>`:r.zone?`<span class="chip zone">En zona</span>`:"";
+const status=r=>r.clas?`<span class="chip ok">✓ Clasificado</span>`:r.tie?`<span class="chip tie">${final?"Desempate":"Empatados en zona"}</span>`:r.zone?`<span class="chip zone">En zona</span>`:"";
 const directNote=c=>c.direct&&c.direct.final?`<div class="direct ${c.direct.final?"ok":""}">${c.direct.final?`✓ Clasificación confirmada: la categoría cerró con ${c.direct.n} ${c.direct.n===1?(c.team?"equipo":"competidor"):(c.team?"equipos":"competidores")} para ${c.cupos} ${c.cupos===1?"plaza":"plazas"}.`:`Por ahora la categoría tiene ${c.direct.n} ${c.direct.n===1?(c.team?"equipo":"competidor"):(c.team?"equipos":"competidores")} entre el Argentino y los inscriptos al 1er Ranqueable. Si no se suman más, ${c.direct.n===1?"queda confirmada su clasificación":"quedan confirmados"} al cerrar el 1er Ranqueable.`}</div>`:"";
 const ICON={
   cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
@@ -723,7 +731,7 @@ function prevBlock(c){
 }
 const insTag=r=>(r.i||[]).filter(i=>!played[i]).map(i=>`<span class="ins-tag show-sm">✓ ${EV[i].corto}</span>`).join("")+(r.x||[]).filter(i=>!played[i]).map(i=>`<span class="ins-tag show-sm aus">- ${EV[i].corto}</span>`).join("");
 const evTh=()=>EV.map(e=>`<th class="hide-sm" title="${esc(e.nombre)}">${e.corto}</th>`).join("");
-const evTd=(p,x,ins,r)=>p.map((v,i)=>i===0&&r&&r.lost?`<td class="ev hide-sm lost" title="No suma al total: no se presentó al 1er Ranqueable">${fmt(v)}</td>`:!played[i]&&ins&&ins.includes(i)?`<td class="ev hide-sm ins" title="Inscripto en ${esc(EV[i].nombre)}">✓</td>`:x&&x.includes(i)?`<td class="ev hide-sm aus" title="No participa en esta fecha en esta categoría">-</td>`:`<td class="ev hide-sm ${played[i]?"":"na"}">${played[i]?(v==null?"–":fmt(v)):"·"}</td>`).join("");
+const evTd=(p,x,ins,r)=>p.map((v,i)=>!played[i]&&ins&&ins.includes(i)?`<td class="ev hide-sm ins" title="Inscripto en ${esc(EV[i].nombre)}">✓</td>`:x&&x.includes(i)?`<td class="ev hide-sm aus" title="No participa en esta fecha en esta categoría">-</td>`:`<td class="ev hide-sm ${played[i]?"":"na"}">${played[i]?(v==null?"–":fmt(v)):"·"}</td>`).join("");
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),1800);}
 function pageHead(kicker,title,sub,crumb){
   return `<section class="page-h"><div class="stripes"></div><div class="wrap">
@@ -837,9 +845,8 @@ V.ranking=(id)=>{
         <div class="pager top">${prev?`<a class="btn l" href="#/ranking/${prev.slug}">← ${navLab(prev,c)}</a>`:"<span></span>"}${next?`<a class="btn l" href="#/ranking/${next.slug}">${navLab(next,c)} →</a>`:""}</div>
         <div class="cat-head">
           <div>${c.num?`<span class="chip cel">Código ITF ${esc(c.num)}</span>`:""}<h2>${esc(c.title)}</h2></div>
-          <div class="toolbar"><a class="btn p" href="#/simulador/${c.slug}">${ICON.sim}Simular</a>${hasLlave(c)?`<a class="btn p" href="#/llave/${c.slug}">${ICON.llave}Llave ${esc(evLabel(EV[NEXT]))}</a>`:""}<button class="btn l" id="shareBtn">${ICON.link}Copiar enlace</button></div>
+          <div class="toolbar"><a class="btn p" href="#/simulador/${c.slug}">${ICON.sim}Simular</a>${hasLlave(c)?`<a class="btn p" href="#/llave/${c.slug}">${ICON.llave}${isTabla(c)?"Tabla":"Llave"} ${esc(evLabel(EV[NEXT]))}</a>`:""}<button class="btn l" id="shareBtn">${ICON.link}Copiar enlace</button></div>
         </div>
-        ${directNote(c)}
         <div class="facts">
           <div><b class="num">${c.rows.length}</b><span>${c.team?"Equipos":"Competidores"}</span></div>
           <div><b class="num">${c.ranked}</b><span>Con puntaje</span></div>
@@ -855,7 +862,7 @@ V.ranking=(id)=>{
           <tbody>${(()=>{const CHc=remaining?chances(c):null;return rows.map((r,k)=>{
             const who=c.team?`<div class="nm">${esc(r.n)}${wcBadge(r.m.map(n=>slug(n)+"--"+slug(r.s)),c)}</div><div class="sm">${r.m.map(n=>`<a href="#/competidor/${slug(n)}--${slug(r.s)}">${esc(n)}</a>`).join(" / ")}</div><div class="sm"><a href="#/escuela/${slug(r.s)}">${esc(r.s)}</a></div>`
               :`<a href="#/competidor/${slug(r.n)}--${slug(r.s)}"><div class="nm">${esc(r.n)}${wcBadge([slug(r.n)+"--"+slug(r.s)],c)}</div></a><div class="sm"><a href="#/escuela/${slug(r.s)}">${esc(r.s)}</a>${insTag(r)}</div>`;
-            return `<tr class="${r.zone?"zone":""} ${r.clas?"clas":""} ${k===cutIdx?"cut":""}"><td>${evPos?`<span class="${posCls(evPos.get(r))}">${evPos.get(r)??"-"}</span>`:`<span class="${posCls(r.pos)}">${r.pos??"–"}</span>`}</td>${EVO?`<td>${varCell(r)}</td>`:""}<td class="l">${who}</td>${evTd(r.p,r.x,r.i,r)}<td class="tot">${fmt(r.tot)}</td>${CHc?`<td>${chanceCell(CHc.get(r))}</td>`:""}<td class="hide-sm">${status(r)}</td></tr>`}).join("")})()}</tbody>
+            return `<tr class="${r.tie?"tiezone":r.zone?"zone":""} ${r.clas?"clas":""} ${k===cutIdx?"cut":""}"><td>${evPos?`<span class="${posCls(evPos.get(r))}">${evPos.get(r)??"-"}</span>`:`<span class="${posCls(r.pos)}">${r.pos??"–"}</span>`}</td>${EVO?`<td>${varCell(r)}</td>`:""}<td class="l">${who}</td>${evTd(r.p,r.x,r.i,r)}<td class="tot">${fmt(r.tot)}</td>${CHc?`<td>${chanceCell(CHc.get(r))}</td>`:""}<td class="hide-sm">${status(r)}</td></tr>`}).join("")})()}</tbody>
         </table></div>
         ${prevBlock(c)}
         ${EVO?`<div class="evo"><div class="flabel">Evolución de posiciones · top 8</div>${bump(c)}</div>`:""}
@@ -1033,7 +1040,7 @@ V.reglamento=()=>{
     <div class="card pad"><h3>3 · Plazas al Mundial</h3><p>Hay <b>${TOTAL_CUPOS} plazas</b>:</p>
       <ul><li><b>2 plazas</b> por cada categoría individual de Formas, Lucha, Rotura de Poder y Técnicas Especiales.</li><li><b>1 equipo</b> por grupo de edad en Lucha Preestablecida (Adultos, Juveniles y Pre-Juveniles).</li></ul>
       <p>Al cierre del ranking, las plazas corresponden a los mejores puntajes acumulados de cada categoría.</p>
-      <p><b>Categorías con pocos competidores:</b> si una categoría termina con ${"2"} o menos competidores en total (entre el Campeonato Argentino y el 1er Ranqueable), se confirma la clasificación de esos competidores.</p>
+      <p><b>Categorías con pocos competidores:</b> aunque una categoría tenga 2 o menos competidores, un cambio de categoría posterior podría sumar otro. Por eso la plaza se considera asegurada recién cuando la ventaja supera los puntos que un hipotético 3er competidor todavía podría sumar.</p>
       <p><b>Requisito para el 2do y 3er Ranqueable:</b> haber participado del Campeonato Argentino y/o del 1er Ranqueable. El 1er Ranqueable es la última oportunidad para sumar nuevos competidores al ranking.</p></div>
     <div class="card pad"><h3>4 · Plaza asegurada anticipada</h3><p>Antes de la última fecha, un competidor <span class="chip ok">✓ Clasificado</span> tiene la plaza asegurada matemáticamente: su ventaja sobre el primer puesto fuera de zona (el 3° en individuales, el 2° en equipos) es mayor que los puntos que todavía están en juego.</p>
       <p>Se consideran <b>${DATA.ptsMaxFecha} puntos por cada fecha restante</b> (el puntaje del 1° puesto en un ranqueable)${!final?`: hoy quedan ${remaining} ${remaining===1?"fecha":"fechas"}, es decir ${ptsMax} pts en juego`:""}.</p>
@@ -1042,7 +1049,7 @@ V.reglamento=()=>{
     ${sec("Divisiones por edad")||sec("Graduaciones permitidas")?`<div class="card pad"><h3>6 · Edades y graduaciones</h3><div class="flabel" style="margin-top:12px">Divisiones por edad</div>${lst("Divisiones por edad")}<div class="flabel" style="margin-top:14px">Graduaciones permitidas</div>${lst("Graduaciones permitidas")}</div>`:""}
     ${sec("Pesaje oficial")?`<div class="card pad"><h3>7 · Pesaje oficial</h3>${lst("Pesaje oficial")}</div>`:""}
     <div class="card pad"><h3>Chance de clasificar</h3><p>En el ranking de cada categoría, la columna <b>Chance</b> estima la probabilidad de que cada competidor termine dentro de las plazas al cierre del ranking.</p>
-      <ul><li>Se simulan ${SIMS.toLocaleString("es-AR")} veces las fechas que faltan disputar, con la escala de puntos de los ranqueables.</li><li>En cada fecha simulada, cada inscripto compite con un 75% de probabilidad (no todos asisten a todas las fechas).</li><li>Los puntos ya obtenidos dan una ventaja moderada para volver a puntuar, pero cualquier inscripto puede ganar una fecha.</li><li><b>0%</b>: ya no puede alcanzar la zona aunque gane todo. <b>100%</b>: tiene la plaza asegurada.</li></ul>
+      <ul><li>Se simulan ${SIMS.toLocaleString("es-AR")} veces las fechas que faltan disputar, con la escala de puntos de los ranqueables.</li><li>Cada fecha se simula con un cuadro de tamaño realista: el de los inscriptos (o participantes) de la fecha más reciente. Quienes compitieron o se anotaron en esa fecha tienen más probabilidad de presentarse.</li><li>Los puntos ya obtenidos dan una ventaja moderada para volver a puntuar, pero cualquier inscripto puede ganar una fecha.</li><li><b>0%</b>: ya no puede alcanzar la zona aunque gane todo. <b>100%</b>: tiene la plaza asegurada.</li></ul>
       <p class="sm">Es una estimación orientativa: no considera quién se inscribe en cada fecha ni cambios de categoría.</p></div>
     <div class="card pad"><h3>Fuentes</h3><p>Planilla oficial del ranking y reglamento del Primer Ranqueable Argentino (FETRA).</p>
       <p class="note">Ante cualquier diferencia, prevalece el reglamento de FETRA y la información publicada en <a href="https://www.fetra-itf.com/" target="_blank" rel="noopener">fetra-itf.com</a>.</p></div>
@@ -1053,8 +1060,17 @@ V.reglamento=()=>{
 const UNP=EV.map((e,i)=>e.jugado?-1:i).filter(i=>i>=0); // fechas por disputar
 let SIM=null;
 function simInit(c){
-  SIM={slug:c.slug,c,rows:c.sorted.map(r=>({n:r.n,s:r.s,p:r.p,d:r.d||0,pos:r.pos,team:c.team,m:r.m,x:r.x||[]})),pick:{}};
+  SIM={slug:c.slug,c,rows:c.sorted.map(r=>({n:r.n,s:r.s,p:r.p,d:r.d||0,pos:r.pos,team:c.team,m:r.m,x:r.x||[]})),pick:{},tb:{}};
   UNP.forEach(i=>SIM.pick[i]={});
+}
+function tbPanel(tg,done){
+  const c=SIM.c, n=tg.length, pl=c.cupos-Math.min(...tg.map(x=>x.tbr?x.pos-x.tbr+1:x.pos))+1, T=SIM.tb, pts=fmt(tg[0].tot);
+  const head=`<div class="tb-h"><span class="chip tie">Desempate</span><b>${n} ${c.team?"equipos":"competidores"} empatados con ${pts} pts</b> <span class="sm">· ${pl===1?"1 plaza en juego":pl+" plazas en juego"}</span></div>`;
+  const byJ=[...tg].sort((a,b)=>a.r.n.localeCompare(b.r.n,"es"));
+  const body=n===2
+    ?`<div class="sm" style="margin:6px 0 8px">Marcá al ganador del desempate:</div><div class="tb-win">${byJ.map((x,k)=>{const o=byJ[1-k];return `<button class="btn ${T[x.j]===1?"p":"l"}" data-tbw="${x.j},${o.j}">${T[x.j]===1?"✓ ":""}${esc(x.r.n)}</button>`;}).join("")}</div>`
+    :`<div class="sm" style="margin:6px 0 8px">Asigná la posición de cada uno en el desempate:</div><table class="tb-tab">${byJ.map(x=>`<tr><td class="l"><div class="nm">${esc(x.r.n)}</div><div class="sm">${esc(x.r.s||"")}</div></td><td><select class="tbpos ${T[x.j]||x.tbAuto?"set":""}" data-j="${x.j}"><option value="">Posición</option>${Array.from({length:n},(_,k)=>`<option value="${k+1}" ${(T[x.j]||x.tbAuto)===k+1?"selected":""}>${k+1}°</option>`).join("")}</select></td></tr>`).join("")}</table>`;
+  return `<div class="tb-box">${head}${body}<div class="sm" style="margin-top:8px">${done?`Desempate definido. ${Object.keys(T).length?`<button class="linkbtn" id="tbReset">Borrar desempate</button>`:""}`:"Hasta definir el desempate, ninguno de los empatados figura como clasificado."}</div></div>`;
 }
 function simCalc(){
   const c=SIM.c, simEv=UNP.filter(i=>Object.keys(SIM.pick[i]).length);
@@ -1065,8 +1081,20 @@ function simCalc(){
     return {j,r,tot:t};
   }).sort((a,b)=>b.tot-a.tot||a.r.n.localeCompare(b.r.n,"es"));
   const tots=res.map(x=>x.tot), thr=tots[c.cupos]??0;
-  res.forEach(x=>{x.pos=x.tot>0?1+tots.filter(t=>t>x.tot).length:null;x.zone=x.pos!=null&&x.pos<=c.cupos;x.clas=x.tot>0&&(rem===0?x.zone:pmax<x.tot-thr);});
-  return {res,rem,pmax,simEv};
+  res.forEach(x=>{x.pos=x.tot>0?1+tots.filter(t=>t>x.tot).length:null;x.zone=x.pos!=null&&x.pos<=c.cupos;x.tie=x.zone&&x.pos+tots.filter(t=>t===x.tot).length-1>c.cupos;x.clas=x.tot>0&&(rem===0?x.zone&&!x.tie:pmax<x.tot-thr);});
+  // Desempate (solo con todas las fechas disputadas): el grupo empatado en el corte se ordena por SIM.tb (j -> puesto del desempate)
+  let tg=null, tbDone=false;
+  if(rem===0&&res.some(x=>x.tie)){
+    tg=res.filter(x=>x.tie); const n=tg.length, base=tg[0].pos, T=SIM.tb;
+    const asig=tg.filter(x=>T[x.j]>=1&&T[x.j]<=n);
+    // con todos menos uno ubicados, el restante queda último
+    if(asig.length===n-1&&new Set(asig.map(x=>T[x.j])).size===n-1){const libre=[...Array(n)].map((_,k)=>k+1).find(k=>!asig.some(x=>T[x.j]===k));tg.forEach(x=>{if(!(T[x.j]>=1&&T[x.j]<=n))x.tbAuto=libre;});}
+    const rk=x=>T[x.j]>=1&&T[x.j]<=n?T[x.j]:x.tbAuto;
+    tbDone=tg.every(x=>rk(x))&&new Set(tg.map(rk)).size===n;
+    if(tbDone){tg.forEach(x=>{x.tbr=rk(x);x.pos=base+x.tbr-1;x.zone=x.pos<=c.cupos;x.tie=false;x.clas=x.zone;});
+      res.sort((a,b)=>b.tot-a.tot||(a.tbr||0)-(b.tbr||0)||a.r.n.localeCompare(b.r.n,"es"));}
+  }
+  return {res,rem,pmax,simEv,tg,tbDone};
 }
 function simGroups(sel){
   const g={};CATS.forEach(c=>{(g[c.mod+" · "+c.age]=g[c.mod+" · "+c.age]||[]).push(c)});
@@ -1098,21 +1126,26 @@ V.simulador.after=(id)=>{
   if(!UNP.length) return;
   const c=SIM.c;
   const draw=()=>{
-    const {res,rem,pmax,simEv}=simCalc();
+    const {res,rem,pmax,simEv,tg,tbDone}=simCalc();
     const byJ=Object.fromEntries(res.map(x=>[x.j,x]));
     $("#simTab").innerHTML=`<thead><tr><th class="l">${c.team?"Equipo":"Competidor"}</th>${EV.map((e,i)=>`<th class="${e.jugado?"hide-sm":"simcol"}" title="${esc(e.nombre)}">${e.corto}</th>`).join("")}<th>Total</th></tr></thead><tbody>${SIM.rows.map((r,j)=>`<tr><td class="l"><div class="nm">${esc(r.n)}${r.extra?`<span class="badge-x">nuevo</span>`:""}</div><div class="sm">${esc(r.s||"")}</div></td>${EV.map((e,i)=>e.jugado?`<td class="ev hide-sm">${fmt(r.p[i]||0)}</td>`:(r.x||[]).includes(i)?`<td class="ev aus" title="No participa en esta fecha">-</td>`:`<td><select data-e="${i}" data-j="${j}" class="${SIM.pick[i][j]?"set":""}"><option value="">—</option>${(e.puntos||[]).map((v,k)=>`<option value="${k+1}" ${SIM.pick[i][j]===k+1?"selected":""}>${k+1}° · ${v}</option>`).join("")}</select></td>`).join("")}<td class="tot">${fmt(byJ[j].tot)}</td></tr>`).join("")}</tbody>`;
     $("#simRes").innerHTML=`<div class="card-h"><h3>Ranking simulado</h3><span class="chip ${rem?"cel":"navy"}">${rem?`${rem} ${rem===1?"fecha pendiente":"fechas pendientes"}`:"Final"}</span></div>
       <div class="legend" style="border-top:0;border-bottom:1px solid var(--line-2)">${simEv.length?`Simulando: ${simEv.map(i=>esc(EV[i].nombre)).join(", ")}`:"Todavía no cargaste resultados."}${rem?` · Puntos aún en juego: ${pmax}`:""}</div>
       <ul class="rank-list" style="padding:4px 18px">${res.filter(x=>x.tot>0).map(x=>{const d=x.r.pos!=null&&x.pos!=null?x.r.pos-x.pos:null;
-        return `<li><span class="${posCls(x.pos)}">${x.pos??"–"}</span><div><div class="nm">${esc(x.r.n)}</div><div class="sm">${esc(x.r.s||"")}</div><div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap">${x.clas?`<span class="chip ok">${rem?"✓ Asegurada":"✓ Clasifica"}</span>`:x.zone?`<span class="chip zone">En zona</span>`:""}${d?`<span class="var ${d>0?"up":"dn"}">${d>0?"▲"+d:"▼"+(-d)}</span>`:""}</div></div><span class="pts num">${fmt(x.tot)}<small>PTS</small></span></li>`}).join("")}</ul>${res.some(x=>!(x.tot>0))?`<div class="legend">+ ${res.filter(x=>!(x.tot>0)).length} sin puntos</div>`:""}`;
+        return `<li><span class="${posCls(x.pos)}">${x.pos??"–"}</span><div><div class="nm">${esc(x.r.n)}</div><div class="sm">${esc(x.r.s||"")}</div><div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap">${x.tbr?`<span class="chip tbr">Desempate ${x.tbr}°</span>`:""}${x.clas?`<span class="chip ok">${rem?"✓ Asegurada":"✓ Clasifica"}</span>`:x.tie?`<span class="chip tie">${rem?"Empatados en zona":"Desempate"}</span>`:x.zone?`<span class="chip zone">En zona</span>`:""}${d?`<span class="var ${d>0?"up":"dn"}">${d>0?"▲"+d:"▼"+(-d)}</span>`:""}</div></div><span class="pts num">${fmt(x.tot)}<small>PTS</small></span></li>`}).join("")}</ul>${tg?tbPanel(tg,tbDone):""}${res.some(x=>x.tie)&&rem?`<div class="tienote" style="margin:0 18px 12px"><span class="chip tie">${rem?"Empatados en zona":"Desempate"}</span> ${(()=>{const t=res.filter(x=>x.tie),pl=c.cupos-t[0].pos+1;return `${t.length} ${c.team?"equipos empatados":"competidores empatados"} con ${fmt(t[0].tot)} pts ${pl===1?"por la última plaza":`por ${pl} plazas`}: ${rem?"se define en las fechas siguientes o por desempate":"se define por desempate"}.`;})()}</div>`:""}${res.some(x=>!(x.tot>0))?`<div class="legend">+ ${res.filter(x=>!(x.tot>0)).length} sin puntos</div>`:""}`;
   };
-  $("#simTab").addEventListener("change",e=>{const sl=e.target.closest("select");if(!sl)return;
+  // desempate: elegir ganador (2 empatados) o puesto del desempate (3 o más)
+  $("#simRes").addEventListener("click",e=>{const b=e.target.closest("[data-tbw]");if(b){const [w,l]=b.dataset.tbw.split(",").map(Number);SIM.tb={[w]:1,[l]:2};draw();}
+    if(e.target.closest("#tbReset")){SIM.tb={};draw();}});
+  $("#simRes").addEventListener("change",e=>{const sl=e.target.closest("select.tbpos");if(!sl)return;const j=+sl.dataset.j,v=+sl.value||0,T=SIM.tb;
+    Object.keys(T).forEach(k=>{if(T[k]===v&&+k!==j)delete T[k];}); if(v)T[j]=v; else delete T[j]; draw();});
+  $("#simTab").addEventListener("change",e=>{const sl=e.target.closest("select");if(!sl)return;SIM.tb={};
     const i=+sl.dataset.e,j=+sl.dataset.j,v=+sl.value||0,pk=SIM.pick[i];
     Object.keys(pk).forEach(k=>{if(pk[k]===v&&+k!==j)delete pk[k];});
     if(v)pk[j]=v; else delete pk[j];
     draw();});
   $("#simReset").onclick=()=>{simInit(c);draw();toast("Simulación reiniciada");};
-  const add=()=>{const v=$("#simNew").value.trim();if(!v)return;SIM.rows.push({n:v,s:"",p:Array(NEV).fill(null),d:0,pos:null,extra:true});$("#simNew").value="";draw();};
+  const add=()=>{const v=$("#simNew").value.trim();if(!v)return;SIM.rows.push({n:v,s:"",p:Array(NEV).fill(null),d:0,pos:null,extra:true});SIM.tb={};$("#simNew").value="";draw();};
   $("#simAdd").onclick=add; $("#simNew").onkeydown=e=>{if(e.key==="Enter")add();};
   draw();
 };
@@ -1167,27 +1200,44 @@ V.mundial.after=()=>{$$("[data-lb]").forEach(i=>i.onclick=()=>{$("#lb img").src=
 /* ---------- probabilidad de clasificar (Monte Carlo) ---------- */
 // Parámetros del modelo:
 //  ALPHA  = cuánto pesan los puntos ya obtenidos en la probabilidad de volver a puntuar (0 = todos iguales)
-//  ASIST  = probabilidad de que cada inscripto compita en cada fecha restante
-const SIMS=5000, CH={}, ALPHA=0.3, ASIST=0.75;
+//  ASIST      = con la inscripción abierta, probabilidad de que un no inscripto igual compita
+//  ACT_W      = en fechas sin inscriptos, cuánto más probable es que se presente quien compitió/se inscribió en la última fecha
+const SIMS=5000, CH={}, ALPHA=0.3, ASIST=0.75, ACT_W=4;
 function rng(seed){let h=1779033703^seed.length;for(let i=0;i<seed.length;i++){h=Math.imul(h^seed.charCodeAt(i),3432918353);h=h<<13|h>>>19;}
   return ()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return (h>>>0)/4294967296;};}
 function chances(c){
   if(CH[c.slug]) return CH[c.slug];
-  const rows=c.sorted, n=rows.length, remI=EV.map((e,i)=>e.jugado?-1:i).filter(i=>i>=0), rem=remI.map(i=>EV[i].puntos||[]);
+  return CH[c.slug]=chancesCore(c,c.sorted,c.sorted.map(r=>r.tot),EV.map((e,i)=>e.jugado?-1:i).filter(i=>i>=0),c.sorted.map(r=>r.clas),c.sorted.map(r=>r.zone),c.slug);
+}
+// núcleo del cálculo: rows + puntajes base, fechas por disputar y quiénes ya tienen la plaza asegurada
+function chancesCore(c,rows,base,remI,clasA,zoneA,seed){
+  const n=rows.length, rem=remI.map(i=>EV[i].puntos||[]);
   const res=new Map();
-  if(!rem.length){rows.forEach(r=>res.set(r,r.zone?1:0));return CH[c.slug]=res;}
-  if(c.direct&&c.direct.final){rows.forEach(r=>res.set(r,r.part?1:0));return CH[c.slug]=res;}
+  if(!rem.length){rows.forEach((r,j)=>res.set(r,zoneA[j]?1:0));return res;}
   const R1i=EV.findIndex(e=>e.id==="r1");
-  const maxRem=rem.reduce((a,p)=>a+(p[0]||0),0);
-  const base=rows.map(r=>r.tot), w=rows.map(r=>1+ALPHA*Math.max(0,r.tot)), cnt=new Float64Array(n), rand=rng(c.slug);
+  const w=base.map(t=>1+ALPHA*Math.max(0,t)), cnt=new Float64Array(n), rand=rng(seed);
+  // Tamaño de cuadro realista para las fechas sin inscriptos: el de la fecha más reciente con datos
+  // (inscriptos si todavía no se disputó, participantes si ya se disputó). Los activos en esa fecha tienen más chance de presentarse.
+  let act=rows.map(()=>false);
+  for(let k=EV.length-1;k>=0;k--){
+    if(played[k]){act=rows.map(r=>r.p[k]!=null);break;}
+    if(c.insc&&c.insc[k]!=null){act=rows.map(r=>(r.i||[]).includes(k));break;}
+  }
+  const F=Math.max(2,act.filter(Boolean).length);
   const tot=new Float64Array(n);
   for(let s=0;s<SIMS;s++){
     for(let j=0;j<n;j++) tot[j]=base[j];
     for(let q=0;q<rem.length;q++){ const pts=rem[q], ei=remI[q], known=c.insc&&c.insc[ei]!=null;
       // orden de llegada ponderado (Plackett-Luce) para los puestos que suman puntos
-      const avail=[];for(let j=0;j<n;j++){ if(ei>R1i&&!rows[j].part) continue; if(known){ const rr=rows[j]; if(rr.x&&rr.x.includes(ei)) continue; const ins=rr.i&&rr.i.includes(ei); if(!ins&&EV[ei].inscripcion_cerrada) continue; if(rand()<(ins?.97:ASIST)) avail.push(j); } else if(rand()<ASIST) avail.push(j); }
-      // con la inscripción cerrada, quien no se anotó (y no cambió de categoría) pierde los puntos del Argentino
-      if(ei===R1i&&EV[ei].inscripcion_cerrada){ for(let j=0;j<n;j++){ const rr=rows[j]; if(!(rr.i||[]).includes(ei)&&!(rr.x||[]).includes(ei)) tot[j]-=Math.max(0,rr.p[0]||0); } }
+      let avail=[];
+      if(known){ // fecha con inscriptos: los inscriptos casi seguro compiten; mientras la inscripción siga abierta, los demás conservan su chance habitual
+        for(let j=0;j<n;j++){ const rr=rows[j]; if(ei>R1i&&!rr.part) continue; if(rr.x&&rr.x.includes(ei)) continue; const ins=rr.i&&rr.i.includes(ei);
+          if(ins){ if(rand()<.97) avail.push(j); } else if(!EV[ei].inscripcion_cerrada&&rand()<ASIST) avail.push(j); }
+      } else { // fecha sin inscriptos: cuadro de F competidores, priorizando a los activos
+        const pool=[];for(let j=0;j<n;j++){ const rr=rows[j]; if(ei>R1i&&!rr.part) continue; if(rr.x&&rr.x.includes(ei)) continue; pool.push(j); }
+        const pw=pool.map(j=>act[j]?ACT_W:1); let PW=pw.reduce((a,b)=>a+b,0);
+        for(let k=0;k<F&&pool.length;k++){ let x=rand()*PW,idx=0; for(;idx<pool.length-1;idx++){x-=pw[idx];if(x<=0)break;} avail.push(pool[idx]); PW-=pw[idx]; pool.splice(idx,1); pw.splice(idx,1); }
+      }
       let W=avail.reduce((a,j)=>a+w[j],0);
       for(let k=0;k<pts.length&&avail.length;k++){
         let x=rand()*W, idx=0; for(;idx<avail.length-1;idx++){x-=w[avail[idx]];if(x<=0)break;}
@@ -1201,17 +1251,16 @@ function chances(c){
       let j=i; while(j<n&&tot[order[j]]===tot[order[i]]) j++;
       const g=j-i, give=Math.min(1,left/g); for(let k=i;k<j;k++) cnt[order[k]]+=give; left-=g; i=j; }
   }
-  const sortedTot=[...base].sort((a,b)=>b-a);
   rows.forEach((r,j)=>{
     let p=cnt[j]/SIMS;
     const maxRow=remI.reduce((x,ei,q)=>x+((r.x&&r.x.includes(ei))||(ei>R1i&&!r.part)?0:(rem[q][0]||0)),0);
-    const above=base.filter(t=>t>r.tot+maxRow).length;
+    const above=base.filter(t=>t>base[j]+maxRow).length;
     p=Math.min(.995,Math.max(.004,p));  // sin certeza matemática nunca se muestra 0% ni 100%
     if(above>=c.cupos) p=0;            // eliminado matemáticamente
-    if(r.clas) p=1;                     // plaza asegurada
+    if(clasA[j]) p=1;                   // plaza asegurada
     res.set(r,p);
   });
-  return CH[c.slug]=res;
+  return res;
 }
 const pctTxt=p=>p>=1?"100%":p<=0?"0%":p>=.995?">99%":p<.01?"<1%":Math.round(p*100)+"%";
 const chanceCell=p=>`<div class="ch"><span class="num">${pctTxt(p)}</span><i><b style="width:${Math.max(p>0?3:0,p*100)}%;background:${p>=.5?"var(--ok)":p>=.15?"var(--gold)":"#9AA8C0"}"></b></i></div>`;
@@ -1337,7 +1386,10 @@ V.historial=(id)=>{
 const NEXT=EV.findIndex(e=>!e.jugado);
 const DRAW={};  // slug -> número de sorteo
 const ROUNDN=n=>({2:"Final",4:"Semifinal",8:"Cuartos de final",16:"Octavos de final",32:"16avos de final",64:"32avos de final",128:"64avos de final"})[n]||`Ronda de ${n}`;
-const hasLlave=c=>NEXT>=0&&c.rows.some(r=>(r.i||[]).includes(NEXT));
+const isTabla=c=>c.mod==="Rotura de Poder"||c.mod==="Técnicas Especiales"; // se compite por tabla de posiciones, no por llave
+const TPOS={}; // slug -> {índice en S: puesto (0 = no suma puntos)}
+const tabNeed=(T,n,excl)=>Math.min(6,n-Object.entries(T).filter(([k,v])=>v===0&&+k!==excl).length); // puestos que reparten puntos
+const hasLlave=c=>NEXT>=0&&(c.rows.some(r=>(r.i||[]).includes(NEXT))||(c.insc&&c.insc[NEXT]!=null));
 function seedOrder(n){let a=[1];while(a.length<n){const m=a.length*2;a=a.flatMap(x=>[x,m+1-x]);}return a;}
 const LORD={}; // slug -> orden actual (lista de filas), editable entre empatados
 function llaveEntrants(c){
@@ -1443,52 +1495,68 @@ function depsOf(B,num){ // peleas que dependen (directa o indirectamente) de la 
   out.delete(num); return out; }
 function simResult(c,B,S){
   const W=WIN[c.slug]||{}, total=B.rounds.reduce((a,r)=>a+r.matches.length,0)+(B.third?1:0), hechas=Object.keys(W).length;
-  const {done,out}=placements(B,W);
+  // sin peleas: con un solo inscripto se lleva el 1° puesto; sin inscriptos el ranking no cambia
+  let {done,out}=S.length<2?{done:true,out:S.length?[undefined,S[0]]:[]}:placements(B,W);
+  let tablaTxt="";
+  if(isTabla(c)&&S.length>=2){ const T=TPOS[c.slug]||{}, need=tabNeed(T,S.length); out=[];
+    Object.entries(T).forEach(([k,v])=>{if(v>0)out[v]=S[+k];}); const asig=Object.values(T).filter(v=>v>0&&v<=need).length; done=asig>=need;
+    if(!done) return `<div class="simres pending"><div class="flabel" style="margin:0">Ranking simulado</div><div class="prog" style="height:8px;margin:10px 0 6px"><i style="width:${asig/need*100}%;background:var(--celeste)"></i></div><span class="sm">${asig} de ${need} puestos asignados. Al completar del 1° al ${need}° vas a ver cómo quedaría el ranking general. Los que no rompan nada se marcan con «0 pts».</span></div>`; }
   if(!done) return `<div class="simres pending"><div class="flabel" style="margin:0">Ranking simulado</div><div class="prog" style="height:8px;margin:10px 0 6px"><i style="width:${hechas/total*100}%;background:var(--celeste)"></i></div><span class="sm">${hechas} de ${total} peleas definidas. Al completar la final${B.third?" y la pelea por el 3° puesto":""} vas a ver cómo quedaría el ranking general.</span></div>`;
   const pts=EV[NEXT].puntos||[], place=new Map();
   out.forEach((x,k)=>{if(x)place.set(x.r,k);});
   const ins=new Set(S.map(x=>x.r));
-  // en la simulación, quien sumó en el Argentino y no se presenta (sin haberse cambiado de categoría) pierde esos puntos
-  const rows=c.rows.map(r=>{const lost=!ins.has(r)&&!(r.x||[]).includes(NEXT)&&(r.p[0]||0)>0&&!r.lost?(r.p[0]||0):0;
-    return {r,lost,add:place.has(r)?(pts[place.get(r)-1]||0):0};}).map(o=>({...o,tot:o.r.tot-o.lost+o.add}));
+  const rows=c.rows.map(r=>({r,add:place.has(r)?(pts[place.get(r)-1]||0):0})).map(o=>({...o,tot:o.r.tot+o.add}));
   rows.sort((a,b)=>b.tot-a.tot||(place.get(a.r)||99)-(place.get(b.r)||99)||a.r.n.localeCompare(b.r.n,"es"));
   const T=rows.map(o=>o.tot); rows.forEach(o=>{o.pos=o.tot>0?1+T.filter(t=>t>o.tot).length:null;});
-  const shown=rows.filter(o=>o.tot>0||o.lost), rest=rows.length-shown.length, perd=rows.filter(o=>o.lost);
-  const podium=out.map((x,k)=>x?`<div class="pod p${k}"><span>${k}°</span><b>${esc(x.r.n)}</b><small>+${pts[k-1]||0} pts</small></div>`:"").join("");
+  const shown=rows.filter(o=>o.tot>0), rest=rows.length-shown.length;
+  // chances con el resultado simulado: quedan las fechas posteriores a esta
+  const remS=EV.map((e,i)=>e.jugado||i===NEXT?-1:i).filter(i=>i>=0), ptsLeft=remS.reduce((a,i)=>a+((EV[i].puntos||[])[0]||0),0);
+  const thrS=rows.map(o=>o.tot)[c.cupos]??0;
+  const clasS=rows.map(o=>o.tot>0&&(remS.length?ptsLeft<o.tot-thrS:o.pos!=null&&o.pos<=c.cupos&&o.pos+rows.filter(x=>x.tot===o.tot).length-1<=c.cupos));
+  const chS=chancesCore(c,rows.map(o=>o.r),rows.map(o=>o.tot),remS,clasS,rows.map(o=>o.pos!=null&&o.pos<=c.cupos),c.slug+"#sim"+Object.entries(W).join()+"|"+Object.entries(TPOS[c.slug]||{}).join());
+  rows.forEach((o,j)=>{o.ch=chS.get(o.r);o.cl=clasS[j];});
+  const podium=!out.some(Boolean)?`<div class="sm" style="grid-column:1/-1">${S.length?"Ningún competidor suma puntos en esta fecha: el ranking no cambia.":"Sin inscriptos en esta fecha: el ranking no cambia."}</div>`:out.map((x,k)=>x?`<div class="pod p${k}"><span>${k}°</span><b>${esc(x.r.n)}</b><small>+${pts[k-1]||0} pts</small></div>`:"").join("");
   return `<div class="simres"><div class="sim-h"><div><div class="flabel" style="margin:0">Resultado simulado · ${esc(EV[NEXT].nombre)}</div><h3>Así quedaría el ranking</h3></div></div>
     <div class="podium">${podium}</div>
-    <div class="tablewrap"><table class="rk"><thead><tr><th>Pos</th><th class="hide-sm">Var.</th><th class="l">${c.team?"Equipo":"Competidor"}</th><th class="hide-sm">Actual</th><th>${esc(EV[NEXT].corto)}</th><th>Total</th><th class="hide-sm">Estado</th></tr></thead>
+    <div class="tablewrap"><table class="rk"><thead><tr><th>Pos</th><th class="hide-sm">Var.</th><th class="l">${c.team?"Equipo":"Competidor"}</th><th class="hide-sm">Actual</th><th>${esc(EV[NEXT].corto)}</th><th>Total</th>${remS.length?`<th title="Probabilidad de clasificar después de esta simulación">Chance</th>`:""}<th class="hide-sm">Estado</th></tr></thead>
     <tbody>${shown.map(o=>{const d=o.r.pos!=null&&o.pos!=null?o.r.pos-o.pos:(o.pos!=null?"new":(o.r.pos!=null?"out":null));const z=o.pos!=null&&o.pos<=c.cupos;
       // empate en el corte: el grupo empatado empieza dentro de las plazas pero no entra completo
       const tie=z&&o.pos+shown.filter(x=>x.tot===o.tot).length-1>c.cupos;
       const vb=d==null?`<span class="var eq">–</span>`:d==="out"?`<span class="var dn">Sale</span>`:d==="new"?`<span class="var nw">Nuevo</span>`:d>0?`<span class="var up">▲${d}</span>`:d<0?`<span class="var dn">▼${-d}</span>`:`<span class="var eq">=</span>`;
-      return `<tr class="${tie?"tiezone":z?"zone":""}"><td><span class="${posCls(o.pos)}">${o.pos??"–"}</span><div class="show-sm-b" style="margin-top:4px">${vb}</div></td><td class="hide-sm">${d==null?`<span class="var eq">–</span>`:d==="out"?`<span class="var dn">Sale</span>`:d==="new"?`<span class="var nw">Nuevo</span>`:d>0?`<span class="var up">▲${d}</span>`:d<0?`<span class="var dn">▼${-d}</span>`:`<span class="var eq">=</span>`}</td><td class="l"><div class="nm">${esc(o.r.n)}</div><div class="sm">${esc(o.r.s)}</div>${o.lost?`<span class="chip lostc" style="margin-top:4px">Pierde ${fmt(o.lost)} pts. del Argentino</span>`:""}${tie?`<span class="chip tie show-sm" style="margin-top:4px">Empatados en zona</span>`:""}</td><td class="ev hide-sm ${o.lost?"lostn":""}">${fmt(o.r.tot)}</td><td class="ev ${o.add?"plus":o.lost?"lostn":""}">${o.add?"+"+o.add:o.lost?"−"+fmt(o.lost):(ins.has(o.r)?"0":"·")}</td><td class="tot">${fmt(o.tot)}</td><td class="hide-sm">${tie?`<span class="chip tie">Empatados en zona</span>`:z?`<span class="chip zone">En zona</span>`:""}</td></tr>`}).join("")}</tbody></table></div>
+      return `<tr class="${tie?"tiezone":z?"zone":""}"><td><span class="${posCls(o.pos)}">${o.pos??"–"}</span><div class="show-sm-b" style="margin-top:4px">${vb}</div></td><td class="hide-sm">${d==null?`<span class="var eq">–</span>`:d==="out"?`<span class="var dn">Sale</span>`:d==="new"?`<span class="var nw">Nuevo</span>`:d>0?`<span class="var up">▲${d}</span>`:d<0?`<span class="var dn">▼${-d}</span>`:`<span class="var eq">=</span>`}</td><td class="l"><div class="nm">${esc(o.r.n)}</div><div class="sm">${esc(o.r.s)}</div>${tie?`<span class="chip tie show-sm" style="margin-top:4px">Empatados en zona</span>`:""}</td><td class="ev hide-sm">${fmt(o.r.tot)}</td><td class="ev ${o.add?"plus":""}">${o.add?"+"+o.add:(ins.has(o.r)?"0":"·")}</td><td class="tot">${fmt(o.tot)}</td>${remS.length?`<td>${chanceCell(o.ch)}</td>`:""}<td class="hide-sm">${o.cl?`<span class="chip ok">✓ Clasificado</span>`:tie?`<span class="chip tie">Empatados en zona</span>`:z?`<span class="chip zone">En zona</span>`:""}</td></tr>`}).join("")}</tbody></table></div>
     ${shown.some(o=>o.pos!=null&&o.pos<=c.cupos&&o.pos+shown.filter(x=>x.tot===o.tot).length-1>c.cupos)?`<div class="tienote"><span class="chip tie">Empatados en zona</span> Hay más ${c.team?"equipos":"competidores"} empatados que plazas disponibles: la plaza se define en las fechas siguientes o por desempate.</div>`:""}
-    ${perd.length?`<div class="tienote"><span class="chip lostc">Pierde pts. del Argentino</span> ${perd.length===1?"No se presenta":"No se presentan"} al ${esc(EV[NEXT].nombre)} en esta categoría: ${perd.map(o=>esc(o.r.n)).join(", ")}. Solo se descuenta en esta simulación.</div>`:""}
     ${rest?`<div class="legend">+ ${rest} ${rest===1?"competidor":"competidores"} sin puntos</div>`:""}</div>`;
+}
+function tablaHTML(c,S){
+  const T=TPOS[c.slug]||{}, pts=EV[NEXT].puntos||[];
+  return `<div class="simbar"><span>Elegí el puesto final de cada competidor (cada puesto se asigna a uno solo). Si no rompe nada, marcalo con <b>0 pts</b>: se puede asignar a todos los que haga falta.</span>${Object.keys(T).length?`<button class="btn l" id="tabReset">Reiniciar simulación</button>`:""}</div>
+  <div class="tablewrap" style="border-top:1px solid var(--line-2)"><table class="rk tabla-pos"><thead><tr><th>Rk</th><th class="l">${c.team?"Equipo":"Competidor"}</th><th>Puesto</th><th class="hide-sm">Pts</th></tr></thead>
+  <tbody>${S.map((x,k)=>{const v=T[k];return `<tr class="${v>0?"set":""}"><td><span class="sd ${x.r.tot>0?"":"np"}">${x.r.tot>0?x.seed:"-"}</span></td><td class="l"><div class="nm">${esc(x.r.n)}</div><div class="sm">${esc(x.r.s)}</div></td>
+    <td><select class="tpos ${v>0?"set":v===0?"zero":""}" data-k="${k}"><option value="">—</option>${Array.from({length:tabNeed(T,S.length,k)},(_,p)=>`<option value="${p+1}" ${v===p+1?"selected":""}>${p+1}°${Object.entries(T).some(([kk,vv])=>vv===p+1&&+kk!==k)?" ·":""}</option>`).join("")}<option value="0" ${v===0?"selected":""}>0 pts</option></select></td>
+    <td class="hide-sm ev ${v>0?"plus":""}">${v>0?"+"+(pts[v-1]||0):v===0?"0":""}</td></tr>`}).join("")}</tbody></table></div>`;
 }
 V.llave=(id)=>{
   const list=CATS.filter(hasLlave);
   if(NEXT<0||!list.length) return pageHead("Próximo torneo","Llave del sorteo","Todavía no hay inscriptos cargados para la próxima fecha.","Llave");
   const c=list.includes(CATBY[id])?CATBY[id]:list[0];
-  const S=llaveEntrants(c), B=buildBracket(S), ev=EV[NEXT];
+  const S=llaveEntrants(c), B=buildBracket(S), ev=EV[NEXT], tabla=isTabla(c);
   const g={};list.forEach(x=>{(g[x.mod+" · "+x.age]=g[x.mod+" · "+x.age]||[]).push(x)});
   const i=list.indexOf(c), prev=list[i-1], next=list[i+1];
-  return pageHead(esc(ev.nombre),"Llave del sorteo",`Sorteo aproximado con los inscriptos al día de hoy. Cabezas de serie según el ranking general: 1° y 2° en mitades opuestas, cruces 1° vs último, 2° vs anteúltimo y así sucesivamente.`,`<a href="#/ranking/${c.slug}">Ranking</a>`)+`
+  return pageHead(esc(ev.nombre),tabla?"Tabla de posiciones":"Llave del sorteo",tabla?`${esc(c.mod)} se compite por tabla de posiciones. Asigná el puesto en que terminaría cada competidor (del 1° al 6°), o 0 pts a quien no rompa nada, para ver cómo quedaría el ranking.`:`Sorteo aproximado con los inscriptos al día de hoy. Cabezas de serie según el ranking general: 1° y 2° en mitades opuestas, cruces 1° vs último, 2° vs anteúltimo y así sucesivamente.`,`<a href="#/ranking/${c.slug}">Ranking</a>`)+`
   <section class="sec"><div class="wrap">
     <div class="card">
       <div class="pager top">${prev?`<a class="btn l" href="#/llave/${prev.slug}">← ${navLab(prev,c)}</a>`:"<span></span>"}${next?`<a class="btn l" href="#/llave/${next.slug}">${navLab(next,c)} →</a>`:""}</div>
       <div class="cat-head">
         <div>${c.num?`<span class="chip cel">Código ITF ${esc(c.num)}</span>`:""}<h2>${esc(c.title)}</h2></div>
-        <div class="toolbar">${S.some((x,k)=>S.some((y,j)=>j!==k&&y.r.tot===x.r.tot))?`<button class="btn p" id="redraw">↻ Volver a sortear</button>`:""}<a class="btn l" href="#/ranking/${c.slug}">Ver ranking</a></div>
+        <div class="toolbar">${!tabla&&S.some((x,k)=>S.some((y,j)=>j!==k&&y.r.tot===x.r.tot))?`<button class="btn p" id="redraw">↻ Volver a sortear</button>`:""}<a class="btn l" href="#/ranking/${c.slug}">Ver ranking</a></div>
       </div>
       <div style="padding:0 20px 14px"><select id="llCat">${Object.entries(g).map(([k,xs])=>`<optgroup label="${esc(k)}">${xs.map(x=>`<option value="${x.slug}" ${x===c?"selected":""}>${esc(x.title)}</option>`).join("")}</optgroup>`).join("")}</select></div>
-      <div class="facts"><div><b class="num">${S.length}</b><span>Inscriptos</span></div><div><b class="num">${S.length>1?B.rounds.reduce((a,r)=>a+r.matches.length,0)+(B.third?1:0):0}</b><span>Peleas</span></div><div><b>${S.length>1?esc(B.rounds[0].name):"—"}</b><span>Primera ronda</span></div></div>
-      ${S.length<2?`<div class="empty">${S.length?`Única inscripción: <b>${esc(S[0].r.n)}</b>. Por ahora no hay cruces.`:"Sin inscriptos."}</div>`
+      ${tabla?`<div class="facts"><div><b class="num">${S.length}</b><span>Inscriptos</span></div><div><b class="num">${Math.min(6,S.length)}</b><span>Puestos que suman</span></div></div>`:`<div class="facts"><div><b class="num">${S.length}</b><span>Inscriptos</span></div><div><b class="num">${S.length>1?B.rounds.reduce((a,r)=>a+r.matches.length,0)+(B.third?1:0):0}</b><span>Peleas</span></div><div><b>${S.length>1?esc(B.rounds[0].name):"—"}</b><span>Primera ronda</span></div></div>`}
+      ${tabla&&S.length>=2?tablaHTML(c,S)+simResult(c,B,S):S.length<2?`<div class="empty">${S.length?`Única inscripción: <b>${esc(S[0].r.n)}</b>. Por ahora no hay cruces.`:"Sin inscriptos."}</div>${simResult(c,B,S)}`
         :`<div class="simbar"><span>Simulá el torneo marcando con <b class="wtick">✓</b> al ganador de cada pelea.</span>${Object.keys(WIN[c.slug]||{}).length?`<button class="btn l" id="simReset2">Reiniciar simulación</button>`:""}</div>
           <div class="hide-sm">${bracketDesktop(B,c)}</div><div class="show-sm-b">${bracketMobile(B,c)}</div>${simResult(c,B,S)}`}
-      <details class="prevrk"><summary><span><b>Orden de siembra</b> · ${S.length} ${c.team?"equipos":"competidores"}</span><span class="chev">Ver</span></summary>
-        <ol class="seedlist">${S.map(x=>`<li><span class="sd ${x.r.tot>0?"":"np"}">${x.r.tot>0?x.seed:"-"}</span><span><b>${esc(x.r.n)}</b> <small class="muted">${esc(x.r.s)}</small></span><span></span></li>`).join("")}</ol></details>
+      ${tabla?"":`<details class="prevrk"><summary><span><b>Orden de siembra</b> · ${S.length} ${c.team?"equipos":"competidores"}</span><span class="chev">Ver</span></summary>
+        <ol class="seedlist">${S.map(x=>`<li><span class="sd ${x.r.tot>0?"":"np"}">${x.r.tot>0?x.seed:"-"}</span><span><b>${esc(x.r.n)}</b> <small class="muted">${esc(x.r.s)}</small></span><span></span></li>`).join("")}</ol></details>`}
     </div>
   </div></section>`;
 };
@@ -1499,6 +1567,12 @@ V.llave.after=(id)=>{
   const keepTab=()=>{const tab=$("#brTabs button.on")?.dataset.k;go(location.hash,true);if(tab){const b=$(`#brTabs button[data-k="${tab}"]`);b&&b.click();}};
   $("#redraw")&&($("#redraw").onclick=()=>{DRAW[c.slug]=(DRAW[c.slug]||1)+1;delete LORD[c.slug];delete WIN[c.slug];go(location.hash,true);toast("Nuevo sorteo");});
   $("#simReset2")&&($("#simReset2").onclick=()=>{delete WIN[c.slug];keepTab();});
+  $("#tabReset")&&($("#tabReset").onclick=()=>{delete TPOS[c.slug];go(location.hash,true);});
+  $$("select.tpos").forEach(sl=>sl.addEventListener("change",()=>{const T=TPOS[c.slug]=TPOS[c.slug]||{},k=+sl.dataset.k;
+    if(sl.value===""){delete T[k];}else{const v=+sl.value; if(v>0)Object.keys(T).forEach(kk=>{if(T[kk]===v&&+kk!==k)delete T[kk];}); T[k]=v;}
+    // si hay más competidores en 0, se achica la cantidad de puestos que suman
+    const lim=tabNeed(T,llaveEntrants(c).length); Object.keys(T).forEach(kk=>{if(T[kk]>lim)delete T[kk];});
+    go(location.hash,true);}));
   $$("button.win").forEach(bt=>bt.addEventListener("click",()=>{
     const B=buildBracket(llaveEntrants(c)), W=WIN[c.slug]=WIN[c.slug]||{}, n=+bt.dataset.m, sd=bt.dataset.s;
     depsOf(B,n).forEach(k=>delete W[k]);

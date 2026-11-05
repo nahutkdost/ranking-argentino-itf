@@ -11,9 +11,9 @@
 13176;Blanco Benjamin;
 13176;Galvez Manuel;
 13177;Cameroni Agustin;
-13177;Kern Francisco;kern-francisco-andres--m-a-s
+13177;Kern Francisco;kern-francisco-andres--martial-art-and-sport
 13250;Diaz Joaquin;diaz-joaquin--ifat
-13250;Vescovo Juan Martín;
+13250;Vescovo Juan Martín;vescovo-juan-martin--une-escuela-marcial
 13260;Aguirre André;aguirre-andre-nazareno--centro-profesional-filial-dolores
 13260;Vinhas Mas Benjamin Benicio;vinhas-mas-benjamin-benicio--asociacion-hwarang-de-taekwon-do
 13470;Dadamo Jean Luca;dadamo-jean-luca--organizacion-de-taekwondo-argentino
@@ -24,8 +24,8 @@
 14172;Maldonado Miqueas Aaron;maldonado-miqueas-aaron--academia-bordiez
 14173;Cabrera Ulises Joaquin;cabrera-ulises--academia-bordiez
 14173;Melaragno Bautista;melaragno-bautista--academia-bbg
-14174;Dariozzi Bolatti Luka;dariozzi-luka--m-a-s
-14174;Daverio Luciano;daverio-luciano--m-a-s
+14174;Dariozzi Bolatti Luka;dariozzi-luka--martial-art-and-sport
+14174;Daverio Luciano;daverio-luciano--martial-art-and-sport
 14175;Rios Paez Gonzalo Javier;rios-paez-gonzalo--academia-bordiez
 14175;Valler Santino;valler-santino--asociacion-taekwondistas-argentinos
 14176;Blanco Pablo Eliel Eliseo;blanco-eliel--organizacion-sudamericana-de-taekwon-do
@@ -45,9 +45,9 @@
 15181;Rizzo Lautaro;rizzo-lautaro--asociacion-pinguinera-pinino-tapia
 15182;Ferreyra Walter;ferreyra-walter--organizacion-sudamericana-de-taekwon-do
 15182;Gozzano Rodrigo;
-15183;Dariozzi Thiago;dariozzi-thiago--m-a-s
-15183;Daverio Valentino;daverio-valentino--m-a-s
-15184;Maggioni Mauricio;maggioni-mauricio--m-a-s
+15183;Dariozzi Thiago;dariozzi-thiago--martial-art-and-sport
+15183;Daverio Valentino;daverio-valentino--martial-art-and-sport
+15184;Maggioni Mauricio;maggioni-mauricio--martial-art-and-sport
 15184;Turner Lucas;turner-lucas--fati
 15185;Bianchi Bruno;bianchi-bruno--academia-bordiez
 15185;Cacciatore Gianfranco;cacciatore-gianfranco--academia-bordiez
@@ -58,7 +58,7 @@
 15250;Carrizo Lautaro Emanuel;carrizo-lautaro--in-nae
 15250;Carrizo Matheo Pablo;carrizo-matheo--in-nae
 15260;Herrera Agustin;
-15260;Maggioni Mauricio;maggioni-mauricio--m-a-s
+15260;Maggioni Mauricio;maggioni-mauricio--martial-art-and-sport
 15270;Beneitez Ezequiel;beneitez-ezequiel--asociacion-civil-nuevo-taekwon-do-unido
 15270;Musi Arato Demian;arato-demian--mulyo
 15280;Gamboa Silvio;gamboa-silvio-david--lotus-taekwondo
@@ -111,7 +111,7 @@
 25182;Pampiglioni Indira;
 25183;Altamirano Maria Agustina;altamirano-agustina--e-p-i-c-a
 25183;Delgado Camila;delgado-camila--academia-bbg
-25184;Canut Camila;canut-camila--m-a-s
+25184;Canut Camila;canut-camila--martial-art-and-sport
 25184;Rossi Sofia;
 25185;Bordiez Aldana;
 25185;Flores Sabrina;

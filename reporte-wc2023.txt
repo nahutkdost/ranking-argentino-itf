@@ -8,7 +8,7 @@
 25183;Amores Ivana;
 55580;Gamboa / Gozzano;gamboa-silvio-david--lotus-taekwondo
 53570;Gonzalez / Trump;trump-catalina-lucia--academia-bordiez
-54570;Romano / Rossi;rossi-tobias-benjamin--asociacion-pinguinera-pinino-tapia
+54570;Romano / Rossi;romano-leandro--martial-art-and-sport,rossi-tobias-benjamin--asociacion-pinguinera-pinino-tapia
 13174;Arrua Santiago Gabriel;
 25260;Baez Giselle;baez-giselle--organizacion-sudamericana-de-taekwon-do
 15260;Ballesteros Franco;
@@ -28,7 +28,7 @@
 15270;Cacciatore Gianfranco;cacciatore-gianfranco--academia-bordiez
 13173;Caceres Francisco;
 13250;Caceres Francisco;
-25184;Canut Camila;canut-camila--m-a-s
+25184;Canut Camila;canut-camila--martial-art-and-sport
 14175;Carrizo Lautaro Emanuel;carrizo-lautaro--in-nae
 14370;Carrizo Lautaro Emanuel;carrizo-lautaro--in-nae
 15250;Carrizo Matheo Pablo;carrizo-matheo--in-nae
@@ -37,10 +37,10 @@
 25250;Cordobes Carolina;cordobes-carolina--une-escuela-marcial
 25187;Coronel Anna;
 25380;Coronel Anna;
-13176;Dariozzi Luka;dariozzi-luka--m-a-s
-15183;Dariozzi Thiago;dariozzi-thiago--m-a-s
-13174;Daverio Luciano;daverio-luciano--m-a-s
-14174;Daverio Valentino;daverio-valentino--m-a-s
+13176;Dariozzi Luka;dariozzi-luka--martial-art-and-sport
+15183;Dariozzi Thiago;dariozzi-thiago--martial-art-and-sport
+13174;Daverio Luciano;daverio-luciano--martial-art-and-sport
+14174;Daverio Valentino;daverio-valentino--martial-art-and-sport
 14176;De Boe Facundo;de-boe-facundo--academia-bordiez
 24175;Delgado Camila;delgado-camila--academia-bbg
 24260;Delgado Camila;delgado-camila--academia-bbg
@@ -77,7 +77,7 @@
 14250;Lopez Quiñones Lautaro;
 23177;Lorefice Zoe;lorefice-zoe--escuela-tecnica
 23260;Lorefice Zoe;lorefice-zoe--escuela-tecnica
-14175;Maggioni Mauricio;maggioni-mauricio--m-a-s
+14175;Maggioni Mauricio;maggioni-mauricio--martial-art-and-sport
 24172;Medina Julieta;
 24250;Medina Julieta;
 13260;Mercogliano Yago;mercogliano-yago--asociacion-civil-nuevo-taekwon-do-unido
@@ -101,7 +101,7 @@
 13470;Pryor Ceferino;
 23173;Racca Samaniego Jazmin;racca-samaniego-jazmin--une-escuela-marcial
 23250;Racca Samaniego Jazmin;racca-samaniego-jazmin--une-escuela-marcial
-15184;Rafaelle Alan;
+15184;Rafaelle Alan;rafaelle-alan-nicolas--gmg
 13470;Rios Paez Gonzalo Javier;rios-paez-gonzalo--academia-bordiez
 14171;Rizzo Marco;rizzo-marco--asociacion-pinguinera-pinino-tapia
 24173;Rodriguez Albiac Zoe Aylen;albiac-zoe--e-p-i-c-a
@@ -115,7 +115,7 @@
 25480;Rossel Lara;rossel-lara-yanina--anjong
 24175;Rossi Agustina;
 25184;Rossi Sofia;
-15480;Saenz Fausto;saenz-fausto--alpha-academia-de-tkd
+15480;Saenz Fausto;saenz-fausto-juan-jose--alpha-academia-de-tkd
 25182;Sanchis Maria Fernanda;
 25270;Sanchis Maria Fernanda;
 13177;Santana Juan;santana-ledesma-juan-gabriel--jung-do

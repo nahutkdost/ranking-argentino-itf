@@ -50,8 +50,8 @@ EVENTOS = [
         "flyer": "assets/flyer-ranqueable1.jpg",
         "direccion": "Av. Cmte. Rosales 10, Posadas, Misiones",
         "reglamento": "assets/Reglamento - 1er Ranqueable Paraguay 2027.pdf",
-        # Poner True cuando cierre la inscripción: quien no esté inscripto no suma en esta fecha
-        # y, si había sumado en el Argentino, se considera que pierde esos puntos en el cálculo de chances.
+        # Poner True cuando cierre la inscripción: en el cálculo de chances, quien no esté inscripto no suma en esta fecha
+        # (conserva sus puntos anteriores).
         "inscripcion_cerrada": False,
         "puntos": [9, 6, 4, 3, 2, 1],
         "cronograma": [
@@ -77,8 +77,7 @@ EVENTOS = [
                 "Si no cumplen con el peso quedan descalificados, sin posibilidad de pasar a otra categoría de peso."]},
             {"t": "Conservación de puntos", "items": [
                 "Quienes sumaron puntos en el Campeonato Argentino 2026 deben inscribirse en la misma categoría para conservar todo su puntaje.",
-                "Excepcionalmente, y solo en este ranqueable, quien cambie de categoría puede trasladar a la nueva el 50 % de los puntos obtenidos en la anterior.",
-                "Quien sumó puntos en el Campeonato Argentino y no se presenta al 1er Ranqueable pierde esos puntos (salvo que se haya cambiado de categoría: en ese caso los conserva en la anterior y puede volver a sumar en ella más adelante)."]},
+                "Excepcionalmente, y solo en este ranqueable, quien cambie de categoría puede trasladar a la nueva el 50 % de los puntos obtenidos en la anterior."]},
             {"t": "Asignación de puestos", "items": [
                 "Se disputa una ronda adicional para definir el 3° y el 4° puesto.",
                 "5° puesto: el eliminado en cuartos de final por el campeón de la categoría.",
@@ -665,8 +664,8 @@ def main():
     a = ap.parse_args()
 
     cats = parse(a.xlsx)
-    actualizar_escuelas(cats)
     actualizar_nombres(cats)
+    actualizar_escuelas(cats)
     played = [any(r["p"][i] is not None for c in cats for r in c["rows"]) for i in range(4)]
     inscripciones(cats, played)
     eventos = []

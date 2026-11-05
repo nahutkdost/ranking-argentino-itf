@@ -9,15 +9,15 @@
 54580;Rojas / Sampaio;rojas-renata--fati,sampaio-alexis--escuela-taekwon-do-argentina
 24260;Aymonino Lucia;aymonino-luciana-ines--centro-profesional-de-taekwondo
 14171;Barco Jonathan;
-14173;Barreto Emanuel;barreto-duette-emanuel--organizacion-sudamericana-de-taekwon-do
-14250;Barreto Emanuel;barreto-duette-emanuel--organizacion-sudamericana-de-taekwon-do
+14173;Barreto Emanuel;barreto-duette-emanuel-axel--organizacion-sudamericana-de-taekwon-do
+14250;Barreto Emanuel;barreto-duette-emanuel-axel--organizacion-sudamericana-de-taekwon-do
 14174;Bartolini Federico;
 24250;Bersanini Valentina;bersanini-valentina--ifat
 15184;Bertoli Javier;
 25185;Bihurriet Delfina;bihurriet-delfina--espiritu-guerrero
 14175;Bonaldi Sergio;bonaldi-sergio--asociacion-cordobesa-de-taekwon-do
-25181;Borelli Noelia;
-25480;Borelli Noelia;
+25181;Borelli Noelia;borelli-noelia--jung-do
+25480;Borelli Noelia;borelli-noelia--jung-do
 14370;Brites Cristian;
 14470;Brites Cristian;
 25250;Burgos Florencia;
@@ -29,7 +29,7 @@
 14270;Cacciatore Gianfranco;cacciatore-gianfranco--academia-bordiez
 14174;Caceres Juan;
 15250;Cantarutti Mauro;
-25184;Canut Camila;canut-camila--m-a-s
+25184;Canut Camila;canut-camila--martial-art-and-sport
 14171;Cento Tomas;
 14172;Chamorro Laureano;
 24173;Cordobes Carolina;cordobes-carolina--une-escuela-marcial
