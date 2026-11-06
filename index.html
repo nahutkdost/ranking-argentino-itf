@@ -485,6 +485,8 @@ td.hide-sm .cps{margin-top:0}
 @media (max-width:640px){.zr-st{flex-direction:column-reverse;align-items:flex-end;gap:5px}}
 .pp{display:inline-block;min-width:44px;text-align:center;padding:4px 8px;border-radius:999px;font:800 11px/1 var(--body);font-variant-numeric:tabular-nums}
 .pp.hi{background:var(--ok-100);color:#0B6B42}.pp.mid{background:var(--gold-100);color:#8A6200}.pp.lo{background:#EEF1F6;color:#5E6B85}.pp.wait{background:#F4F6FA;color:#B6C0D2}
+.ev-sel{display:flex;gap:10px 24px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}.ev-sel>.sm{max-width:420px}
+.seg button:disabled{opacity:.45;cursor:not-allowed}.seg button:disabled:hover{border-color:var(--line)}
 .sch-hl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 .sch-hl a{text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:4px}.sch-hl a b{font:800 17px/1.2 var(--body);color:var(--navy)}.sch-hl a span{font-size:13px;color:var(--ink-3)}.sch-hl .flabel{margin:0}
 .sch-mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
@@ -681,6 +683,7 @@ CATS.forEach(c=>c.sorted.forEach(r=>{
 COMPS.forEach(o=>{const s=SCH[slug(o.s)]; if(s)s.comps.add(o.key);});
 const SCHS=Object.values(SCH).map(o=>(o.nc=o.comps.size,o.ppc=o.nc?o.tot/o.nc:0,o)).sort((a,b)=>b.tot-a.tot||a.n.localeCompare(b.n,"es"));
 SCHS.forEach(o=>{o.pos=1+SCHS.filter(x=>x.tot>o.tot).length;});
+const SCH_N=SCHS.length;
 // inscripciones de cada escuela en la próxima fecha (se completa al definir NEXT)
 const schInsc=ev=>{SCHS.forEach(o=>{o.insN=0;o.compsN=new Set();}); if(ev<0)return; CATS.forEach(c=>c.sorted.forEach(r=>{if((r.i||[]).includes(ev)){const o=SCH[slug(r.s)]; if(o){o.insN++; (c.team?(r.m||[]):[r.n]).forEach(n=>o.compsN.add(n));}}}));};
 const TOTAL_CUPOS=CATS.reduce((a,c)=>a+c.cupos,0);
@@ -949,19 +952,41 @@ function plRows(mod,cs){
 V.plazas.after=()=>{$("#plSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b)go("#/plazas"+(b.dataset.v?"/"+b.dataset.v:""),true)});};
 
 let SS={k:"tot",d:-1,q:""};
+// Torneos contemplados en las estadísticas de escuelas (selección múltiple)
+let ESEL=null;
+const schStats=sel=>{
+  const L={};
+  CATS.forEach(c=>c.sorted.forEach(r=>{
+    const key=slug(r.s), base=SCH[key]; if(!base) return;
+    const o=L[key]||(L[key]={key,n:base.n,tot:0,mod:{},cs:new Set(),zone:base.zone,insN:base.insN||0,compsN:base.compsN||new Set()});
+    let t=0,part=false; sel.forEach(i=>{if(r.p[i]!=null){part=true;t+=r.p[i]||0;}});
+    o.tot+=t; if(t)o.mod[c.mod]=(o.mod[c.mod]||0)+t;
+    if(part)(c.team?(r.m||[]):[r.n]).forEach(n=>o.cs.add(n));
+  }));
+  const A=Object.values(L).map(o=>(o.nc=o.cs.size,o.ppc=o.nc?o.tot/o.nc:0,o)).sort((a,b)=>b.tot-a.tot||a.n.localeCompare(b.n,"es"));
+  A.forEach(o=>{o.pos=1+A.filter(x=>x.tot>o.tot).length;}); return A;
+};
+let SL=[];
 V.escuelas=()=>{
   schInsc(NEXT); const nx=NEXT>=0?EV[NEXT]:null;
+  const jug=EV.map((e,i)=>e.jugado?i:-1).filter(i=>i>=0);
+  if(!ESEL) ESEL=new Set(jug); ESEL.forEach(i=>{if(!jug.includes(i))ESEL.delete(i);}); if(!ESEL.size) jug.forEach(i=>ESEL.add(i));
+  const SCHS=SL=schStats([...ESEL]);
+  const selTxt=jug.length&&ESEL.size===jug.length?"todos los torneos disputados":[...ESEL].sort().map(i=>evLabel(EV[i])).join(" + ");
   const conPts=SCHS.filter(o=>o.tot>0), conZona=SCHS.filter(o=>o.zone>0), maxIns=nx?[...SCHS].sort((a,b)=>b.insN-a.insN)[0]:null;
   const best=k=>[...SCHS].sort((a,b)=>(b.mod[k]||0)-(a.mod[k]||0))[0];
   return pageHead("Puntaje por escuela","Ranking de escuelas","Suma de los puntos obtenidos por los competidores de cada escuela en todas las modalidades y fechas. En Lucha Pre-Establecida suman los puntos del equipo.","Escuelas")+`
   <div class="wrap"><div class="kpis">
-    <div class="kpi"><b class="num">${SCHS.length}</b><span>Escuelas</span></div>
+    <div class="kpi"><b class="num">${SCH_N}</b><span>Escuelas</span></div>
     <div class="kpi"><b class="num">${conPts.length}</b><span>Con puntos</span></div>
     <div class="kpi"><b class="num">${conZona.length}</b><span>Con competidores en zona</span></div>
     ${nx?`<div class="kpi"><b class="num">${SCHS.filter(o=>o.insN).length}</b><span>Anotadas al ${esc(evLabel(nx))}</span></div>`:""}
-    <div class="kpi acc"><b class="num">${fmt(SCHS.reduce((a,o)=>a+o.tot,0))}</b><span>Puntos repartidos</span></div>
+    <div class="kpi acc"><b class="num">${fmt(SCHS.reduce((a,o)=>a+o.tot,0))}</b><span>Puntos ${ESEL.size===jug.length?"repartidos":"en los torneos elegidos"}</span></div>
   </div></div>
   <section class="sec"><div class="wrap">
+    <div class="card pad ev-sel"><div><div class="flabel" style="margin:0 0 8px">Torneos contemplados</div>
+    <div class="seg" id="evSel">${EV.map((e,i)=>`<button data-i="${i}" class="${ESEL.has(i)?"on":""}" ${e.jugado?"":"disabled title=\"Todavía no se disputó\""}>${ESEL.has(i)?"✓ ":""}${esc(evLabel(e))}</button>`).join("")}</div></div>
+    <div class="sm">Elegí uno o varios torneos. Puntos, puestos, competidores y promedios se calculan solo con ${esc(selTxt)}. "En zona" e inscripciones muestran el estado actual.</div></div>
     <div class="sch-hl">
       ${SCHS[0]?`<a class="card pad" href="#/escuela/${SCHS[0].key}"><div class="flabel">Líder del ranking</div><b>${esc(SCHS[0].n)}</b><span>${fmt(SCHS[0].tot)} pts · ${SCHS[0].nc} competidores</span></a>`:""}
       ${conZona.length?(o=>`<a class="card pad" href="#/escuela/${o.key}"><div class="flabel">Más competidores en zona</div><b>${esc(o.n)}</b><span>${o.zone} en zona de clasificación</span></a>`)([...conZona].sort((a,b)=>b.zone-a.zone||b.tot-a.tot)[0]):""}
@@ -982,12 +1007,14 @@ V.escuelas.after=()=>{
   const val=(o,k)=>k.startsWith("m:")?(o.mod[k.slice(2)]||0):o[k];
   const draw=()=>{
     const q=norm(SS.q);
-    const rows=SCHS.filter(o=>!q||norm(o.n).includes(q)).sort((a,b)=>{const x=val(a,SS.k),y=val(b,SS.k);return (typeof x==="string"?x.localeCompare(y,"es"):x-y)*SS.d||a.pos-b.pos});
+    const rows=SL.filter(o=>!q||norm(o.n).includes(q)).sort((a,b)=>{const x=val(a,SS.k),y=val(b,SS.k);return (typeof x==="string"?x.localeCompare(y,"es"):x-y)*SS.d||a.pos-b.pos});
     $("#st").innerHTML=`<thead><tr>${cols.map(([k,l,left])=>`<th class="sortable ${left?"l":""} ${SS.k===k?"sorted":""} ${hid(k)?"hide-sm":""}" data-k="${k}">${l}${SS.k===k?(SS.d<0?" ▾":" ▴"):""}</th>`).join("")}</tr></thead>
     <tbody>${rows.map(o=>`<tr><td><span class="${posCls(o.pos)}">${o.pos}</span></td><td class="l"><a href="#/escuela/${o.key}"><div class="nm">${esc(o.n)}</div></a>${modBar(o.mod,o.tot)}<div class="sm show-sm-b">${o.nc} comp.${nx?` · ${o.insN} insc.`:""}</div></td><td class="hide-sm">${o.nc}</td>${MODS.map(m=>`<td class="ev hide-sm ${o.mod[m.k]?"":"na"}">${fmt(o.mod[m.k]||0)}</td>`).join("")}<td>${o.zone?`<span class="chip zone">${o.zone}</span>`:"–"}</td>${nx?`<td class="hide-sm">${o.insN||"–"}</td>`:""}<td class="hide-sm">${fmt(Math.round(o.ppc*10)/10)}</td><td class="tot">${fmt(o.tot)}</td></tr>`).join("")||`<tr><td colspan="12" class="empty">Sin resultados</td></tr>`}</tbody>`;
     $$("#st th.sortable").forEach(th=>th.onclick=()=>{const k=th.dataset.k;SS.d=SS.k===k?-SS.d:(k==="n"||k==="pos"?1:-1);SS.k=k;draw();});
   };
   $("#sq").oninput=e=>{SS.q=e.target.value;draw();};
+  $("#evSel").addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.disabled)return;const i=+b.dataset.i;
+    if(ESEL.has(i)){if(ESEL.size===1)return;ESEL.delete(i);}else ESEL.add(i); const y=scrollY; go(location.hash,true); scrollTo(0,y);});
   draw();
 };
 
