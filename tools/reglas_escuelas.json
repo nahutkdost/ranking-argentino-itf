@@ -1,0 +1,58 @@
+{
+  "club": {
+    "OLDSCHOOL": "Academia Bordiez",
+    "FATI": "{escuela} (FATI)",
+    "FAVALLI": "mantener",
+    "GOMEZ DE OLIVERA": "mantener",
+    "ANDRADE": "Asociacion Taekwondo Chascomus"
+  },
+  "club_base": {
+    "FATI": "FATI"
+  },
+  "sin_sufijo": [
+    "FATI"
+  ],
+  "club_escuela_nuevos": {
+    "AEITASOC": "Asoc. de Enseñanza Integral (AEITASOC)",
+    "GONZALEZ": "E.P.I.C.A",
+    "SILVA": "Martial Art and Sport",
+    "DO-MALVA": "Do-Malva",
+    "DURE": "Dure",
+    "MEDINA": "Medina",
+    "GYMCORAJE": "Osvaldo Lezcano FMT (Gym Coraje)",
+    "TKDYUSAN": "Asociacion Yusan de Taekwon-Do ITF",
+    "KWY": "Kwan Yin",
+    "ARB": "Centro Chaqueño de Taekwon-Do",
+    "CENTROTKD": "Centro de Entrenamiento TKD",
+    "GADEA": "GMG",
+    "CEJAS": "Grupo Kumgang",
+    "TOP": "Taekwon-Do Asociacion de Practicantes",
+    "ORELLANA": "Ceyc"
+  },
+  "competidor": {
+    "Scafetta Noziglia, Maria Renata": "mantener",
+    "Barroso, Zahira": "mantener",
+    "Lopez Ferrari, Santino": "club",
+    "Da Silva, Luzmila": "club",
+    "Rodriguez, Maia": "mantener",
+    "Dariozzi, Luka": "Martial Art and Sport",
+    "Feijoo, Lucila": "mantener",
+    "Orellana, Ludmila": "mantener",
+    "Suarez, Felipe Damian": "GMG",
+    "Grillo Mariuzza, Francisco Ignacio": "GMG"
+  },
+  "nombres": {
+    "BORDOLIS ANDRÉS SEBASTIAN": "Bordolis, Andrés Sebastian",
+    "RUHMLING NAILA GERALDINE": "Ruhmling, Naila Geraldine",
+    "CACCIATORE GIAN FRANCO": "Cacciatore, Gianfranco"
+  },
+  "equipos": {},
+  "nombres_equipos": {},
+  "renombrar_escuelas": {
+    "Academia Taekwondo Chascomus": "Asociacion Taekwondo Chascomus",
+    "M.A.S": "Martial Art and Sport"
+  },
+  "integrantes": {
+    "BORELLI": "Borelli, Noelia"
+  }
+}

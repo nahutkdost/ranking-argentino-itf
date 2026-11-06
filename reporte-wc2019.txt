@@ -1,6 +1,6 @@
 15182;Abasolo Leandro;
 25181;Acosta Ailen;acosta-ailen--academia-bordiez
-25183;Acosta Milagros;acosta-milagros--club-nacional-de-taekwondo
+25183;Acosta Milagros;acosta-milagros--academia-bordiez
 14174;Agostino Julian;
 14250;Agostino Julian;
 24171;Aguila Rocio;
