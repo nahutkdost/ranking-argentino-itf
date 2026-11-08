@@ -1633,7 +1633,13 @@ function placements(B,W){
   if(B.N===5){
     // con 5 competidores, los 4 que llegan a semifinal definen del 1° al 4° y el restante queda 5°
     const top=new Set(out.filter(Boolean)), rest=B.S.filter(x=>!top.has(x)); if(rest.length===1) out[5]=rest[0];
-  } else if(qf){ [[1,5],[2,6]].forEach(([w,pos])=>{const m=qf.matches.find(m=>{const x=pl(m);return x&&x[0]===out[w];}); if(m) out[pos]=pl(m)[1]; }); }
+  } else if(qf){ [[1,5],[2,6]].forEach(([w,pos])=>{
+    // 5°/6°: quien perdió en cuartos con el campeón / subcampeón
+    let m=qf.matches.find(m=>{const x=pl(m);return x&&x[0]===out[w];});
+    // si pasó libre los cuartos, es quien perdió en cuartos con su rival de semifinal
+    if(!m){const sm=B.semis.find(x=>{const r=pl(x);return r&&r.includes(out[w]);});
+      if(sm){const o=[sm.a,sm.b].find(sd=>resolve(sd,W)!==out[w]); if(o&&o.m&&qf.matches.includes(o.m)) m=o.m;}}
+    if(m&&pl(m)) out[pos]=pl(m)[1]; }); }
   return {done:true,out};
 }
 const slotHTML=(s,c,m,side)=>{
