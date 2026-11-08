@@ -448,7 +448,7 @@ select.swap:hover,select.swap:focus{color:var(--celeste);box-shadow:none}
 .bp{font:800 15px/1 var(--display);color:var(--navy-800)}
 .bmob .bm{margin:22px 0 4px}
 .bmob{padding:12px 0 14px;border-top:1px solid var(--line-2)}
-.bmob #brTabs{padding:0 16px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.bmob #brTabs::-webkit-scrollbar{display:none}.bmob #brTabs button{flex:none}
+.bmob .brtabs{padding:0 16px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.bmob .brtabs::-webkit-scrollbar{display:none}.bmob .brtabs button{flex:none}
 .bswipe{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;align-items:flex-start;transition:height .25s ease;margin-top:10px}
 .bswipe::-webkit-scrollbar{display:none}
 .bswipe .bround{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;padding:4px 0 6px 16px;box-sizing:border-box;min-width:0}
@@ -537,6 +537,17 @@ td.hide-sm .cps{margin-top:0}
 .fsm{gap:8px;margin-top:8px}.fsm label{display:flex;flex-direction:column;gap:3px;font:800 10px/1 var(--body);color:var(--celeste);letter-spacing:.06em}
 @media (max-width:640px){.fsm{display:flex!important}.fsm select.fpk{min-width:0;width:100%}.fsm label{flex:1}}
 .simres th.fcol,.simres td.fcol{color:var(--celeste);text-align:center}
+.stage{border-top:6px solid var(--bg);margin-top:4px}
+.stage-h{display:flex;gap:12px;align-items:center;padding:20px 20px 6px}.stage-h h3{margin:0;font:800 24px/1 var(--display);text-transform:uppercase;color:var(--navy-800)}
+.stage-step{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 20px}.stage-step>b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--navy-800);color:#fff;font:800 13px/1 var(--body);flex:none}
+.stage-step>span{font-weight:800;color:var(--navy-800)}.stage-step small{font-weight:600;color:var(--ink-3);margin-left:6px}
+.insq{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}.insq .btn{padding:7px 10px;font-size:11px}
+.insgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;padding:4px 20px 12px}
+.insc{min-width:0;display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid var(--line-2);border-radius:10px;cursor:pointer;font-size:13px;background:#fff}
+.insc input{width:16px;height:16px;accent-color:var(--navy-800);flex:none}.insc .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.insc .pt{font:800 13px/1 var(--body);color:var(--ink-3)}
+.insc.on{border-color:var(--celeste-300);background:var(--celeste-100)}.insc.on .pt{color:var(--navy-800)}
+.stage-next{padding:14px 20px;color:var(--ink-3)}
+@media (max-width:640px){.insq{margin-left:0}.insgrid{grid-template-columns:repeat(2,minmax(0,1fr));padding:4px 14px 12px}.insc{min-width:0;padding:8px}}
 .simlock{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 18px;background:var(--celeste-100);border-bottom:1px solid var(--line-2);font-size:13.5px}
 .simlock svg{width:18px;height:18px;color:var(--celeste);flex:none}.simlock span{flex:1 1 220px}.simlock .btn{padding:8px 12px}
 td.ev.fix{white-space:nowrap}td.ev.fix b{color:var(--navy-800)}td.ev.fix small{color:var(--ok);font-weight:800}
@@ -1658,10 +1669,10 @@ const slotHTML=(s,c,m,side)=>{
   const W=WIN[c.slug]||{}, who=s.p||resolve(s,W), canPick=m&&resolve(m.a,W)&&resolve(m.b,W), won=m&&W[m.num]===side, lost=m&&W[m.num]&&W[m.num]!==side;
   const pick=canPick?`<button class="win ${won?"on":""}" data-m="${m.num}" data-s="${side}" title="Marcar como ganador">✓</button>`:"";
   const cls=`bs ${won?"won":""} ${lost?"lost":""}`;
-  if(s.p){const r=s.p.r, L=LORD[c.slug], i=s.p.seed-1;
+  if(s.p){const r=s.p.r, L=LORD[c.slug], i=s.p.seed-1, tt=s.p.tt??r.tot;
     const nm=s.p.grp.length>1?`<select class="swap" data-i="${i}" title="Cambiar por otro con el mismo puntaje">${s.p.grp.map(x=>`<option value="${L.indexOf(x)}" ${x===r?"selected":""}>${esc(x.n)}</option>`).join("")}</select>`:`<b>${esc(r.n)}</b>`;
-    return `<div class="${cls}"><span class="sd ${r.tot>0?"":"np"}">${r.tot>0?s.p.seed:"-"}</span><span class="bn">${nm}<small>${esc(r.s)}</small></span>${pick}</div>`;}
-  if(who){const r=who.r;return `<div class="${cls}"><span class="sd ${r.tot>0?"":"np"}">${r.tot>0?who.seed:"-"}</span><span class="bn"><b>${esc(r.n)}</b><small>${esc(r.s)}</small></span>${pick}</div>`;}
+    return `<div class="${cls}"><span class="sd ${tt>0?"":"np"}">${tt>0?s.p.seed:"-"}</span><span class="bn">${nm}<small>${esc(r.s)}</small></span>${pick}</div>`;}
+  if(who){const r=who.r,tt=who.tt??r.tot;return `<div class="${cls}"><span class="sd ${tt>0?"":"np"}">${tt>0?who.seed:"-"}</span><span class="bn"><b>${esc(r.n)}</b><small>${esc(r.s)}</small></span>${pick}</div>`;}
   return `<div class="bs w"><span class="sd">·</span><span class="bn"><i>${s.l?"Perdedor":"Ganador"} pelea ${(s.m||s.l).num}</i></span></div>`;
 };
 const matchHTML=(m,c,st)=>`<div class="bm ${m.third?"third":""}" ${st?`style="${st}"`:""}><span class="bnum">${m.num}</span>${slotHTML(m.a,c,m,"a")}${slotHTML(m.b,c,m,"b")}</div>`;
@@ -1717,8 +1728,8 @@ function bracketMobile(B,c){
     if(B.third&&k===R.length-1) out+=`<div class="tlabel" style="left:14px;top:${ty-34}px">3° y 4° puesto</div>`+matchHTML(B.third,c,`top:${ty}px`);
     return `<div class="bround ${k>0?"nin":""}" data-k="${k}"><div class="flabel" style="margin:0 0 8px">${esc(rd.name)} · ${rd.matches.length} ${rd.matches.length===1?"pelea":"peleas"}</div><div class="bcol" style="height:${HH}px">${out}</div></div>`;};
   const k0=Math.min(MOBK[c.slug]||0,R.length-1);
-  return `<div class="bmob"><div class="seg" id="brTabs">${R.map((rd,k)=>`<button data-k="${k}" class="${k===k0?"on":""}">${esc(rd.name.replace(" de final",""))}</button>`).join("")}</div>
-    <div class="bswipe" id="bSwipe" data-k0="${k0}">${R.map(panel).join("")}</div>
+  return `<div class="bmob" data-slug="${c.slug}"><div class="seg brtabs">${R.map((rd,k)=>`<button data-k="${k}" class="${k===k0?"on":""}">${esc(rd.name.replace(" de final",""))}</button>`).join("")}</div>
+    <div class="bswipe" data-k0="${k0}">${R.map(panel).join("")}</div>
     <div class="bdots">${R.map((_,k)=>`<i class="${k===k0?"on":""}"></i>`).join("")}</div></div>`;
 }
 function depsOf(B,num){ // peleas que dependen (directa o indirectamente) de la pelea num
@@ -1726,51 +1737,97 @@ function depsOf(B,num){ // peleas que dependen (directa o indirectamente) de la 
   while(ch){ch=false;all.forEach(m=>{if(out.has(m.num))return;if([m.a,m.b].some(x=>(x.m&&out.has(x.m.num))||(x.l&&out.has(x.l.num)))){out.add(m.num);ch=true;}});}
   out.delete(num); return out; }
 const LLOUT={}; // slug -> puestos del resultado simulado de la llave/tabla
-const EXT={};   // slug -> {on, p:{evento:{fila:puesto}}} próximas fechas simuladas debajo de la llave
-function simResult(c,B,S){
-  const W=WIN[c.slug]||{}, total=B.rounds.reduce((a,r)=>a+r.matches.length,0)+(B.third?1:0), hechas=Object.keys(W).length;
-  // sin peleas: con un solo inscripto se lleva el 1° puesto; sin inscriptos el ranking no cambia
-  let {done,out}=S.length<2?{done:true,out:S.length?[undefined,S[0]]:[]}:placements(B,W);
-  let tablaTxt="";
-  if(isTabla(c)&&S.length>=2){ const T=TPOS[c.slug]||{}, need=tabNeed(T,S.length); out=[];
-    Object.entries(T).forEach(([k,v])=>{if(v>0)out[v]=S[+k];}); const asig=Object.values(T).filter(v=>v>0&&v<=need).length; done=asig>=need;
-    if(!done) return `<div class="simres pending"><div class="flabel" style="margin:0">Ranking simulado</div><div class="prog" style="height:8px;margin:10px 0 6px"><i style="width:${asig/need*100}%;background:var(--celeste)"></i></div><span class="sm">${asig} de ${need} puestos asignados. Al completar del 1° al ${need}° vas a ver cómo quedaría el ranking general. Los que no rompan nada se marcan con «0 pts».</span></div>`; }
-  if(!done) return `<div class="simres pending"><div class="flabel" style="margin:0">Ranking simulado</div><div class="prog" style="height:8px;margin:10px 0 6px"><i style="width:${hechas/total*100}%;background:var(--celeste)"></i></div><span class="sm">${hechas} de ${total} peleas definidas. Al completar la final${B.third?" y la pelea por el 3° puesto":""} vas a ver cómo quedaría el ranking general.</span></div>`;
-  const pts=EV[NEXT].puntos||[], place=new Map();
-  out.forEach((x,k)=>{if(x)place.set(x.r,k);});
-  LLOUT[c.slug]=out;
-  const ins=new Set(S.map(x=>x.r));
-  // próximas fechas: se cargan en esta misma tabla (EXT[slug].p[evento][índice de fila] = puesto)
-  const fut=EV.map((e,i)=>e.jugado||i===NEXT?-1:i).filter(i=>i>=0), X=EXT[c.slug], on=!!(X&&X.on);
-  const fp=(r,i)=>{const k=on&&X.p[i]?X.p[i][c.rows.indexOf(r)]:0;return k?((EV[i].puntos||[])[k-1]||0):0;};
-  const rows=c.rows.map(r=>({r,add:place.has(r)?(pts[place.get(r)-1]||0):0,fa:fut.map(i=>fp(r,i))})).map(o=>({...o,tot:o.r.tot+o.add+o.fa.reduce((a,v)=>a+v,0)}));
+const EXT={};   // slug -> {on, ins:{evento:[índices de fila inscriptos]}, draw:{evento:n}}  simulación de las fechas siguientes
+const FUT=()=>EV.map((e,i)=>e.jugado||i===NEXT?-1:i).filter(i=>i>=0);
+const hsh=s=>{let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;};
+// estado de una fecha simulada: llave/tabla -> puestos
+function stageOut(cs,S,B,tabla){
+  if(S.length<2) return {done:true,out:S.length?[undefined,S[0]]:[],asig:0,need:0};
+  if(tabla){const T=TPOS[cs.slug]||{}, need=tabNeed(T,S.length), out=[];
+    Object.entries(T).forEach(([k,v])=>{if(v>0)out[v]=S[+k];}); const asig=Object.values(T).filter(v=>v>0&&v<=need).length;
+    return {done:asig>=need,out,asig,need};}
+  const W=WIN[cs.slug]||{}, r=placements(B,W);
+  return {...r,asig:Object.keys(W).length,need:B.rounds.reduce((a,x)=>a+x.matches.length,0)+(B.third?1:0)};
+}
+const addPts=(tot,out,ev)=>{const m=new Map(tot);out.forEach((x,k)=>{if(x)m.set(x.r,(m.get(x.r)||0)+((EV[ev].puntos||[])[k-1]||0));});return m;};
+// cadena completa: 1er Ranqueable (llave real) y, si está activado, las fechas siguientes con inscriptos elegidos y llave aproximada
+function simChain(c){
+  const tabla=isTabla(c), B0=getBracket(c), S0=OFI(c)?B0.S:llaveEntrants(c), r0=stageOut(c,S0,B0,tabla);
+  let tot=new Map(c.rows.map(r=>[r,r.tot]));
+  const first={i:NEXT,key:c.slug,cs:c,S:S0,B:B0,tabla,before:tot,res:r0,ins:new Set(S0.map(x=>x.r))};
+  const st=[first]; if(!r0.done) return st;
+  tot=addPts(tot,r0.out,NEXT); first.after=tot;
+  const X=EXT[c.slug]; if(!X||!X.on) return st;
+  for(const i of FUT()){
+    const key=c.slug+"@"+i, cs=Object.assign(Object.create(c),{slug:key});
+    const dflt=c.rows.map((r,k)=>(r.i||[]).includes(NEXT)?k:-1).filter(k=>k>=0);
+    const sel=(X.ins[i]??dflt).map(k=>c.rows[k]), before=tot, d=X.draw[i]||0;
+    const ord=[...sel].sort((a,b)=>before.get(b)-before.get(a)||hsh(a.n+"#"+d)-hsh(b.n+"#"+d));
+    const S=ord.map((r,k)=>({r,seed:k+1,grp:[r],tt:before.get(r)}));
+    const B=S.length>1&&!tabla?buildBracket(S):{rounds:[]}, res=stageOut(cs,S,B,tabla);
+    const o={i,key,cs,S,B,tabla,before,res,ins:new Set(sel),ties:S.some((x,k)=>S.some((y,q)=>q!==k&&y.tt===x.tt))};
+    st.push(o); if(!res.done) break;
+    tot=addPts(tot,res.out,i); o.after=tot;
+  }
+  return st;
+}
+const pendHTML=(o)=>`<div class="simres pending"><div class="flabel" style="margin:0">Ranking simulado</div><div class="prog" style="height:8px;margin:10px 0 6px"><i style="width:${o.res.need?o.res.asig/o.res.need*100:0}%;background:var(--celeste)"></i></div><span class="sm">${o.tabla?`${o.res.asig} de ${o.res.need} puestos asignados. Al completar del 1° al ${o.res.need}° vas a ver cómo quedaría el ranking general.`:`${o.res.asig} de ${o.res.need} peleas definidas. Al completar la final${o.B.third?" y la pelea por el 3° puesto":""} vas a ver cómo quedaría el ranking general.`}</span></div>`;
+// tabla "Así quedaría el ranking" después de una fecha simulada
+function resultBlock(c,o,last){
+  const ev=o.i, pts=EV[ev].puntos||[], place=new Map(); o.res.out.forEach((x,k)=>{if(x)place.set(x.r,k);});
+  if(ev===NEXT) LLOUT[c.slug]=o.res.out;
+  const before=o.before, B4=[...before.values()];
+  const posB=r=>before.get(r)>0?1+B4.filter(t=>t>before.get(r)).length:null;
+  const rows=c.rows.map(r=>({r,add:place.has(r)?(pts[place.get(r)-1]||0):0})).map(x=>({...x,tot:before.get(x.r)+x.add,pb:posB(x.r)}));
   rows.sort((a,b)=>b.tot-a.tot||(place.get(a.r)||99)-(place.get(b.r)||99)||a.r.n.localeCompare(b.r.n,"es"));
-  const T=rows.map(o=>o.tot); rows.forEach(o=>{o.pos=o.tot>0?1+T.filter(t=>t>o.tot).length:null;});
-  const shown=on?rows:rows.filter(o=>o.tot>0), rest=rows.length-shown.length;
-  // chances: quedan las fechas posteriores a esta que no se simularon
-  const remS=fut.filter(i=>!(on&&X.p[i]&&Object.keys(X.p[i]).length)), ptsLeft=remS.reduce((a,i)=>a+((EV[i].puntos||[])[0]||0),0);
-  const simF=fut.filter(i=>!remS.includes(i));
-  const fsel=(i,r)=>{const ri=c.rows.indexOf(r),k=on&&X.p[i]?X.p[i][ri]||0:0;return `<select class="fpk ${k?"set":""}" data-e="${i}" data-r="${ri}"><option value="">—</option>${(EV[i].puntos||[]).map((v,q)=>`<option value="${q+1}" ${k===q+1?"selected":""}>${q+1}° · ${v}</option>`).join("")}</select>`;};
-  const thrS=rows.map(o=>o.tot)[c.cupos]??0;
-  const clasS=rows.map(o=>o.tot>0&&(remS.length?ptsLeft<o.tot-thrS:o.pos!=null&&o.pos<=c.cupos&&o.pos+rows.filter(x=>x.tot===o.tot).length-1<=c.cupos));
-  const chS=chancesCore(c,rows.map(o=>o.r),rows.map(o=>o.tot),remS,clasS,rows.map(o=>o.pos!=null&&o.pos<=c.cupos),c.slug+"#sim"+Object.entries(W).join()+"|"+Object.entries(TPOS[c.slug]||{}).join()+"|"+(on?JSON.stringify(X.p):""));
-  rows.forEach((o,j)=>{o.ch=chS.get(o.r);o.cl=clasS[j];});
+  const T=rows.map(x=>x.tot); rows.forEach(x=>{x.pos=x.tot>0?1+T.filter(t=>t>x.tot).length:null;});
+  const shown=rows.filter(x=>x.tot>0), rest=rows.length-shown.length;
+  const remS=EV.map((e,i)=>e.jugado||i<=ev?-1:i).filter(i=>i>=0), ptsLeft=remS.reduce((a,i)=>a+((EV[i].puntos||[])[0]||0),0);
+  const thrS=T[c.cupos]??0;
+  const clasS=rows.map(x=>x.tot>0&&(remS.length?ptsLeft<x.tot-thrS:x.pos!=null&&x.pos<=c.cupos&&x.pos+rows.filter(y=>y.tot===x.tot).length-1<=c.cupos));
+  const seed=c.slug+"#sim"+ev+"|"+[...place.entries()].map(([r,k])=>r.n+k).join()+"|"+B4.join();
+  const chS=remS.length?chancesCore(c,rows.map(x=>x.r),T,remS,clasS,rows.map(x=>x.pos!=null&&x.pos<=c.cupos),seed):new Map();
+  rows.forEach((x,j)=>{x.ch=chS.get(x.r);x.cl=clasS[j];});
+  const out=o.res.out, S=o.S;
   const podium=!out.some(Boolean)?`<div class="sm" style="grid-column:1/-1">${S.length?"Ningún competidor suma puntos en esta fecha: el ranking no cambia.":"Sin inscriptos en esta fecha: el ranking no cambia."}</div>`:out.map((x,k)=>x?`<div class="pod p${k}"><span>${k}°</span><b>${esc(x.r.n)}</b><small>+${pts[k-1]||0} pts</small></div>`:"").join("");
-  return `<div class="simres"><div class="sim-h"><div><div class="flabel" style="margin:0">Resultado simulado · ${esc(EV[NEXT].nombre)}</div><h3>Así quedaría el ranking${simF.length?` <small>con ${simF.map(i=>esc(EV[i].corto)).join(" y ")}</small>`:""}</h3></div>${fut.length?(on?`<button class="btn l" id="goNext" data-c="${c.slug}">Quitar próximos ranqueables</button>`:`<button class="btn p" id="goNext" data-c="${c.slug}">${ICON.sim}Simular próximos ranqueables</button>`):""}</div>
-    ${on?`<div class="simbar"><span>Elegí el puesto de cada competidor en ${fut.map(i=>`<b>${esc(EV[i].nombre)}</b>`).join(" y ")}. Cada puesto se asigna a uno solo por fecha.</span></div>`:""}
+  const fut=FUT(), X=EXT[c.slug], on=!!(X&&X.on);
+  const btn=ev===NEXT&&fut.length?(on?`<button class="btn l" id="goNext" data-c="${c.slug}">Quitar próximos ranqueables</button>`:`<button class="btn p" id="goNext" data-c="${c.slug}">${ICON.sim}Simular próximos ranqueables</button>`):"";
+  const varB=x=>{const d=x.pb!=null&&x.pos!=null?x.pb-x.pos:(x.pos!=null?"new":(x.pb!=null?"out":null));
+    return d==null?`<span class="var eq">–</span>`:d==="out"?`<span class="var dn">Sale</span>`:d==="new"?`<span class="var nw">Nuevo</span>`:d>0?`<span class="var up">▲${d}</span>`:d<0?`<span class="var dn">▼${-d}</span>`:`<span class="var eq">=</span>`;};
+  const tieAny=shown.some(x=>x.pos!=null&&x.pos<=c.cupos&&x.pos+shown.filter(y=>y.tot===x.tot).length-1>c.cupos);
+  return `<div class="simres"><div class="sim-h"><div><div class="flabel" style="margin:0">Resultado simulado · ${esc(EV[ev].nombre)}</div><h3>Así quedaría el ranking${ev!==NEXT?` <small>después del ${esc(evLabel(EV[ev]))}</small>`:""}</h3></div>${btn}</div>
     <div class="podium">${podium}</div>
-    <div class="tablewrap"><table class="rk"><thead><tr><th>Pos</th><th class="hide-sm">Var.</th><th class="l">${c.team?"Equipo":"Competidor"}</th><th class="hide-sm">Actual</th><th>${esc(EV[NEXT].corto)}</th>${on?fut.map(i=>`<th class="fcol hide-sm">${esc(EV[i].corto)}</th>`).join(""):""}<th>Total</th>${remS.length?`<th title="Probabilidad de clasificar después de esta simulación">Chance</th>`:""}<th class="hide-sm">Estado</th></tr></thead>
-    <tbody>${shown.map(o=>{const d=o.r.pos!=null&&o.pos!=null?o.r.pos-o.pos:(o.pos!=null?"new":(o.r.pos!=null?"out":null));const z=o.pos!=null&&o.pos<=c.cupos;
-      // empate en el corte: el grupo empatado empieza dentro de las plazas pero no entra completo
-      const tie=z&&o.pos+shown.filter(x=>x.tot===o.tot).length-1>c.cupos;
-      const vb=d==null?`<span class="var eq">–</span>`:d==="out"?`<span class="var dn">Sale</span>`:d==="new"?`<span class="var nw">Nuevo</span>`:d>0?`<span class="var up">▲${d}</span>`:d<0?`<span class="var dn">▼${-d}</span>`:`<span class="var eq">=</span>`;
-      return `<tr class="${tie?"tiezone":z?"zone":""}"><td><span class="${posCls(o.pos)}">${o.pos??"–"}</span><div class="show-sm-b" style="margin-top:4px">${vb}</div></td><td class="hide-sm">${d==null?`<span class="var eq">–</span>`:d==="out"?`<span class="var dn">Sale</span>`:d==="new"?`<span class="var nw">Nuevo</span>`:d>0?`<span class="var up">▲${d}</span>`:d<0?`<span class="var dn">▼${-d}</span>`:`<span class="var eq">=</span>`}</td><td class="l"><div class="nm">${esc(o.r.n)}</div><div class="sm">${esc(o.r.s)}</div>${on?`<div class="fsm show-sm-b">${fut.map(i=>`<label><span>${esc(EV[i].corto)}</span>${fsel(i,o.r)}</label>`).join("")}</div>`:""}${tie?`<span class="chip tie show-sm" style="margin-top:4px">Empatados en zona</span>`:""}</td><td class="ev hide-sm">${fmt(o.r.tot)}</td><td class="ev ${o.add?"plus":""}">${o.add?"+"+o.add:(ins.has(o.r)?"0":"-")}</td>${on?fut.map(i=>`<td class="fcol hide-sm">${fsel(i,o.r)}</td>`).join(""):""}<td class="tot">${fmt(o.tot)}</td>${remS.length?`<td>${chanceCell(o.ch)}</td>`:""}<td class="hide-sm">${o.cl?`<span class="chip ok">✓ Clasificado</span>`:tie?`<span class="chip tie">${remS.length?"Empatados en zona":"Desempate"}</span>`:z?`<span class="chip zone">En zona</span>`:""}</td></tr>`}).join("")}</tbody></table></div>
-    ${shown.some(o=>o.pos!=null&&o.pos<=c.cupos&&o.pos+shown.filter(x=>x.tot===o.tot).length-1>c.cupos)?`<div class="tienote"><span class="chip tie">Empatados en zona</span> Hay más ${c.team?"equipos":"competidores"} empatados que plazas disponibles: la plaza se define en las fechas siguientes o por desempate.</div>`:""}
+    <div class="tablewrap"><table class="rk"><thead><tr><th>Pos</th><th class="hide-sm">Var.</th><th class="l">${c.team?"Equipo":"Competidor"}</th><th class="hide-sm">${ev===NEXT?"Actual":"Antes"}</th><th>${esc(EV[ev].corto)}</th><th>Total</th>${remS.length?`<th title="Probabilidad de clasificar">Chance</th>`:""}<th class="hide-sm">Estado</th></tr></thead>
+    <tbody>${shown.map(x=>{const z=x.pos!=null&&x.pos<=c.cupos, tie=z&&x.pos+shown.filter(y=>y.tot===x.tot).length-1>c.cupos;
+      return `<tr class="${tie?"tiezone":z?"zone":""}"><td><span class="${posCls(x.pos)}">${x.pos??"–"}</span><div class="show-sm-b" style="margin-top:4px">${varB(x)}</div></td><td class="hide-sm">${varB(x)}</td><td class="l"><div class="nm">${esc(x.r.n)}</div><div class="sm">${esc(x.r.s)}</div>${tie?`<span class="chip tie show-sm" style="margin-top:4px">${remS.length?"Empatados en zona":"Desempate"}</span>`:""}</td><td class="ev hide-sm">${fmt(before.get(x.r))}</td><td class="ev ${x.add?"plus":""}">${x.add?"+"+x.add:(o.ins.has(x.r)?"0":"-")}</td><td class="tot">${fmt(x.tot)}</td>${remS.length?`<td>${chanceCell(x.ch)}</td>`:""}<td class="hide-sm">${x.cl?`<span class="chip ok">✓ Clasificado</span>`:tie?`<span class="chip tie">${remS.length?"Empatados en zona":"Desempate"}</span>`:z?`<span class="chip zone">En zona</span>`:""}</td></tr>`}).join("")}</tbody></table></div>
+    ${tieAny?`<div class="tienote"><span class="chip tie">${remS.length?"Empatados en zona":"Desempate"}</span> Hay más ${c.team?"equipos":"competidores"} empatados que plazas disponibles: ${remS.length?"la plaza se define en las fechas siguientes o por desempate.":"la plaza se define por desempate."}</div>`:""}
     ${rest?`<div class="legend">+ ${rest} ${rest===1?"competidor":"competidores"} sin puntos</div>`:""}</div>`;
 }
-function tablaHTML(c,S){
-  const T=TPOS[c.slug]||{}, pts=EV[NEXT].puntos||[];
-  return `<div class="simbar"><span>Elegí el puesto final de cada competidor (cada puesto se asigna a uno solo). Si no rompe nada, marcalo con <b>0 pts</b>: se puede asignar a todos los que haga falta.</span>${Object.keys(T).length?`<button class="btn l" id="tabReset">Reiniciar simulación</button>`:""}</div>
+function simResult(c,B,S){
+  const st=simChain(c), o=st[0];
+  if(!o.res.done) return pendHTML(o);
+  return resultBlock(c,o)+st.slice(1).map(x=>stageHTML(c,x)).join("")+(st.length>1&&!st[st.length-1].res.done?"":(EXT[c.slug]&&EXT[c.slug].on&&st.length-1<FUT().length?`<div class="stage-next sm">Completá la simulación anterior para seguir con el ${esc(evLabel(EV[FUT()[st.length-1]]))}.</div>`:""));
+}
+// una fecha futura: elegir inscriptos -> llave aproximada (o tabla) -> resultado
+function stageHTML(c,o){
+  const ev=EV[o.i], cs=o.cs, before=o.before;
+  const all=[...c.rows].sort((a,b)=>before.get(b)-before.get(a)||a.n.localeCompare(b.n,"es"));
+  const prevEv=EV[o.i===FUT()[0]?NEXT:FUT()[FUT().indexOf(o.i)-1]];
+  const ins=`<div class="stage-ins"><div class="stage-step"><b>1</b><span>¿Quiénes se anotan? <small>${o.S.length} ${c.team?"equipos":"inscriptos"}</small></span>
+      <div class="insq"><button class="btn l" data-q="prev">Los del ${esc(evLabel(prevEv))}</button><button class="btn l" data-q="pts">Con puntos</button><button class="btn l" data-q="all">Todos</button><button class="btn l" data-q="none">Ninguno</button></div></div>
+    <div class="insgrid">${all.map(r=>{const k=c.rows.indexOf(r),on=o.ins.has(r);return `<label class="insc ${on?"on":""}"><input type="checkbox" class="inschk" data-r="${k}" ${on?"checked":""}><span class="nm">${esc(r.n)}</span><span class="pt">${fmt(before.get(r))}</span></label>`;}).join("")}</div></div>`;
+  let draw="";
+  if(o.S.length<2) draw=`<div class="empty">${o.S.length?`Única inscripción: <b>${esc(o.S[0].r.n)}</b>. Suma los 9 pts.`:"Sin inscriptos: el ranking no cambia en esta fecha."}</div>`;
+  else if(o.tabla) draw=tablaHTML(cs,o.S,o.i);
+  else draw=`<div class="simbar"><span>Llave aproximada: cabezas de serie según el ranking simulado hasta el ${esc(evLabel(prevEv))}. Marcá con <b class="wtick">✓</b> al ganador de cada pelea.</span>${o.ties?`<button class="btn l stDraw">↻ Volver a sortear</button>`:""}${Object.keys(WIN[cs.slug]||{}).length?`<button class="btn l stReset">Reiniciar</button>`:""}</div>
+      <div class="hide-sm">${bracketDesktop(o.B,cs)}</div><div class="show-sm-b">${bracketMobile(o.B,cs)}</div>`;
+  return `<div class="stage" data-st="${o.i}"><div class="stage-h"><span class="chip cel">Simulación</span><h3>${esc(ev.nombre)}</h3></div>
+    ${ins}<div class="stage-step" style="padding:14px 20px 4px"><b>2</b><span>${o.tabla?"Tabla de posiciones":"Llave"}</span></div>${draw}
+    ${o.res.done?resultBlock(c,o):o.S.length>=2?pendHTML(o):""}</div>`;
+}
+function tablaHTML(c,S,ev=NEXT){
+  const T=TPOS[c.slug]||{}, pts=EV[ev].puntos||[];
+  return `<div class="simbar"><span>Elegí el puesto final de cada competidor (cada puesto se asigna a uno solo). Si no rompe nada, marcalo con <b>0 pts</b>: se puede asignar a todos los que haga falta.</span>${Object.keys(T).length?`<button class="btn l" class="btn l tabReset" data-key="${c.slug}">Reiniciar simulación</button>`:""}</div>
   <div class="tablewrap" style="border-top:1px solid var(--line-2)"><table class="rk tabla-pos"><thead><tr><th>Rk</th><th class="l">${c.team?"Equipo":"Competidor"}</th><th>Puesto</th><th class="hide-sm">Pts</th></tr></thead>
   <tbody>${S.map((x,k)=>{const v=T[k];return `<tr class="${v>0?"set":""}"><td><span class="sd ${x.r.tot>0?"":"np"}">${x.r.tot>0?x.seed:"-"}</span></td><td class="l"><div class="nm">${esc(x.r.n)}</div><div class="sm">${esc(x.r.s)}</div></td>
     <td><select class="tpos ${v>0?"set":v===0?"zero":""}" data-k="${k}"><option value="">—</option>${Array.from({length:tabNeed(T,S.length,k)},(_,p)=>`<option value="${p+1}" ${v===p+1?"selected":""}>${p+1}°${Object.entries(T).some(([kk,vv])=>vv===p+1&&+kk!==k)?" ·":""}</option>`).join("")}<option value="0" ${v===0?"selected":""}>0 pts</option></select></td>
@@ -1830,8 +1887,8 @@ function llaveASim(c){
   go("#/simulador/"+c.slug);
 }
 document.addEventListener("click",e=>{const b=e.target.closest("#goNext");if(!b)return;const sl=b.dataset.c;
-  if(EXT[sl]&&EXT[sl].on) delete EXT[sl]; else EXT[sl]={on:true,p:{}};
-  go(location.hash,true); if(EXT[sl]) setTimeout(()=>document.querySelector(".simres .fcol select")?.scrollIntoView({block:"center",behavior:"smooth"}),60);});
+  if(EXT[sl]&&EXT[sl].on){FUT().forEach(f=>{delete WIN[sl+"@"+f];delete TPOS[sl+"@"+f];});delete EXT[sl];} else EXT[sl]={on:true,ins:{},draw:{}};
+  const y=scrollY; go(location.hash,true); scrollTo(0,y); if(EXT[sl]) setTimeout(()=>document.querySelector(".stage")?.scrollIntoView({block:"start",behavior:"smooth"}),80);});
 document.addEventListener("change",e=>{const sl=e.target.closest("select.fpk");if(!sl)return;const c=CATBY[location.hash.split("/")[2]];if(!c||!EXT[c.slug])return;
   const i=+sl.dataset.e,ri=+sl.dataset.r,v=+sl.value||0,P=EXT[c.slug].p[i]=EXT[c.slug].p[i]||{};
   Object.keys(P).forEach(k=>{if(P[k]===v&&+k!==ri)delete P[k];}); if(v)P[ri]=v; else delete P[ri];
@@ -1867,30 +1924,41 @@ V.llave.after=(id)=>{
   $("#llCat")?.addEventListener("change",e=>go("#/llave/"+e.target.value));
   const keepTab=()=>go(location.hash,true);
   $("#redraw")&&($("#redraw").onclick=()=>{DRAW[c.slug]=(DRAW[c.slug]||1)+1;delete LORD[c.slug];delete WIN[c.slug];go(location.hash,true);toast("Nuevo sorteo");});
-  $("#simReset2")&&($("#simReset2").onclick=()=>{delete WIN[c.slug];keepTab();});
-  $("#tabReset")&&($("#tabReset").onclick=()=>{delete TPOS[c.slug];go(location.hash,true);});
-  $$("select.tpos").forEach(sl=>sl.addEventListener("change",()=>{const T=TPOS[c.slug]=TPOS[c.slug]||{},k=+sl.dataset.k;
+  const rer=()=>{const y=scrollY; go(location.hash,true); scrollTo(0,y);};
+  const stOf=el=>{const d=el.closest("[data-st]"); const st=simChain(c); return d?st.find(x=>x.i===+d.dataset.st):st[0];};
+  // al cambiar una fecha se borran las simulaciones de las fechas siguientes
+  const clearAfter=i=>FUT().filter(f=>f>i).forEach(f=>{delete WIN[c.slug+"@"+f];delete TPOS[c.slug+"@"+f];});
+  $("#simReset2")&&($("#simReset2").onclick=()=>{delete WIN[c.slug];clearAfter(NEXT);rer();});
+  $$(".tabReset").forEach(b=>b.onclick=()=>{const o=stOf(b);delete TPOS[o.key];clearAfter(o.i);rer();});
+  $$(".stReset").forEach(b=>b.onclick=()=>{const o=stOf(b);delete WIN[o.key];clearAfter(o.i);rer();});
+  $$(".stDraw").forEach(b=>b.onclick=()=>{const o=stOf(b),X=EXT[c.slug];X.draw[o.i]=(X.draw[o.i]||0)+1;delete WIN[o.key];clearAfter(o.i);rer();toast("Nuevo sorteo");});
+  $$("select.tpos").forEach(sl=>sl.addEventListener("change",()=>{const o=stOf(sl),T=TPOS[o.key]=TPOS[o.key]||{},k=+sl.dataset.k;
     if(sl.value===""){delete T[k];}else{const v=+sl.value; if(v>0)Object.keys(T).forEach(kk=>{if(T[kk]===v&&+kk!==k)delete T[kk];}); T[k]=v;}
     // si hay más competidores en 0, se achica la cantidad de puestos que suman
-    const lim=tabNeed(T,llaveEntrants(c).length); Object.keys(T).forEach(kk=>{if(T[kk]>lim)delete T[kk];});
-    go(location.hash,true);}));
+    const lim=tabNeed(T,o.S.length); Object.keys(T).forEach(kk=>{if(T[kk]>lim)delete T[kk];});
+    clearAfter(o.i); rer();}));
   $$("button.win").forEach(bt=>bt.addEventListener("click",()=>{
-    const B=getBracket(c), W=WIN[c.slug]=WIN[c.slug]||{}, n=+bt.dataset.m, sd=bt.dataset.s;
+    const o=stOf(bt), B=o.B, W=WIN[o.key]=WIN[o.key]||{}, n=+bt.dataset.m, sd=bt.dataset.s;
     depsOf(B,n).forEach(k=>delete W[k]);
     if(W[n]===sd) delete W[n]; else W[n]=sd;
-    keepTab();}));
+    clearAfter(o.i); rer();}));
+  // inscriptos de una fecha simulada
+  const setIns=(o,ks)=>{EXT[c.slug].ins[o.i]=ks; delete WIN[o.key]; delete TPOS[o.key]; clearAfter(o.i); rer();};
+  $$(".inschk").forEach(ch=>ch.addEventListener("change",()=>{const o=stOf(ch),cur=new Set([...o.ins].map(r=>c.rows.indexOf(r))),k=+ch.dataset.r;
+    ch.checked?cur.add(k):cur.delete(k); setIns(o,[...cur]);}));
+  $$(".insq button").forEach(b=>b.addEventListener("click",()=>{const o=stOf(b),q=b.dataset.q,all=c.rows.map((r,k)=>k);
+    const ch=simChain(c), pv=ch[ch.findIndex(y=>y.i===o.i)-1], prev=pv?[...pv.ins].map(r=>c.rows.indexOf(r)):[];
+    setIns(o,q==="all"?all:q==="none"?[]:q==="pts"?all.filter(k=>o.before.get(c.rows[k])>0):prev);}));
   $$("select.swap").forEach(sl=>sl.addEventListener("change",()=>{const L=LORD[c.slug],i=+sl.dataset.i,j=+sl.value;if(i===j)return;[L[i],L[j]]=[L[j],L[i]];delete WIN[c.slug];
     go(location.hash,true);}));
-  const sw=$("#bSwipe");
-  if(sw){
-    const panels=[...sw.children], cur=()=>Math.round(sw.scrollLeft/sw.clientWidth);
-    const fitH=()=>{};
-    const mark=k=>{MOBK[c.slug]=k; $$("#brTabs button").forEach(x=>x.classList.toggle("on",+x.dataset.k===k)); $$(".bdots i").forEach((x,i)=>x.classList.toggle("on",i===k));
-      const t=$(`#brTabs button[data-k="${k}"]`); t&&t.scrollIntoView({block:"nearest",inline:"center"}); fitH(k);};
+  $$(".bmob").forEach(bm=>{const sw=bm.querySelector(".bswipe"), sl=bm.dataset.slug; if(!sw) return;
+    const cur=()=>Math.round(sw.scrollLeft/sw.clientWidth);
+    const mark=k=>{MOBK[sl]=k; bm.querySelectorAll(".brtabs button").forEach(x=>x.classList.toggle("on",+x.dataset.k===k)); bm.querySelectorAll(".bdots i").forEach((x,i)=>x.classList.toggle("on",i===k));
+      const t=bm.querySelector(`.brtabs button[data-k="${k}"]`); t&&t.scrollIntoView({block:"nearest",inline:"center"});};
     const k0=+sw.dataset.k0; requestAnimationFrame(()=>{sw.scrollTo({left:k0*sw.clientWidth,behavior:"instant"});});
     let t; sw.addEventListener("scroll",()=>{clearTimeout(t); t=setTimeout(()=>mark(cur()),70);},{passive:true});
-    $("#brTabs")?.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return; sw.scrollTo({left:+b.dataset.k*sw.clientWidth,behavior:"smooth"});});
-  }
+    bm.querySelector(".brtabs")?.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return; sw.scrollTo({left:+b.dataset.k*sw.clientWidth,behavior:"smooth"});});
+  });
 };
 
 function notFound(){return pageHead("Error","No encontrado","El elemento que buscás no existe o cambió de nombre en la última actualización.")+`<section class="sec"><div class="wrap"><a class="btn p" href="#/inicio">Volver al inicio</a></div></section>`;}
