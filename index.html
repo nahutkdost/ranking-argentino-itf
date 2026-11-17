@@ -955,7 +955,7 @@ V.ranking=(id)=>{
         <div class="pager top">${prev?`<a class="btn l" href="#/ranking/${prev.slug}">← ${navLab(prev,c)}</a>`:"<span></span>"}${next?`<a class="btn l" href="#/ranking/${next.slug}">${navLab(next,c)} →</a>`:""}</div>
         <div class="cat-head">
           <div>${c.num?`<span class="chip cel">Código ITF ${esc(c.num)}</span>`:""}<h2>${esc(c.title)}</h2></div>
-          <div class="toolbar">${hasLlave(c)?`<a class="btn p" href="#/llave/${c.slug}">${ICON.llave}${PLC(c,NEXT)&&!(c.parcial&&c.parcial[NEXT]&&c.parcial[NEXT].length)?"Ver resultado y simular próximos":"Simular "+esc(evLabel(EV[NEXT]))}</a>`:`<a class="btn p" href="#/simulador/${c.slug}">${ICON.sim}Simular</a>`}<button class="btn l" id="shareBtn">${ICON.link}Copiar enlace</button></div>
+          <div class="toolbar">${hasLlave(c)?`<a class="btn p" href="#/llave/${c.slug}">${ICON.llave}${PLC(c,NEXT)&&!(c.parcial&&c.parcial[NEXT]&&c.parcial[NEXT].length)?"Ver resultado y simular próximos":"Simular "+esc(evLabel(EV[NEXT]))}</a>`:`<a class="btn p" href="#/simulador/${c.slug}">${ICON.sim}Simular</a>`}${PASTC[c.slug]?`<a class="btn l" href="#/resultados/${c.slug}">${ICON.llave}Llave ${esc(EV[LEV].corto)}</a>`:""}<button class="btn l" id="shareBtn">${ICON.link}Copiar enlace</button></div>
         </div>
         <div class="facts">
           <div><b class="num">${c.rows.length}</b><span>${c.team?"Equipos":"Competidores"}</span></div>
@@ -1199,7 +1199,7 @@ V.calendario=(id)=>pageHead("Calendario clasificatorio","Eventos del ranking",`$
           ${e.puntos?`<div class="flabel" style="margin-top:4px">Puntos para el ranking</div>${ptsScale(e.puntos,true)}`:""}
           ${e.cronograma&&e.cronograma.length?`<div class="flabel" style="margin-top:16px">Cronograma</div><div class="crono">${e.cronograma.map(d=>`<div><b>${esc(d.dia)}</b><ul>${d.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`).join("")}</div>`:""}
           ${e===nextEv&&e.fecha?`<div class="count" id="cd" style="max-width:380px"><div><b>–</b><span>Días</span></div><div><b>–</b><span>Horas</span></div><div><b>–</b><span>Min</span></div><div><b>–</b><span>Seg</span></div></div>`:""}
-          <div class="toolbar">${e.agenda&&e.agenda.length?`<a class="btn p" href="#/cronograma">${ICON.cal}Cronograma por área</a>`:""}${e.reglamento?`<a class="btn p" href="${e.reglamento.data}" download="${esc(e.reglamento.nombre)}">${ICON.dl}Descargar reglamento (PDF)</a>`:""}${maps?`<a class="btn l" href="${maps}" target="_blank" rel="noopener">${ICON.pin}Cómo llegar</a>`:""}${e.jugado?`<a class="btn p" href="#/ranking">Ver resultados en el ranking</a>`:""}</div>
+          <div class="toolbar">${e.agenda&&e.agenda.length?`<a class="btn p" href="#/cronograma">${ICON.cal}Cronograma por área</a>`:""}${e.reglamento?`<a class="btn p" href="${e.reglamento.data}" download="${esc(e.reglamento.nombre)}">${ICON.dl}Descargar reglamento (PDF)</a>`:""}${maps?`<a class="btn l" href="${maps}" target="_blank" rel="noopener">${ICON.pin}Cómo llegar</a>`:""}${e.jugado?`<a class="btn p" href="#/ranking">Ver resultados en el ranking</a>`:""}${EV.indexOf(e)===LEV&&Object.keys(PASTC).length?`<a class="btn p" href="#/resultados">${ICON.llave}Llaves y resultados</a>`:""}</div>
         </div></article>`}).join("")}
       <div class="wc wc-fl">${DATA.mundial&&DATA.mundial.flyer?`<img src="${DATA.mundial.flyer}" alt="ITF Taekwon-Do World Championship Paraguay 2027" data-lb>`:""}<div><div class="stripes"></div><div class="kicker" style="color:var(--gold)">Objetivo final</div><h3>Campeonato Mundial ITF 2027</h3><p><b style="color:#fff">17 al 23 de octubre de 2027</b> · ueno SND Arena, Asunción, Paraguay.</p><p style="margin-top:10px">Los ${TOTAL_CUPOS} cupos del ranking se definen al cierre de las ${NEV} fechas del ranking.</p><div class="toolbar" style="margin-top:16px"><a class="btn p" href="#/mundial">Información del Mundial</a><a class="btn g" href="#/plazas">Ver plazas</a>${HIST.length?`<a class="btn g" href="#/historial">Mundiales anteriores</a><a class="btn g" href="#/argentinos">Argentinos en Mundiales</a>`:""}</div></div></div>
     </div>
@@ -1576,6 +1576,7 @@ V.historial=(id)=>{
 
 /* ---------- llave del próximo torneo (sorteo aproximado) ---------- */
 const NEXT=EV.findIndex(e=>!e.jugado);
+let OEV=NEXT; // fecha cuyas llaves/órdenes oficiales se están mirando (la próxima, o una ya disputada en #/resultados)
 const DRAW={};  // slug -> número de sorteo
 const ROUNDN=n=>({2:"Final",4:"Semifinal",8:"Cuartos de final",16:"Octavos de final",32:"16avos de final",64:"32avos de final",128:"64avos de final"})[n]||`Ronda de ${n}`;
 const isTabla=c=>c.mod==="Rotura de Poder"||c.mod==="Técnicas Especiales"; // se compite por tabla de posiciones, no por llave
@@ -1621,7 +1622,7 @@ function buildBracket(S){
   return {N,P,E,rounds,fin,semis,third,S};
 }
 // Llave oficial (sorteo de SportData): cada inscripto en su columna/posición del cuadro; no se puede editar, solo marcar ganadores
-const OFI=c=>NEXT>=0&&c.llave&&c.llave[NEXT]?c.llave[NEXT]:null;
+const OFI=c=>OEV>=0&&c.llave&&c.llave[OEV]?c.llave[OEV]:null;
 function officialEntrants(c){
   const L=OFI(c), rows=[...new Set(L.ent.filter(e=>e.r!=null).map(e=>c.rows[e.r]))].sort((a,b)=>b.tot-a.tot||c.sorted.indexOf(a)-c.sorted.indexOf(b));
   return rows.map((r,i)=>({r,seed:i+1,grp:[r]}));
@@ -1659,7 +1660,7 @@ function buildOfficial(c){
 }
 const getBracket=c=>OFI(c)?buildOfficial(c):buildBracket(llaveEntrants(c));
 // Rotura / Técnicas Especiales: orden de competencia oficial (tabla de SportData)
-const ORD=c=>NEXT>=0&&c.orden&&c.orden[NEXT]?c.orden[NEXT]:null;
+const ORD=c=>OEV>=0&&c.orden&&c.orden[OEV]?c.orden[OEV]:null;
 function ordenEntrants(c){
   const o=ORD(c), rk=[...o].sort((a,b)=>c.rows[b].tot-c.rows[a].tot||c.sorted.indexOf(c.rows[a])-c.sorted.indexOf(c.rows[b]));
   return o.map((k,i)=>({r:c.rows[k],seed:rk.indexOf(k)+1,grp:[c.rows[k]],ord:i+1}));
@@ -1701,7 +1702,7 @@ function rotApply(key,n){
 const RES={}, RPOS={}; // slug -> {numPelea: lado} / slug -> {índice: puesto}
 const RONDA_K={oct:"Octavos de final",cua:"Cuartos de final",sem:"Semifinal",fin:"Final","16a":"16avos de final","32a":"32avos de final"};
 function realWins(c){
-  const H=NEXT>=0&&c.hechos&&c.hechos[NEXT]; if(!H||!H.length) return;
+  const H=OEV>=0&&c.hechos&&c.hechos[OEV]; if(!H||!H.length) return;
   if(isTabla(c)){ if(!ORD(c)) return; const S=getEntrants(c), T={};
     if(isRot(c)){const P={},D={}; H.forEach(h=>{const k=S.findIndex(x=>x.r===c.rows[h.p]); if(k<0)return; if(h.pts)P[k]=h.pts.map(v=>v==null?null:+v); if(h.des!=null)D[k]=h.des; if(h.pos!=null)(RFIX[c.slug]=RFIX[c.slug]||{})[k]=h.pos;});
       RPTR[c.slug]=P; RDESR[c.slug]=D; RPT[c.slug]=JSON.parse(JSON.stringify(P)); RDES[c.slug]={...D}; rotApply(c.slug,S.length); return;}
@@ -1732,6 +1733,12 @@ function realWins(c){
   RES[c.slug]=W;
 }
 CATS.forEach(c=>{try{realWins(c);}catch(e){console.warn("resultados",c.slug,e);}});
+// Llaves de la última fecha disputada (para consultarlas en #/resultados): se guardan aparte, con su propia clave
+const LEV=(()=>{for(let i=(NEXT<0?EV.length:NEXT)-1;i>=0;i--) if(CATS.some(c=>(c.llave&&c.llave[i])||(c.orden&&c.orden[i]))) return i; return -1;})();
+const PASTC={};
+if(LEV>=0) CATS.forEach(c=>{ if(!((c.llave&&c.llave[LEV])||(c.orden&&c.orden[LEV]))) return;
+  const p=Object.assign(Object.create(c),{slug:c.slug+"~"+EV[LEV].id,ro:true}); PASTC[c.slug]=p;
+  OEV=LEV; try{realWins(p);}catch(e){console.warn("resultados",c.slug,e);} OEV=NEXT; });
 Object.entries(RES).forEach(([k,v])=>WIN[k]={...v}); Object.entries(RPOS).forEach(([k,v])=>TPOS[k]={...v});
 const allReal=c=>{const k=c.slug, eq=(a,b)=>JSON.stringify(a||{})===JSON.stringify(b||{});
   if(isTabla(c)) return isRot(c)?(Object.keys(RPTR[k]||{}).length>0||Object.keys(RFIX[k]||{}).length>0)&&eq(RPT[k],RPTR[k])&&Object.entries(RDES[k]||{}).every(([x,v])=>(RDESR[k]||{})[x]===v):Object.keys(RPOS[k]||{}).length>0&&eq(TPOS[k],RPOS[k]);
@@ -1758,7 +1765,7 @@ function placements(B,W){
   return {done:true,out};
 }
 const slotHTML=(s,c,m,side)=>{
-  const W=WIN[c.slug]||{}, who=s.p||resolve(s,W), real=m&&isReal(c,m.num), canPick=m&&!real&&resolve(m.a,W)&&resolve(m.b,W), won=m&&W[m.num]===side, lost=m&&W[m.num]&&W[m.num]!==side;
+  const W=WIN[c.slug]||{}, who=s.p||resolve(s,W), real=m&&isReal(c,m.num), canPick=m&&!real&&!c.ro&&resolve(m.a,W)&&resolve(m.b,W), won=m&&W[m.num]===side, lost=m&&W[m.num]&&W[m.num]!==side;
   const pick=canPick?`<button class="win ${won?"on":""}" data-m="${m.num}" data-s="${side}" title="Marcar como ganador">✓</button>`:"";
   const cls=`bs ${won?"won":""} ${lost?"lost":""} ${real?"real":""}`;
   if(s.p){const r=s.p.r, L=LORD[c.slug], i=s.p.seed-1, tt=s.p.tt??r.tot;
@@ -1958,7 +1965,7 @@ V.cronograma=(dia)=>{
   const sinHorario=CATS.filter(c=>(c.rows.some(r=>(r.i||[]).includes(ei)))&&!A.some(b=>b.code===CAT_CODE(c)));
   const blk=b=>{ if(!b.code) return `<div class="cb brk"><span class="ct">${b.desde} – ${b.hasta}</span><b>Descanso</b></div>`;
     const c=byCode[b.code], t=c?c.title:b.label;
-    return `<a class="cb" data-code="${b.code}" href="${c?(c.llave&&c.llave[ei]?"#/llave/":"#/ranking/")+c.slug:"#/cronograma"}"><span class="ct">${b.desde} – ${b.hasta}${b.fase==="Final"?` <span class="chip gold">Final</span>`:""}</span><b>${esc(t)}</b><span class="cn">${b.n} ${b.fase==="Final"?"finalistas":c&&c.team?"equipos":"inscriptos"}</span></a>`;};
+    return `<a class="cb" data-code="${b.code}" href="${c?(c.llave&&c.llave[ei]?(ei===LEV&&PASTC[c.slug]?"#/resultados/":"#/llave/"):"#/ranking/")+c.slug:"#/cronograma"}"><span class="ct">${b.desde} – ${b.hasta}${b.fase==="Final"?` <span class="chip gold">Final</span>`:""}</span><b>${esc(t)}</b><span class="cn">${b.n} ${b.fase==="Final"?"finalistas":c&&c.team?"equipos":"inscriptos"}</span></a>`;};
   return pageHead(esc(e.nombre),"Cronograma por área",`Horarios publicados por la organización para el ${esc(e.fecha_texto)}. Son estimados y pueden modificarse durante el torneo.`,"Cronograma")+`
   <section class="sec"><div class="wrap">
     <div class="card pad cro-bar">
@@ -2108,6 +2115,9 @@ V.llave.after=(id)=>{
     setIns(o,q==="all"?all:q==="none"?[]:q==="pts"?all.filter(k=>o.before.get(c.rows[k])>0):prev);}));
   $$("select.swap").forEach(sl=>sl.addEventListener("change",()=>{const L=LORD[c.slug],i=+sl.dataset.i,j=+sl.value;if(i===j)return;[L[i],L[j]]=[L[j],L[i]];delete WIN[c.slug];
     go(location.hash,true);}));
+  initBmob();
+};
+function initBmob(){
   $$(".bmob").forEach(bm=>{const sw=bm.querySelector(".bswipe"), sl=bm.dataset.slug; if(!sw) return;
     const cur=()=>Math.round(sw.scrollLeft/sw.clientWidth);
     const mark=k=>{MOBK[sl]=k; bm.querySelectorAll(".brtabs button").forEach(x=>x.classList.toggle("on",+x.dataset.k===k)); bm.querySelectorAll(".bdots i").forEach((x,i)=>x.classList.toggle("on",i===k));
@@ -2116,6 +2126,44 @@ V.llave.after=(id)=>{
     let t; sw.addEventListener("scroll",()=>{clearTimeout(t); t=setTimeout(()=>mark(cur()),70);},{passive:true});
     bm.querySelector(".brtabs")?.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return; sw.scrollTo({left:+b.dataset.k*sw.clientWidth,behavior:"smooth"});});
   });
+};
+
+/* ---------- llaves y resultados de la última fecha disputada ---------- */
+V.resultados=(id)=>{
+  const list=CATS.filter(c=>PASTC[c.slug]);
+  if(!list.length) return pageHead("Resultados","Llaves y resultados","Todavía no hay llaves de fechas disputadas.","Resultados");
+  const c=list.includes(CATBY[id])?CATBY[id]:list[0], P=PASTC[c.slug], ev=EV[LEV], pts=ev.puntos||[];
+  OEV=LEV;
+  try{
+  const tabla=isTabla(c), S=getEntrants(P), B=tabla?null:getBracket(P);
+  const g={};list.forEach(x=>{(g[x.mod+" · "+x.age]=g[x.mod+" · "+x.age]||[]).push(x)});
+  const i=list.indexOf(c), prev=list[i-1], next=list[i+1];
+  const pos=r=>{const v=r.p[LEV]; if(v==null) return null; const k=pts.indexOf(v); return v>0&&k>=0?k+1:0;};
+  const part=c.rows.filter(r=>r.p[LEV]!=null).sort((a,b)=>(b.p[LEV]||0)-(a.p[LEV]||0)||a.n.localeCompare(b.n));
+  const falta=c.parcial&&c.parcial[LEV]&&c.parcial[LEV].length?c.parcial[LEV]:null;
+  const W=WIN[P.slug]||{}, nReal=Object.keys(RES[P.slug]||{}).length;
+  const res=`<div class="simres"><div class="sim-h"><div><div class="flabel" style="margin:0">${falta?"Resultado parcial":"Resultado oficial"} · ${esc(ev.nombre)}</div><h3>Puestos y puntos de la fecha</h3></div></div>
+    ${falta?`<div class="parcial-note" style="margin:0 0 10px">⏳ Falta${falta.length>1?"n":""} definir ${falta.map(k=>k+"°").join(", ")} puesto${falta.length>1?"s":""}. Por ahora figuran con 0.</div>`:""}
+    <div class="tablewrap"><table class="rk"><thead><tr><th>Pos</th><th class="l">${c.team?"Equipo":"Competidor"}</th><th>Pts ${esc(ev.corto)}</th></tr></thead><tbody>${part.map(r=>{const q=pos(r);
+      return `<tr><td class="pos">${q?q:"-"}</td><td class="l"><div class="nm">${esc(r.n)}</div><div class="sm">${esc(r.s)}</div></td><td class="tot">${fmt(r.p[LEV])}</td></tr>`;}).join("")}</tbody></table></div></div>`;
+  const body=tabla?`<div class="tablewrap" style="border-top:1px solid var(--line-2)"><table class="rk tabla-pos"><thead><tr><th>Orden</th><th class="l">Competidor</th><th>Puesto</th><th>Pts</th></tr></thead><tbody>${S.map(x=>{const q=pos(x.r);
+      return `<tr class="${q?"set":""}"><td><span class="ordn">${x.ord||"-"}</span></td><td class="l"><div class="nm">${esc(x.r.n)}</div><div class="sm">${esc(x.r.s)}</div></td><td>${q?`<b class="rpos">${q}°</b>`:x.r.p[LEV]==null?"-":"—"}</td><td class="num">${x.r.p[LEV]==null?"-":fmt(x.r.p[LEV])}</td></tr>`;}).join("")}</tbody></table></div>`
+    :S.length<2?`<div class="empty">${S.length?`Única inscripción: <b>${esc(S[0].r.n)}</b>.`:"Sin inscriptos."}</div>`
+    :`<div class="simbar"><span>Llave oficial del sorteo. ${nReal?`Las peleas marcadas son los resultados cargados; las que siguen en blanco todavía no tienen resultado.`:`Todavía no hay resultados cargados para esta llave.`}</span></div>
+      <div class="hide-sm">${bracketDesktop(B,P)}</div><div class="show-sm-b">${bracketMobile(B,P)}</div>`;
+  return pageHead(esc(ev.nombre),tabla?"Tabla y resultados":"Llave y resultados",`${tabla?"Orden oficial de competencia":"Llave oficial del sorteo"} y resultados cargados del ${esc(ev.fecha_texto||ev.nombre)}.`,"Resultados")+`
+  <section class="sec"><div class="wrap"><div class="card">
+    <div class="pager top">${prev?`<a class="btn l" href="#/resultados/${prev.slug}">← ${navLab(prev,c)}</a>`:"<span></span>"}${next?`<a class="btn l" href="#/resultados/${next.slug}">${navLab(next,c)} →</a>`:""}</div>
+    <div class="cat-head"><div>${c.num?`<span class="chip cel">Código ITF ${esc(c.num)}</span>`:""}<h2>${esc(c.title)}</h2></div>
+      <div class="toolbar"><span class="chip ok">✓ ${tabla?"Orden oficial":"Sorteo oficial"}</span><a class="btn l" href="#/ranking/${c.slug}">Ver ranking</a></div></div>
+    <div style="padding:0 20px 14px"><select id="resCat">${Object.entries(g).map(([k,xs])=>`<optgroup label="${esc(k)}">${xs.map(x=>`<option value="${x.slug}" ${x===c?"selected":""}>${esc(x.title)}</option>`).join("")}</optgroup>`).join("")}</select></div>
+    ${body}${res}
+  </div></div></section>`;
+  } finally { OEV=NEXT; }
+};
+V.resultados.after=()=>{
+  $("#resCat")?.addEventListener("change",e=>go("#/resultados/"+e.target.value));
+  initBmob();
 };
 
 function notFound(){return pageHead("Error","No encontrado","El elemento que buscás no existe o cambió de nombre en la última actualización.")+`<section class="sec"><div class="wrap"><a class="btn p" href="#/inicio">Volver al inicio</a></div></section>`;}
@@ -2141,7 +2189,7 @@ function render(){
   if(view.match)view.match(a);
   $("#app").innerHTML=view(a);
   view.after&&view.after(a);
-  const sec={llave:"ranking",cronograma:"calendario",argentinos:"inicio",historial:"plazas",escuela:"escuelas",competidor:"competidores",simulador:"ranking",mundial:"calendario"}[r]||r;
+  const sec={resultados:"calendario",llave:"ranking",cronograma:"calendario",argentinos:"inicio",historial:"plazas",escuela:"escuelas",competidor:"competidores",simulador:"ranking",mundial:"calendario"}[r]||r;
   $$("#links a").forEach(x=>x.classList.toggle("on",x.dataset.r===sec));
   $("#links").classList.remove("open");
   $("#heroSearch")&&($("#heroSearch").onclick=openSearch);
